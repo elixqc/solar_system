@@ -236,5 +236,19 @@
     earthAgePlus.addEventListener('click', () => adjustEarthAge(1));
     updateSaturnAge();
   </script>
+  <script src="../starfield.js"></script>
+  <script>
+    Starfield.setup({
+      starColor: "rgb(58, 85, 217)",
+      hueJitter: 0,
+      trailLength: 0.8,
+      baseSpeed: 3,
+      maxAcceleration: 2,
+      accelerationRate: 0.05,
+      decelerationRate: 0.05,
+      minSpawnRadius: 80,
+      maxSpawnRadius: 500
+    });
+  </script>
 </body>
 </html>

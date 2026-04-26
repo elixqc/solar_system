@@ -101,6 +101,8 @@
     }
 
     .hero {
+      position: relative;
+      overflow: hidden;
       min-height: 100vh;
       padding: 120px 40px 80px;
       background: var(--pure-black);
@@ -895,6 +897,20 @@
 
     planetOpen.addEventListener('click', openSelectedPlanet);
     planetSelect.addEventListener('change', openSelectedPlanet);
+  </script>
+  <script src="../starfield.js"></script>
+  <script>
+    Starfield.setup({
+      starColor: "rgb(58, 85, 217)",
+      hueJitter: 0,
+      trailLength: 0.8,
+      baseSpeed: 3,
+      maxAcceleration: 2,
+      accelerationRate: 0.05,
+      decelerationRate: 0.05,
+      minSpawnRadius: 80,
+      maxSpawnRadius: 500
+    });
   </script>
 </body>
 </html>

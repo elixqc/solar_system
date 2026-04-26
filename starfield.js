@@ -77,7 +77,7 @@ const Starfield = (function() {
     if(options) Object.assign(config, options);
     
     // Bind to the hero section
-    const container = document.getElementById('hero');
+    const container = document.getElementById('hero') || document.querySelector('.hero');
     if (!container) return;
 
     canvas = document.createElement('canvas');
