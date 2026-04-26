@@ -6,7 +6,7 @@ import os
 # CONFIGURATION
 # ============================================================
 TEXTURE_DIR = r"C:\solar_system"
-RENDER_ENGINE = "BLENDER_EEVEE"   # or "CYCLES"
+RENDER_ENGINE = "CYCLES"   # or "BLENDER_EEVEE"
 RESOLUTION_X = 1920
 RESOLUTION_Y = 1080
 FRAME_START = 1
@@ -59,6 +59,28 @@ def setup_scene():
         cycles.samples = 128
         if USE_MOTION_BLUR:
             scene.render.use_motion_blur = True
+        
+        # In Cycles, Bloom must be done via the Compositor using a Glare node
+        if USE_BLOOM:
+            scene.use_nodes = True
+            tree = scene.node_tree
+            tree.nodes.clear()
+            
+            rlayers = tree.nodes.new(type='CompositorNodeRLayers')
+            rlayers.location = (0, 0)
+            
+            glare = tree.nodes.new(type='CompositorNodeGlare')
+            glare.location = (300, 0)
+            glare.glare_type = 'FOG_GLOW'
+            glare.quality = 'HIGH'
+            glare.threshold = 0.8
+            glare.size = 9  # Max size for glow spread
+            
+            comp = tree.nodes.new(type='CompositorNodeComposite')
+            comp.location = (600, 0)
+            
+            tree.links.new(rlayers.outputs['Image'], glare.inputs['Image'])
+            tree.links.new(glare.outputs['Image'], comp.inputs['Image'])
 
     # World – starfield
     world = bpy.data.worlds.new("World")
@@ -330,21 +352,22 @@ def assign_material(obj, mat):
 #  base_color_rgba, texture_filename)
 PLANET_DATA = [
     # True relative size (Earth = 0.3)
-    ("Mercury", 0.11,  12,   88,   58,  0.03,  (0.6, 0.5, 0.45, 1), "mercury_color.jpg"),
-    ("Venus",   0.28,  18,  225,  243,  177.4, (0.9, 0.8, 0.5,  1), "venus_surface.jpg"),
-    ("Earth",   0.30,  25,  365,    1,   23.4, (0.2, 0.5, 0.9,  1), "earth_daymap.jpg"),
-    ("Mars",    0.16,  34,  687,   1.03, 25.2, (0.8, 0.4, 0.2,  1), "mars_surface.jpg"),
-    ("Jupiter", 3.36,  55,  433,   0.41, 3.1,  (0.8, 0.7, 0.55, 1), "jupiter_map.jpg"),
-    ("Saturn",  2.83,  80,  107,   0.45, 26.7, (0.9, 0.85, 0.6, 1), "saturn_color.jpg"),
-    ("Uranus",  1.20, 105,  840,   0.72, 97.8, (0.5, 0.85, 0.9, 1), "uranus.jpg"),
-    ("Neptune", 1.16, 125, 1640,   0.67, 28.3, (0.2, 0.4, 0.9,  1), "neptune_surface.jpg"),
-    ("Pluto",   0.05, 150, 2480,   6.39, 122.5, (0.6, 0.5, 0.4,  1), "pluto_map.jpg"),
+    # Name, radius, orbit_r, orb_period_days, rot_period, axial_tilt, base_color, tex_filename
+    ("Mercury", 0.11,  12,     88,   58,  0.03,  (0.6, 0.5, 0.45, 1), "mercury_color.jpg"),
+    ("Venus",   0.28,  18,    225,  243,  177.4, (0.9, 0.8, 0.5,  1), "venus_surface.jpg"),
+    ("Earth",   0.30,  25,    365,    1,   23.4, (0.2, 0.5, 0.9,  1), "earth_daymap.jpg"),
+    ("Mars",    0.16,  34,    687,   1.03, 25.2, (0.8, 0.4, 0.2,  1), "mars_surface.jpg"),
+    ("Jupiter", 3.36,  55,   4333,   0.41, 3.1,  (0.8, 0.7, 0.55, 1), "jupiter_map.jpg"),
+    ("Saturn",  2.83,  80,  10759,   0.45, 26.7, (0.9, 0.85, 0.6, 1), "saturn_color.jpg"),
+    ("Uranus",  1.20, 105,  30688,   0.72, 97.8, (0.5, 0.85, 0.9, 1), "uranus.jpg"),
+    ("Neptune", 1.16, 125,  60182,   0.67, 28.3, (0.2, 0.4, 0.9,  1), "neptune_surface.jpg"),
+    ("Pluto",   0.05, 150,  90560,   6.39, 122.5, (0.6, 0.5, 0.4,  1), "pluto_map.jpg"),
 ]
 
 SUN_RADIUS = 8.0
 
-# Map frame period → animation speed factor (so orbits fit in 1500 frames nicely)
-SPEED_SCALE = 0.025   # multiply real periods by this to get animation degrees/frame
+# Global orbital speed multiplier (keeps relative speeds mathematically perfectly accurate)
+SPEED_SCALE = 1.5
 
 
 # ============================================================
@@ -364,9 +387,9 @@ def build_solar_system():
     # every time the shadow map recalculates during playback.
     sun_obj.visible_shadow = False
 
-    # Sun point light - reduced energy to avoid washing out planets
-    sun_light = add_point_light("SunLight", (0, 0, 0), energy=80000,
-                                radius=SUN_RADIUS, color=(1.0, 0.95, 0.8))
+    # Sun point light - extremely high intensity for high contrast realism
+    sun_light = add_point_light("SunLight", (0, 0, 0), energy=150000,
+                                radius=SUN_RADIUS, color=(1.0, 0.95, 0.9))
 
     # FIX 2: Disable shadows on the point light.
     sun_light.data.use_shadow = False
@@ -375,19 +398,20 @@ def build_solar_system():
     sun_light.data.use_custom_distance = True
     sun_light.data.cutoff_distance     = 600.0
 
-    # Ambient fill light using a SUN lamp to evenly light the dark sides of all planets everywhere
+    # Ambient fill light (very weak, to maintain dark space but not pure black)
     bpy.ops.object.light_add(type='SUN', rotation=(math.radians(45), math.radians(45), 0))
     fill = bpy.context.active_object
     fill.name = "AmbientFill"
-    fill.data.energy = 0.2  # Sun lamps use low energy values
+    fill.data.energy = 0.01  # Drastically reduced for deep cinematic shadows
     fill.data.color = (0.3, 0.35, 0.5)
     fill.data.use_shadow = False
     
+    # Subtle rim light style fill
     bpy.ops.object.light_add(type='SUN', rotation=(math.radians(-45), math.radians(-135), 0))
     fill2 = bpy.context.active_object
     fill2.name = "AmbientFill2"
-    fill2.data.energy = 0.1
-    fill2.data.color = (0.25, 0.3, 0.45)
+    fill2.data.energy = 0.03
+    fill2.data.color = (0.7, 0.8, 1.0)
     fill2.data.use_shadow = False
 
     # ----- PLANETS -----
@@ -493,7 +517,16 @@ def add_orbit_lines():
     emit = nodes.new("ShaderNodeEmission");        emit.location = (100, 0)
     emit.inputs["Color"].default_value    = (0.4, 0.6, 1.0, 1.0)
     emit.inputs["Strength"].default_value = 0.7  # Below bloom threshold to prevent bright glowing
-    links.new(emit.outputs["Emission"], out.inputs["Surface"])
+    
+    # We add a Mix Shader to animate opacity
+    trans = nodes.new("ShaderNodeBsdfTransparent"); trans.location = (100, 100)
+    mix = nodes.new("ShaderNodeMixShader"); mix.location = (250, 50)
+    mix.name = "OrbitFadeMix"
+    mix.inputs[0].default_value = 1.0 # 0 = transparent, 1 = emission
+    
+    links.new(trans.outputs["BSDF"], mix.inputs[1])
+    links.new(emit.outputs["Emission"], mix.inputs[2])
+    links.new(mix.outputs["Shader"], out.inputs["Surface"])
 
     mat.blend_method  = "BLEND"
     mat.shadow_method = "NONE"
@@ -590,27 +623,51 @@ def add_planet_labels(planets, cam_obj, blocks):
 
         planet = planets[pname]["planet"]
         pivot = planets[pname]["pivot"]
-        orbit_r = planets[pname]["orbit_r"]
+        
+        # Adjust radius consideration for Saturn to account for its rings
+        label_prad = prad * 2.5 if pname == "Saturn" else prad
+        
+        # 1. Create an Empty Rig to act as a billboard center
+        billboard_rig = create_empty(f"LabelRig_{pname}", location=(orbit_r, 0, 0))
+        
+        # Parent to the pivot. It will follow the planet's orbit perfectly, 
+        # but won't inherit the planet's spinning rotation!
+        billboard_rig.parent = pivot
+        
+        # Rig always faces the camera (Z points to camera, Y points Up, X points Right)
+        c_track = billboard_rig.constraints.new(type='TRACK_TO')
+        c_track.target = cam_obj
+        c_track.track_axis = 'TRACK_Z'
+        c_track.up_axis = 'UP_Y'
 
-        # Position at the planet's orbit radius plus an offset
-        bpy.ops.object.text_add(location=(orbit_r + prad * 1.5, 0, prad * 1.2))
+        # 2. Create the Text Object
+        bpy.ops.object.text_add(location=(0, 0, 0))
         txt_obj = bpy.context.active_object
         txt_obj.name = f"Label_{pname}"
-        txt_obj.data.body = pname
-        txt_obj.data.size = max(0.2, prad * 0.4)
-        txt_obj.data.align_x = 'CENTER'
+        txt_obj.parent = billboard_rig
 
-        # Parent to the pivot instead of the planet
-        # This makes it follow the orbit but NOT spin wildly with the planet's day/night cycle!
-        txt_obj.parent = pivot
+        # 3. Typography & Styling
+        txt_obj.data.body = pname.upper()  # All caps
+        txt_obj.data.size = label_prad * 0.35  # Strict proportional scale so all planets match visually
+        txt_obj.data.align_x = 'LEFT'
+        txt_obj.data.space_character = 1.4  # Cinematic letter spacing
+        
+        # Offset text strictly proportional to the planet's radius
+        txt_obj.location = (label_prad * 1.3, label_prad * 0.2, 0)
+        
+        # Try to load a clean modern font (Windows standard)
+        font_path = "C:\\Windows\\Fonts\\segoeuil.ttf"  # Segoe UI Light
+        if not os.path.exists(font_path):
+            font_path = "C:\\Windows\\Fonts\\arial.ttf"
+            
+        if os.path.exists(font_path):
+            try:
+                fnt = bpy.data.fonts.load(font_path)
+                txt_obj.data.font = fnt
+            except Exception:
+                pass
 
-        # Track To constraint so it faces camera
-        c = txt_obj.constraints.new(type='TRACK_TO')
-        c.target = cam_obj
-        c.track_axis = 'TRACK_Z'
-        c.up_axis = 'UP_Y'
-
-        # Material with animated transparency
+        # 4. Material with subtle glow and animated transparency
         lmat = bpy.data.materials.new(f"Label_{pname}_Mat")
         lmat.use_nodes = True
         lmat.blend_method = 'BLEND'
@@ -623,8 +680,9 @@ def add_planet_labels(planets, cam_obj, blocks):
 
         lemit = ln.new("ShaderNodeEmission")
         lemit.location = (0, 0)
-        lemit.inputs["Color"].default_value = (1, 1, 1, 1)
-        lemit.inputs["Strength"].default_value = 2.0
+        # Subtle bluish-white for space aesthetic
+        lemit.inputs["Color"].default_value = (0.85, 0.92, 1.0, 1.0)
+        lemit.inputs["Strength"].default_value = 1.5  # Subtle glow
 
         ltrans = ln.new("ShaderNodeBsdfTransparent")
         ltrans.location = (0, 100)
@@ -642,7 +700,7 @@ def add_planet_labels(planets, cam_obj, blocks):
         # Store mix node to animate it later
         label_objects[pname] = {"obj": txt_obj, "mix_node": lmix}
 
-    # Animate visibility based on camera segments
+    # 5. Animate visibility based on camera segments
     for idx, (pname, b_start, b_end) in enumerate(blocks):
         trans_end = b_start if idx == 0 else b_start + 40
         showcase_start = trans_end
@@ -671,7 +729,7 @@ def add_planet_labels(planets, cam_obj, blocks):
         mix_node.inputs[0].default_value = 0.0
         mix_node.inputs[0].keyframe_insert(data_path="default_value", frame=fade_out_end)
 
-        # Apply bezier interpolation for smooth fade
+        # Apply bezier interpolation for smooth cinematic fade
         if mix_node.id_data.animation_data and mix_node.id_data.animation_data.action:
             for fcurve in mix_node.id_data.animation_data.action.fcurves:
                 for kf in fcurve.keyframe_points:
@@ -705,12 +763,15 @@ def build_camera_system(planets):
 
     # Setup Cinematic Depth of Field
     cam_data = cam_obj.data
-    cam_data.lens = 24  # Wider lens so we can get physically closer
+    cam_data.lens = 50  # Cinematic 50mm lens
     cam_data.clip_start = 0.01
     cam_data.clip_end = 2000
     cam_data.dof.use_dof = True
     cam_data.dof.focus_object = cam_target
-    cam_data.dof.aperture_fstop = 2.8
+    cam_data.dof.aperture_fstop = 1.8  # Strong subject focus
+    
+    # Offset camera slightly for rule-of-thirds framing
+    cam_data.shift_x = 0.15
 
     # Slight camera tilt for realism
     cam_obj.rotation_euler.y = math.radians(2)
@@ -753,12 +814,23 @@ def build_camera_system(planets):
     for pname in PLANET_DATA:
         keyframe_influence(pname[0], 1, 0.0)
 
-    # Overview Camera Motion (start extremely close but with wide lens, slight zoom/orbit)
-    cam_obj.location = (0, -140, 100)
+    # Overview Camera Motion (Arc/Orbit, slow easing)
+    cam_obj.location = (-60, -140, 100)
     cam_obj.keyframe_insert(data_path="location", frame=1)
 
     cam_obj.location = (50, -80, 60)
     cam_obj.keyframe_insert(data_path="location", frame=240)
+
+    # Animate orbit lines fading out after the overview
+    orbit_mat = bpy.data.materials.get("Orbit_Line_Mat")
+    orbit_mix = orbit_mat.node_tree.nodes["OrbitFadeMix"] if orbit_mat else None
+
+    if orbit_mix:
+        orbit_mix.inputs[0].default_value = 1.0
+        orbit_mix.inputs[0].keyframe_insert(data_path="default_value", frame=1)
+        orbit_mix.inputs[0].keyframe_insert(data_path="default_value", frame=240)
+        orbit_mix.inputs[0].default_value = 0.0
+        orbit_mix.inputs[0].keyframe_insert(data_path="default_value", frame=300)
 
     # Hold Sun target until transition ends
     keyframe_influence("Sun", 300, 1.0)
@@ -797,14 +869,17 @@ def build_camera_system(planets):
         keyframe_influence(pname, showcase_end, 1.0)
 
         prad = planets[pname]["radius"]
+        
+        # Pull camera back further for Saturn so the rings fit perfectly
+        cam_prad = prad * 2.5 if pname == "Saturn" else prad
 
-        # Local camera position (offset from planet)
-        start_loc = (0, -prad * 8, prad * 3)
+        # Local camera position (arc/orbital movement around planet)
+        start_loc = (-cam_prad * 5, -cam_prad * 8, cam_prad * 4)
         cam_obj.location = start_loc
         cam_obj.keyframe_insert(data_path="location", frame=showcase_start)
 
-        # Slight orbit and push-in during showcase
-        end_loc = (prad * 5, -prad * 6, prad * 4)
+        # Subtle arc and push-in during showcase
+        end_loc = (cam_prad * 4, -cam_prad * 6, cam_prad * 2)
         cam_obj.location = end_loc
         cam_obj.keyframe_insert(data_path="location", frame=showcase_end)
 
@@ -823,6 +898,18 @@ def build_camera_system(planets):
     keyframe_influence("Sun", final_start, 0.0)
     keyframe_influence("Sun", final_trans_end, 1.0)
     keyframe_influence("Sun", final_end, 1.0)
+
+    # Bring orbit lines back for the final overview
+    if orbit_mix:
+        orbit_mix.inputs[0].keyframe_insert(data_path="default_value", frame=final_start)
+        orbit_mix.inputs[0].default_value = 1.0
+        orbit_mix.inputs[0].keyframe_insert(data_path="default_value", frame=final_trans_end)
+        
+        # Smooth interpolation for orbit mix
+        if orbit_mix.id_data.animation_data and orbit_mix.id_data.animation_data.action:
+            for fcurve in orbit_mix.id_data.animation_data.action.fcurves:
+                for kf in fcurve.keyframe_points:
+                    kf.interpolation = 'BEZIER'
 
     # Move camera to a closer wide-angle overview (balances seeing outer planets with keeping inner planets visible)
     cam_obj.location = (0, -80, 50)
@@ -844,8 +931,8 @@ def build_camera_system(planets):
         for fcurve in cam_obj.animation_data.action.fcurves:
             if fcurve.data_path == "location":
                 mod = fcurve.modifiers.new(type='NOISE')
-                mod.scale = 80.0
-                mod.strength = 0.2
+                mod.scale = 120.0
+                mod.strength = 0.1  # Very subtle shake
 
     return cam_obj, blocks
 
