@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Earth — Blender Solar System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    :root {
+      --action-blue: #0066cc;
+      --focus-blue: #0071e3;
+      --sky-blue: #2997ff;
+      --near-black: #1d1d1f;
+      --paper-white: #ffffff;
+      --parchment: #f5f5f7;
+      --dark-tile-1: #272729;
+      --dark-tile-2: #2a2a2c;
+      --pure-black: #000000;
+      --pearl-btn: #fafafc;
+      --hairline: rgba(0, 0, 0, 0.08);
+      --hairline-dark: rgba(255, 255, 255, 0.12);
+      --muted-80: rgba(0, 0, 0, 0.8);
+      --muted-48: rgba(0, 0, 0, 0.48);
+    }
+    body { margin: 0; font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 17px; line-height: 1.47; color: var(--near-black); background: var(--paper-white); overflow-x: hidden; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+    a { color: inherit; }
+    img, video { display: block; max-width: 100%; }
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; height: 44px; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 0 22px; background: rgba(0, 0, 0, 0.84); backdrop-filter: saturate(180%) blur(20px); -webkit-backdrop-filter: saturate(180%) blur(20px); }
+    .nav-logo { font-size: 18px; font-weight: 600; letter-spacing: -0.02em; color: var(--paper-white); text-decoration: none; white-space: nowrap; }
+    .nav-logo span { color: var(--sky-blue); }
+    .nav-links { display: flex; align-items: center; gap: 2px; list-style: none; margin: 0; padding: 0; }
+    .nav-links a { display: inline-flex; align-items: center; min-height: 32px; padding: 0 14px; font-size: 12px; letter-spacing: -0.01em; color: rgba(255, 255, 255, 0.84); text-decoration: none; transition: color 0.2s ease; }
+    .nav-links a:hover { color: var(--paper-white); }
+    .nav-badge { font-size: 11px; letter-spacing: 0.01em; color: rgba(255, 255, 255, 0.52); white-space: nowrap; }
+    .hero { min-height: 100vh; padding: 120px 40px 80px; background: var(--pure-black); color: var(--paper-white); display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.9fr); gap: 48px; align-items: center; }
+    .hero-eyebrow { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 20px; color: var(--sky-blue); font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    .hero-eyebrow::before { content: ""; width: 8px; height: 8px; border-radius: 999px; background: var(--sky-blue); }
+    .hero-title { margin: 0; font-size: clamp(44px, 7.2vw, 88px); line-height: 0.98; letter-spacing: -0.055em; font-weight: 600; max-width: 9ch; }
+    .hero-title .accent { color: var(--sky-blue); }
+    .hero-sub { max-width: 34rem; margin: 24px 0 0; font-size: 21px; line-height: 1.38; color: rgba(255, 255, 255, 0.66); }
+    .hero-ctas { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 36px; }
+    .btn-pill-primary, .btn-pill-ghost, .inline-link { text-decoration: none; }
+    .btn-pill-primary, .btn-pill-ghost { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 11px 24px; border-radius: 980px; font-size: 17px; letter-spacing: -0.02em; transition: transform 0.15s ease, opacity 0.2s ease, background 0.2s ease, border-color 0.2s ease; white-space: nowrap; }
+    .btn-pill-primary { background: var(--action-blue); color: var(--paper-white); border: 1px solid transparent; }
+    .btn-pill-primary:hover { opacity: 0.9; }
+    .btn-pill-primary:active { transform: scale(0.95); }
+    .btn-pill-primary:focus-visible, .btn-pill-ghost:focus-visible, .inline-link:focus-visible { outline: 2px solid var(--focus-blue); outline-offset: 2px; }
+    .btn-pill-ghost { background: transparent; color: var(--sky-blue); border: 1px solid var(--sky-blue); }
+    .btn-pill-ghost:hover { background: rgba(41, 151, 255, 0.1); }
+    .btn-pill-ghost:active { transform: scale(0.95); }
+    .hero-aside { display: grid; gap: 16px; }
+    .hero-panel { padding: 24px; border-radius: 24px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); backdrop-filter: blur(12px); }
+    .hero-panel-label, .section-eyebrow, .meta-kicker { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    .hero-panel-label { margin-bottom: 14px; color: rgba(255, 255, 255, 0.48); }
+    .hero-panel-copy { margin: 0; font-size: 17px; line-height: 1.55; color: rgba(255, 255, 255, 0.8); }
+    .hero-list { display: grid; gap: 12px; margin: 18px 0 0; padding: 0; list-style: none; }
+    .hero-list li { display: flex; align-items: flex-start; gap: 12px; font-size: 14px; line-height: 1.45; color: rgba(255, 255, 255, 0.7); }
+    .hero-list li::before { content: ""; width: 8px; height: 8px; border-radius: 999px; margin-top: 0.45em; background: var(--sky-blue); flex: 0 0 auto; }
+    .tile { padding: 96px 40px; }
+    .tile-light { background: var(--paper-white); color: var(--near-black); }
+    .tile-dark { background: var(--dark-tile-1); color: var(--paper-white); }
+    .section-title { margin: 0; font-size: clamp(34px, 4.8vw, 60px); line-height: 1.05; letter-spacing: -0.04em; font-weight: 600; }
+    .section-eyebrow { margin-bottom: 12px; }
+    .tile-light .section-eyebrow { color: var(--action-blue); }
+    .tile-dark .section-eyebrow { color: var(--sky-blue); }
+    .tile-light .section-title { color: var(--near-black); }
+    .tile-dark .section-title { color: var(--paper-white); }
+    .media-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.8fr); gap: 20px; margin-top: 44px; align-items: start; }
+    .video-card { padding: 24px; border-radius: 18px; background: var(--dark-tile-2); border: 1px solid var(--hairline-dark); }
+    .render-placeholder { min-height: 420px; border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.08); background: #000; display: grid; place-items: center; text-align: center; padding: 48px 36px; }
+    .render-placeholder-inner { max-width: 38rem; display: grid; gap: 14px; justify-items: center; }
+    .render-placeholder-badge { display: inline-flex; align-items: center; min-height: 28px; padding: 0 12px; border-radius: 980px; background: rgba(41, 151, 255, 0.14); color: var(--sky-blue); font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    .render-placeholder h3 { margin: 0; font-size: clamp(28px, 4vw, 48px); line-height: 1.04; letter-spacing: -0.04em; font-weight: 600; color: var(--paper-white); }
+    .render-placeholder p { margin: 0; max-width: 32rem; font-size: 17px; line-height: 1.55; color: rgba(255, 255, 255, 0.72); }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .meta-chip { display: inline-flex; align-items: center; min-height: 28px; padding: 0 12px; border-radius: 8px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.12); color: rgba(255, 255, 255, 0.84); font-size: 12px; }
+    .side-note { padding: 28px; border-radius: 18px; background: var(--paper-white); border: 1px solid var(--hairline); }
+    .side-note h3 { margin: 0 0 10px; font-size: 24px; line-height: 1.12; letter-spacing: -0.04em; font-weight: 600; color: var(--near-black); }
+    .side-note p { margin: 0; font-size: 15px; line-height: 1.55; color: var(--muted-80); }
+    .side-note .inline-link { color: var(--action-blue); font-weight: 600; }
+    .age-calculator { margin-top: 18px; padding-top: 18px; border-top: 1px solid var(--hairline); display: grid; gap: 12px; }
+    .age-calculator-label { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted-48); }
+    .age-calculator p { margin: 0; font-size: 15px; line-height: 1.55; color: var(--muted-80); }
+    .age-calculator-row { display: grid; gap: 10px; }
+    .age-calculator-controls { display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; gap: 10px; align-items: center; }
+    .age-stepper { width: 44px; height: 44px; border-radius: 12px; border: 1px solid var(--hairline); background: var(--paper-white); color: var(--near-black); font: inherit; font-size: 22px; line-height: 1; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s ease, transform 0.15s ease, border-color 0.2s ease; }
+    .age-stepper:hover { background: var(--pearl-btn); }
+    .age-stepper:active { transform: scale(0.96); }
+    .age-stepper:focus-visible { outline: 2px solid var(--focus-blue); outline-offset: 2px; }
+    .age-calculator input { width: 100%; min-height: 44px; padding: 0 14px; border-radius: 12px; border: 1px solid var(--hairline); background: var(--paper-white); color: var(--near-black); font: inherit; outline: none; appearance: textfield; text-align: center; -moz-appearance: textfield; }
+    .age-calculator input::-webkit-outer-spin-button, .age-calculator input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    .age-calculator input:focus { border-color: var(--focus-blue); box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.18); }
+    .age-calculator-output { padding: 12px 14px; border-radius: 12px; background: rgba(0, 102, 204, 0.08); color: var(--near-black); font-size: 14px; line-height: 1.4; font-weight: 600; text-align: center; }
+    .age-calculator-output strong { color: var(--action-blue); }
+    .age-calculator-hint { margin: 0; font-size: 13px; line-height: 1.45; color: var(--muted-48); }
+    .details-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; margin-top: 44px; }
+    .details-card { padding: 28px; border-radius: 18px; background: var(--paper-white); border: 1px solid var(--hairline); }
+    .details-card.dark { background: var(--dark-tile-2); color: var(--paper-white); border-color: var(--hairline-dark); }
+    .details-card .meta-kicker { color: var(--muted-48); margin-bottom: 12px; }
+    .details-card.dark .meta-kicker { color: rgba(255, 255, 255, 0.48); }
+    .details-card h3 { margin: 0 0 10px; font-size: 22px; line-height: 1.12; letter-spacing: -0.04em; font-weight: 600; color: inherit; }
+    .details-card p { margin: 0; font-size: 15px; line-height: 1.55; color: inherit; opacity: 0.84; }
+    footer { background: var(--parchment); border-top: 1px solid var(--hairline); padding: 56px 40px; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+    .footer-left .f-title { margin: 0 0 6px; font-size: clamp(26px, 2.8vw, 34px); line-height: 1.06; letter-spacing: -0.04em; font-weight: 600; color: var(--near-black); }
+    .footer-left .f-title span { color: var(--action-blue); }
+    .footer-left .f-sub, .footer-right, .footer-note { font-size: 12px; line-height: 1.9; letter-spacing: -0.01em; text-transform: uppercase; color: var(--muted-48); }
+    .footer-note { margin-top: 12px; }
+    .footer-right { text-align: right; }
+    .footer-right a { color: var(--action-blue); text-decoration: none; }
+    .footer-right a:hover { text-decoration: underline; }
+    @media (max-width: 1024px) { .hero, .media-grid, .details-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 833px) { nav { padding: 0 16px; } .nav-links { display: none; } .hero, .tile, footer { padding-left: 24px; padding-right: 24px; } .hero { padding-top: 100px; padding-bottom: 72px; } .hero-sub { font-size: 18px; } .video-card { padding: 20px; } .footer-right { text-align: left; } }
+    @media (max-width: 640px) { .hero-title { font-size: clamp(40px, 14vw, 56px); } .hero-ctas { flex-direction: column; align-items: stretch; } .btn-pill-primary, .btn-pill-ghost { width: 100%; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; } }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="nav-logo" href="index.html">Nico <span>Barredo</span></a>
+    <ul class="nav-links" aria-label="Primary">
+      <li><a href="../index.html#hero">Home</a></li>
+      <li><a href="../index.html#work">Work</a></li>
+      <li><a href="../index.html#about">About</a></li>
+      <li><a href="index.html">Blender</a></li>
+      <li><a href="../rotoscope/index.html">Rotoscope</a></li>
+    </ul>
+    <div class="nav-badge">Earth</div>
+  </nav>
+  <main>
+    <section class="hero">
+      <div>
+        <div class="hero-eyebrow">Earth</div>
+        <h1 class="hero-title">The living world we call <span class="accent">home</span>.</h1>
+        <p class="hero-sub">Earth is the third planet from the Sun and the only known world with surface oceans, active plate tectonics, and life. Its atmosphere is rich in nitrogen and oxygen, which supports stable temperatures and complex ecosystems.</p>
+        <div class="hero-ctas">
+          <a href="#media" class="btn-pill-primary">View the Render</a>
+          <a href="index.html" class="btn-pill-ghost">Back to Blender Home</a>
+        </div>
+      </div>
+      <aside class="hero-aside" aria-label="Earth notes">
+        <div class="hero-panel">
+          <div class="hero-panel-label">Render note</div>
+          <ul class="hero-list">
+            <li>Use the render to show oceans, cloud cover, and day-night motion.</li>
+            <li>Keep the planet centered and softly lit so the surface reads clearly.</li>
+            <li>This page can also anchor the whole solar-system series intro.</li>
+          </ul>
+        </div>
+      </aside>
+    </section>
+    <section class="tile tile-light" id="media">
+      <div class="section-eyebrow">Planet Profile</div>
+      <h2 class="section-title">Earth render and explanation.</h2>
+      <div class="media-grid">
+        <div class="video-card">
+          <div style="overflow:hidden;border-radius:18px;background:#000;border:1px solid rgba(255,255,255,0.08);">
+            <video autoplay muted loop playsinline preload="metadata" style="display:block;width:100%;aspect-ratio:16 / 9;object-fit:cover;background:#000;">
+              <source src="media/earth.mp4" type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div style="margin-top:18px;display:grid;gap:10px;">
+            <div class="meta-kicker">Blender Render</div>
+            <h2 style="margin:0;font-size:28px;line-height:1.08;letter-spacing:-0.04em;font-weight:600;color:var(--paper-white);">Earth in a 10-second loop.</h2>
+            <p style="margin:0;font-size:15px;line-height:1.55;color:rgba(255,255,255,0.78);">This render was created in Blender. It is set to autoplay, stay muted, and loop so the page feels polished without showing playback controls.</p>
+            <div class="meta-row">
+              <span class="meta-chip">10 seconds</span>
+              <span class="meta-chip">Autoplay</span>
+              <span class="meta-chip">Muted</span>
+              <span class="meta-chip">Loop</span>
+            </div>
+          </div>
+        </div>
+        <aside class="side-note">
+          <h3>Earth summary</h3>
+          <p>Earth has liquid water on its surface, a protective magnetic field, and an atmosphere that helps regulate climate. It is the only planet known to support life as we know it.</p>
+          <div class="age-calculator">
+            <div class="age-calculator-label">Age converter</div>
+            <p class="age-calculator-hint">Enter your age in Earth years and see the Earth equivalent. Since this is Earth itself, the number stays the same.</p>
+            <div class="age-calculator-row">
+              <div class="age-calculator-controls">
+                <button class="age-stepper" type="button" id="earth-age-minus" aria-label="Decrease Earth age by 1 year">−</button>
+                <input id="earth-age-input" type="number" min="0" step="1" value="20" aria-label="Your age in Earth years" />
+                <button class="age-stepper" type="button" id="earth-age-plus" aria-label="Increase Earth age by 1 year">+</button>
+              </div>
+              <div class="age-calculator-output" id="earth-age-output">You would be about <strong>20 years, 0 months, 0 days</strong> Earth time.</div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+    <section class="tile tile-dark">
+      <div class="section-eyebrow">Key Features</div>
+      <h2 class="section-title">What makes Earth unique.</h2>
+      <div class="details-grid">
+        <article class="details-card">
+          <div class="meta-kicker">Life support</div>
+          <h3>Water, atmosphere, and chemistry.</h3>
+          <p>Earth's liquid water, moderate temperatures, and chemical cycles make it the only known world with a biosphere that can sustain complex life.</p>
+        </article>
+        <article class="details-card dark">
+          <div class="meta-kicker">Rotation</div>
+          <h3>A balanced day and year.</h3>
+          <p>Earth completes one rotation in about 24 hours and one orbit in about 365.25 days. That stable rhythm shapes weather, seasons, and daily life.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <div class="footer-left">
+      <div class="f-title">Nico <span>Barredo</span></div>
+      <div class="f-sub">Earth · Blender Planet Page</div>
+      <div class="footer-note">This page follows the same structure as the other planet pages in the series.</div>
+    </div>
+    <div class="footer-right">
+      Back to <a href="index.html">Blender Home</a><br />
+      Media path: blender/media/earth.mp4
+    </div>
+  </footer>
+  <script>
+    const earthAgeInput = document.getElementById('earth-age-input');
+    const earthAgeOutput = document.getElementById('earth-age-output');
+    const earthAgeMinus = document.getElementById('earth-age-minus');
+    const earthAgePlus = document.getElementById('earth-age-plus');
+
+    function formatPlanetAge(earthAge, planetYearInEarthDays) {
+      const safeEarthAge = Number.isFinite(earthAge) && earthAge >= 0 ? earthAge : 0;
+      const totalPlanetYears = (safeEarthAge * 365.25) / planetYearInEarthDays;
+      let years = Math.floor(totalPlanetYears);
+      let months = Math.floor((totalPlanetYears - years) * 12);
+      let days = Math.round((((totalPlanetYears - years) * 12) - months) * 30);
+
+      if (days >= 30) {
+        days -= 30;
+        months += 1;
+      }
+
+      if (months >= 12) {
+        months -= 12;
+        years += 1;
+      }
+
+      return `${years} year${years === 1 ? '' : 's'}, ${months} month${months === 1 ? '' : 's'}, ${days} day${days === 1 ? '' : 's'}`;
+    }
+
+    function updateEarthAge() {
+      const earthAge = Number(earthAgeInput.value);
+      const earthAgeValue = formatPlanetAge(earthAge, 365.25);
+      earthAgeOutput.innerHTML = `You would be about <strong>${earthAgeValue}</strong> Earth time.`;
+    }
+
+    function adjustEarthAge(delta) {
+      const currentAge = Number(earthAgeInput.value);
+      const safeAge = Number.isFinite(currentAge) && currentAge >= 0 ? currentAge : 0;
+      const nextAge = Math.max(0, Math.round(safeAge + delta));
+      earthAgeInput.value = nextAge;
+      updateEarthAge();
+    }
+
+    earthAgeInput.addEventListener('input', updateEarthAge);
+    earthAgeMinus.addEventListener('click', () => adjustEarthAge(-1));
+    earthAgePlus.addEventListener('click', () => adjustEarthAge(1));
+    updateEarthAge();
+  </script>
+</body>
+</html>

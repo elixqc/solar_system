@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rotoscope — Live Action · M&A Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:       #09111a;
+      --surface:  #111d2b;
+      --cyan:     #7cd4c5;
+      --cyan-dim: #2e6f67;
+      --gold:     #ff7a59;
+      --white:    #f4f1e8;
+      --muted:    #9aa8bf;
+      --border:   rgba(244,241,232,0.13);
+      --bg-spot-1: rgba(124,212,197,0.12);
+      --bg-spot-2: rgba(255,122,89,0.11);
+      --nav-bg: rgba(9,17,26,0.62);
+      --nav-pill-bg: rgba(17,29,43,0.72);
+      --theme-star: rgba(240,238,232,1);
+    }
+
+    body[data-theme='light'] {
+      --bg:       #f5f1e8;
+      --surface:  #fbf8f2;
+      --cyan:     #2f8a7c;
+      --cyan-dim: #7daea6;
+      --gold:     #be5b41;
+      --white:    #1f2e43;
+      --muted:    #60728b;
+      --border:   rgba(31,46,67,0.18);
+      --bg-spot-1: rgba(47,138,124,0.12);
+      --bg-spot-2: rgba(190,91,65,0.1);
+      --nav-bg: rgba(245,241,232,0.82);
+      --nav-pill-bg: rgba(255,255,255,0.74);
+      --theme-star: rgba(38,54,78,1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background:
+        radial-gradient(1200px 820px at 85% -10%, var(--bg-spot-1), transparent 62%),
+        radial-gradient(900px 680px at -10% 105%, var(--bg-spot-2), transparent 58%),
+        var(--bg);
+      color: var(--white);
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 13px;
+      overflow-x: hidden;
+    }
+
+    /* noise grain */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      background-size: 180px;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    #stars-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .wrapper { position: relative; z-index: 2; }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 48px;
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(18px);
+      background: var(--nav-bg);
+    }
+
+    .nav-logo {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 16px;
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--white); }
+
+    .nav-links {
+      display: flex;
+      gap: 8px;
+      list-style: none;
+      padding: 6px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--nav-pill-bg);
+    }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+      border-radius: 999px;
+      padding: 7px 12px;
+    }
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--cyan);
+      background: rgba(124,212,197,0.1);
+    }
+
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--border);
+      background: var(--nav-pill-bg);
+      color: var(--white);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .theme-toggle:hover {
+      border-color: var(--cyan-dim);
+      transform: translateY(-1px);
+    }
+    .theme-toggle-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--gold);
+      flex-shrink: 0;
+    }
+
+    /* ── PAGE HERO ── */
+    .page-hero {
+      padding: 160px 56px 80px;
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: end;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* filmstrip lines deco */
+    .page-hero::after {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 220px;
+      height: 100%;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 46px,
+        rgba(124,212,197,0.05) 46px,
+        rgba(124,212,197,0.05) 50px
+      );
+      pointer-events: none;
+    }
+
+    .hero-eyebrow {
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 24px;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 28px;
+      height: 1px;
+      background: var(--cyan);
+      vertical-align: middle;
+      margin-right: 12px;
+    }
+
+    .page-title {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: clamp(44px, 6vw, 86px);
+      font-weight: 300;
+      line-height: 0.95;
+    }
+    .page-title em { font-style: italic; color: var(--cyan); }
+
+    .hero-right {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      justify-content: flex-end;
+    }
+
+    .hero-desc {
+      font-size: 12px;
+      line-height: 2;
+      color: var(--muted);
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .tag {
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border: 1px solid var(--cyan-dim);
+      color: var(--cyan);
+    }
+
+    /* ── SECTION BASE ── */
+    section {
+      padding: 80px 56px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sec-label {
+      font-size: 10px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 12px;
+    }
+
+    .sec-title {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: clamp(28px, 3.5vw, 46px);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 48px;
+    }
+
+    /* ── VIDEO GRID ── */
+    .video-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+
+    .video-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
+    .video-block:hover { border-color: rgba(124,212,197,0.38); }
+
+    .video-block-header {
+      padding: 24px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .vb-label {
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .vb-num {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 22px;
+      font-weight: 300;
+      color: var(--cyan);
+      opacity: 0.35;
+    }
+
+    .video-embed-wrap {
+      position: relative;
+      width: 100%;
+      padding-bottom: 56.25%; /* 16:9 */
+      background: #000;
+    }
+
+    .video-embed-wrap iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+
+    /* placeholder shown when no src yet */
+    .video-placeholder {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      background: rgba(9,17,26,0.86);
+      cursor: default;
+    }
+
+    .video-placeholder .ph-icon {
+      width: 52px;
+      height: 52px;
+      border: 1px solid var(--cyan-dim);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .video-placeholder .ph-icon svg { stroke: var(--cyan); }
+
+    .video-placeholder p {
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .video-block-footer {
+      padding: 20px 28px;
+      border-top: 1px solid var(--border);
+    }
+
+    .vb-title {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 20px;
+      font-weight: 300;
+      margin-bottom: 6px;
+    }
+
+    .vb-desc {
+      font-size: 11px;
+      line-height: 1.8;
+      color: var(--muted);
+    }
+
+    /* ── PROCEDURE ── */
+    .procedure-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2px;
+    }
+
+    .procedure-step {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 36px 32px;
+      position: relative;
+      transition: border-color 0.3s;
+    }
+
+    .procedure-step:hover { border-color: rgba(124,212,197,0.32); }
+
+    .step-num {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 56px;
+      font-weight: 300;
+      color: var(--cyan);
+      opacity: 0.12;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .step-title {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--white);
+      margin-bottom: 12px;
+    }
+
+    .step-desc {
+      font-size: 11px;
+      line-height: 1.9;
+      color: var(--muted);
+    }
+
+    .step-accent {
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 0;
+      background: var(--cyan);
+      transition: height 0.35s ease;
+    }
+
+    .procedure-step:hover .step-accent { height: 100%; }
+
+    /* ── WEEKLY PROGRESS ── */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .week-row {
+      display: grid;
+      grid-template-columns: 100px 1px 1fr;
+      gap: 0 32px;
+      position: relative;
+    }
+
+    .week-num {
+      padding: 28px 0;
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: right;
+    }
+
+    .week-line {
+      position: relative;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+
+    .week-dot {
+      position: absolute;
+      top: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 1.5px solid var(--cyan);
+      z-index: 2;
+      transition: background 0.2s;
+    }
+
+    .week-row:hover .week-dot { background: var(--cyan); }
+
+    .week-content {
+      padding: 24px 0 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .week-row:last-child .week-content { border-bottom: none; }
+
+    .week-title {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 20px;
+      font-weight: 300;
+      margin-bottom: 8px;
+    }
+
+    .week-body {
+      font-size: 11px;
+      line-height: 1.9;
+      color: var(--muted);
+    }
+
+    .week-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 12px;
+    }
+
+    .week-tag {
+      font-size: 9px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      background: rgba(124,212,197,0.08);
+      border: 1px solid var(--cyan-dim);
+      color: var(--cyan);
+    }
+
+    /* ── WEEKLY VIDEO LINKS ── */
+    .week-links-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 10px;
+    }
+    .week-link-card {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      padding: 14px;
+      display: grid;
+      gap: 8px;
+    }
+    .week-link-label {
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .week-link-anchor {
+      color: var(--cyan);
+      text-decoration: none;
+      font-size: 11px;
+      line-height: 1.6;
+      word-break: break-all;
+      border: 1px dashed var(--cyan-dim);
+      padding: 8px 10px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .week-link-anchor:hover {
+      color: var(--gold);
+      border-color: var(--gold);
+    }
+
+    /* ── DISCLAIMER ── */
+    .disclaimer-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--cyan);
+      padding: 40px 44px;
+    }
+
+    .disclaimer-box .d-label {
+      font-size: 9px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .disclaimer-box .d-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--cyan-dim);
+    }
+
+    .disclaimer-box .d-text {
+      font-size: 12px;
+      line-height: 2.1;
+      color: var(--muted);
+    }
+
+    .disclaimer-box .d-text strong {
+      color: var(--white);
+      font-weight: 700;
+    }
+
+    .disclaimer-box .d-text em {
+      color: var(--cyan);
+      font-style: normal;
+    }
+
+    /* ── BACK LINK ── */
+    .back-bar {
+      padding: 32px 56px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .back-btn:hover { color: var(--white); }
+
+    .back-btn .arr {
+      display: inline-flex;
+      width: 30px;
+      height: 30px;
+      border: 1px solid var(--border);
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.2s;
+    }
+
+    .back-btn:hover .arr { border-color: var(--muted); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .page-hero > * {
+      animation: fadeUp 0.8s ease both;
+    }
+    .page-hero > *:nth-child(2) { animation-delay: 0.15s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 860px) {
+      nav {
+        padding: 16px 24px;
+        gap: 8px;
+      }
+      .nav-links {
+        overflow-x: auto;
+        min-width: 0;
+        flex: 1;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+      .nav-links::-webkit-scrollbar { display: none; }
+      .nav-links a { white-space: nowrap; }
+      .theme-toggle { padding: 7px 10px; }
+      .page-hero { padding: 140px 24px 60px; grid-template-columns: 1fr; gap: 32px; }
+      section { padding: 60px 24px; }
+      .video-grid { grid-template-columns: 1fr; }
+      .week-row { grid-template-columns: 60px 1px 1fr; gap: 0 18px; }
+      .back-bar { padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="stars-canvas"></canvas>
+
+<div class="wrapper">
+
+  <!-- NAV -->
+  <nav>
+    <a href="../index.html" class="nav-logo">M<span>&amp;</span>A · Portfolio</a>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="../blender/index.html">Blender</a></li>
+      <li><a href="#" class="active">Rotoscope</a></li>
+    </ul>
+    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle theme" aria-pressed="false">
+      <span class="theme-toggle-dot"></span>
+      <span id="theme-toggle-text">Dark</span>
+    </button>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <div class="page-hero">
+    <div>
+      <p class="hero-eyebrow">Project 02 — Video Compositing</p>
+      <h1 class="page-title">Roto<em>scope</em><br>Live Action</h1>
+    </div>
+    <div class="hero-right">
+      <p class="hero-desc">
+        A rotoscoped video project built over live-action footage — tracing frames
+        by hand to isolate subjects, then compositing animated elements with synced
+        audio and typographic overlays into a final polished piece.
+      </p>
+      <div class="hero-tags">
+        <span class="tag">Rotoscoping</span>
+        <span class="tag">Compositing</span>
+        <span class="tag">Audio Sync</span>
+        <span class="tag">Video Editing</span>
+        <span class="tag">Motion Design</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BACK -->
+  <div class="back-bar">
+    <a href="../index.html" class="back-btn">
+      <span class="arr">←</span>
+      Back to Portfolio
+    </a>
+  </div>
+
+  <!-- ── VIDEOS ── -->
+  <section id="videos">
+    <div class="sec-label">// 01 — Footage</div>
+    <h2 class="sec-title">The Videos</h2>
+
+    <div class="video-grid">
+
+      <!-- LIVE ACTION -->
+      <div class="video-block">
+        <div class="video-block-header">
+          <span class="vb-label">Source Material</span>
+          <span class="vb-num">01</span>
+        </div>
+        <div class="video-embed-wrap">
+          <a href="https://youtu.be/4SdJ2IHkHc8" target="_blank" style="
+            position:absolute; inset:0; display:flex; flex-direction:column;
+            align-items:center; justify-content:center; gap:0;
+            text-decoration:none; overflow:hidden;
+          ">
+            <!-- YouTube auto-thumbnail — always works, no embedding needed -->
+            <img
+              src="https://img.youtube.com/vi/4SdJ2IHkHc8/hqdefault.jpg"
+              alt="Live Action Footage thumbnail"
+              style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.75;transition:opacity 0.3s;"
+              onmouseover="this.style.opacity='1'"
+              onmouseout="this.style.opacity='0.75'"
+            />
+            <!-- play button overlay -->
+            <div style="
+              position:relative; z-index:2;
+              width:60px; height:60px; border-radius:50%;
+              background:rgba(9,17,26,0.78);
+              border:1.5px solid var(--cyan);
+              display:flex; align-items:center; justify-content:center;
+              backdrop-filter:blur(6px);
+            ">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="1.3">
+                <polygon points="10,8 18,12 10,16" fill="var(--cyan)" stroke="none"/>
+              </svg>
+            </div>
+            <p style="
+              position:relative; z-index:2;
+              margin-top:14px; font-size:10px;
+              letter-spacing:0.18em; text-transform:uppercase;
+              color:var(--white); font-family:'IBM Plex Mono',monospace;
+              text-shadow:0 1px 6px rgba(0,0,0,0.8);
+            ">Watch on YouTube ↗</p>
+          </a>
+        </div>
+        <div class="video-block-footer">
+          <div class="vb-title">Live Action Footage</div>
+          <div class="vb-desc">The original source video used as the base layer for the rotoscoping process.</div>
+        </div>
+      </div>
+
+      <!-- FINAL VIDEO -->
+      <div class="video-block">
+        <div class="video-block-header">
+          <span class="vb-label">Final Output</span>
+          <span class="vb-num">02</span>
+        </div>
+        <div class="video-embed-wrap">
+          <!-- ↓ PASTE YOUR FINAL ROTOSCOPED VIDEO YOUTUBE EMBED SRC HERE -->
+          <div class="video-placeholder">
+            <div class="ph-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="1.3">
+                <rect x="2" y="4" width="20" height="16" rx="2"/>
+                <line x1="2" y1="9" x2="22" y2="9"/>
+                <line x1="8" y1="4" x2="8" y2="9"/>
+                <line x1="16" y1="4" x2="16" y2="9"/>
+                <polygon points="10,12.5 10,17.5 16,15" fill="currentColor" stroke="none"/>
+              </svg>
+            </div>
+            <p>Final Rotoscoped Video</p>
+          </div>
+          <!--
+            REPLACE the <div class="video-placeholder">...</div> above with:
+            <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" allowfullscreen></iframe>
+          -->
+        </div>
+        <div class="video-block-footer">
+          <div class="vb-title">Final Video — Audio + Text + Video</div>
+          <div class="vb-desc">The completed rotoscoped composition with layered audio, animated text overlays, and visual effects.</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── PROCEDURE ── -->
+  <section id="procedure">
+    <div class="sec-label">// 02 — Workflow</div>
+    <h2 class="sec-title">Procedure</h2>
+
+    <div class="procedure-grid">
+
+      <div class="procedure-step">
+        <div class="step-accent"></div>
+        <div class="step-num">01</div>
+        <div class="step-title">Source Video Selection</div>
+        <div class="step-desc">Identified and acquired the live-action footage to be used as the base layer. Reviewed frame composition and subject movement for rotoscoping feasibility.</div>
+      </div>
+
+      <div class="procedure-step">
+        <div class="step-accent"></div>
+        <div class="step-num">02</div>
+        <div class="step-title">Frame-by-Frame Tracing</div>
+        <div class="step-desc">Used rotoscoping tools to manually trace the subject outline across each frame, creating a clean mask that isolates the live-action subject from the background.</div>
+      </div>
+
+      <div class="procedure-step">
+        <div class="step-accent"></div>
+        <div class="step-num">03</div>
+        <div class="step-title">Layer Compositing</div>
+        <div class="step-desc">Combined the masked live-action layer with animated and illustrated elements, ensuring proper depth ordering, blending modes, and timing alignment.</div>
+      </div>
+
+      <div class="procedure-step">
+        <div class="step-accent"></div>
+        <div class="step-num">04</div>
+        <div class="step-title">Audio Integration</div>
+        <div class="step-desc">Synced background music and sound effects to the visual timeline. Balanced audio levels to complement the rotoscoped motion and pacing of the final video.</div>
+      </div>
+
+      <div class="procedure-step">
+        <div class="step-accent"></div>
+        <div class="step-num">05</div>
+        <div class="step-title">Text & Typography</div>
+        <div class="step-desc">Added animated text overlays including titles, subtitles, and motion-tracked labels. Ensured readability and stylistic consistency across all frames.</div>
+      </div>
+
+      <div class="procedure-step">
+        <div class="step-accent"></div>
+        <div class="step-num">06</div>
+        <div class="step-title">Export & Review</div>
+        <div class="step-desc">Rendered the final composition at full resolution. Reviewed playback for frame consistency, audio sync, and visual quality before final submission.</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── WEEKLY PROGRESS ── -->
+  <section id="progress">
+    <div class="sec-label">// 03 — Documentation</div>
+    <h2 class="sec-title">Weekly Progress</h2>
+
+    <div class="timeline">
+
+      <div class="week-row">
+        <div class="week-num">Week 1</div>
+        <div class="week-line"><div class="week-dot"></div></div>
+        <div class="week-content">
+          <div class="week-title">Research &amp; Planning</div>
+          <div class="week-body">Explored rotoscoping techniques and reference videos. Selected the source live-action footage and outlined the overall creative direction of the project. Identified the tools and software to be used.</div>
+          <div class="week-tags">
+            <span class="week-tag">Research</span>
+            <span class="week-tag">Planning</span>
+            <span class="week-tag">Tool Setup</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="week-row">
+        <div class="week-num">Week 2</div>
+        <div class="week-line"><div class="week-dot"></div></div>
+        <div class="week-content">
+          <div class="week-title">Initial Frame Tracing</div>
+          <div class="week-body">Began frame-by-frame rotoscoping of the source footage. Focused on establishing consistent outlines for the subject. Completed approximately the first third of the video sequence.</div>
+          <div class="week-tags">
+            <span class="week-tag">Rotoscoping</span>
+            <span class="week-tag">Frame Tracing</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="week-row">
+        <div class="week-num">Week 3</div>
+        <div class="week-line"><div class="week-dot"></div></div>
+        <div class="week-content">
+          <div class="week-title">Continued Tracing &amp; Refinement</div>
+          <div class="week-body">Continued tracing through the middle section of the footage. Revisited earlier frames for cleanup and consistency. Began experimenting with color and style for the animated overlay layer.</div>
+          <div class="week-tags">
+            <span class="week-tag">Rotoscoping</span>
+            <span class="week-tag">Cleanup</span>
+            <span class="week-tag">Style Testing</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="week-row">
+        <div class="week-num">Week 4</div>
+        <div class="week-line"><div class="week-dot"></div></div>
+        <div class="week-content">
+          <div class="week-title">Compositing &amp; Audio</div>
+          <div class="week-body">Completed tracing of all frames. Composited the rotoscoped layer with background elements. Integrated background audio and sound effects, syncing them to key motion moments in the video.</div>
+          <div class="week-tags">
+            <span class="week-tag">Compositing</span>
+            <span class="week-tag">Audio Sync</span>
+            <span class="week-tag">Background</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="week-row">
+        <div class="week-num">Week 5</div>
+        <div class="week-line"><div class="week-dot"></div></div>
+        <div class="week-content">
+          <div class="week-title">Text Overlays &amp; Final Export</div>
+          <div class="week-body">Added typographic elements including title cards and animated text. Performed final color grading. Exported the completed video at full quality and prepared all project documentation and credits.</div>
+          <div class="week-tags">
+            <span class="week-tag">Typography</span>
+            <span class="week-tag">Color Grading</span>
+            <span class="week-tag">Final Export</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── WEEKLY YOUTUBE LINKS ── -->
+  <section id="weekly-links">
+    <div class="sec-label">// 04 — Links</div>
+    <h2 class="sec-title">Week 1-14 YouTube Links</h2>
+    <div class="hero-desc" style="margin-bottom:24px;max-width:70ch;">
+      Replace each link below with your own weekly rotoscope update video URL.
+      You can edit both the href and the visible text directly in this file.
+    </div>
+    <div class="week-links-grid">
+      <div class="week-link-card"><div class="week-link-label">Week 01</div><a class="week-link-anchor" href="#" target="_blank" rel="noreferrer">Paste YouTube Link</a></div>
+      <div class="week-link-card"><div class="week-link-label">Week 02</div><a class="week-link-anchor" href="#" target="_blank" rel="noreferrer">Paste YouTube Link</a></div>
+      <div class="week-link-card"><div class="week-link-label">Week 03</div><a class="week-link-anchor" href="#" target="_blank" rel="noreferrer">Paste YouTube Link</a></div>
+      <div class="week-link-card"><div class="week-link-label">Week 04</div><a class="week-link-anchor" href="#" target="_blank" rel="noreferrer">Paste YouTube Link</a></div>
+      <div class="week-link-card"><div class="week-link-label">Week 05</div><a class="week-link-anchor" href="#" target="_blank" rel="noreferrer">Paste YouTube Link</a></div>
+      <div class="week-link-card"><div class="week-link-label">Week 06</div><a class="week-link-anchor" href="#" target="_blank" rel="noreferrer">Paste YouTube Link</a></div>
+      <div class="week-link-card"><div class="week-link-label">Week 07</div><a class="week-link-anchor" href="#" target="_blank" rel="noreferrer">Paste YouTube Link</a></div>
+      <div class="week-link-card"><div class="week-link-label">Week 08</div><a class="week-link-anchor" href="#" target="_blank" rel="noreferrer">Paste YouTube Link</a></div>
+      <div class="week-link-card"><div class="week-link-label">Week 09</div><a class="week-link-anchor" href="#" target="_blank" rel="noreferrer">Paste YouTube Link</a></div>
+      <div class="week-link-card"><div class="week-link-label">Week 10</div><a class="week-link-anchor" href="#" target="_blank" rel="noreferrer">Paste YouTube Link</a></div>
+      <div class="week-link-card"><div class="week-link-label">Week 11</div><a class="week-link-anchor" href="#" target="_blank" rel="noreferrer">Paste YouTube Link</a></div>
+      <div class="week-link-card"><div class="week-link-label">Week 12</div><a class="week-link-anchor" href="#" target="_blank" rel="noreferrer">Paste YouTube Link</a></div>
+      <div class="week-link-card"><div class="week-link-label">Week 13</div><a class="week-link-anchor" href="#" target="_blank" rel="noreferrer">Paste YouTube Link</a></div>
+      <div class="week-link-card"><div class="week-link-label">Week 14</div><a class="week-link-anchor" href="#" target="_blank" rel="noreferrer">Paste YouTube Link</a></div>
+    </div>
+  </section>
+
+  <!-- ── DISCLAIMER / CREDITS ── -->
+  <section id="credits">
+    <div class="sec-label">// 05 — Attribution</div>
+    <h2 class="sec-title">Disclaimer &amp; Credits</h2>
+
+    <div class="disclaimer-box">
+      <div class="d-label">Important Notice</div>
+      <div class="d-text">
+        The live-action source footage used in this rotoscoping project is <strong>not owned by the creator</strong> of this project.
+        All rights to the original video belong to its respective copyright holder.
+        <br><br>
+        <strong>Original Video:</strong> <em>[Title of Source Video]</em><br>
+        <strong>Original Creator / Channel:</strong> <em>[Creator Name or Channel]</em><br>
+        <strong>Source Platform:</strong> <em>[e.g. YouTube, Vimeo]</em><br>
+        <strong>Original URL:</strong> <em>[Link to Original Video]</em>
+        <br><br>
+        This project was created <strong>solely for academic and educational purposes</strong> as part of the
+        <em>Multimedia &amp; Authoring</em> course requirement. No commercial use, distribution,
+        or monetization is intended. All rotoscoped and composite elements were produced
+        by the student author.
+        <br><br>
+        <strong>No copyright infringement is intended.</strong> If you are the rightful owner and have
+        concerns regarding the use of this footage, please reach out directly.
+      </div>
+    </div>
+  </section>
+
+</div><!-- /wrapper -->
+
+<!-- STARS -->
+<script>
+  const canvas = document.getElementById('stars-canvas');
+  const ctx = canvas.getContext('2d');
+  let stars = [], W, H;
+  let currentTheme = 'dark';
+
+  function applyTheme(theme) {
+    currentTheme = theme === 'light' ? 'light' : 'dark';
+    document.body.dataset.theme = currentTheme;
+    const text = document.getElementById('theme-toggle-text');
+    const btn = document.getElementById('theme-toggle');
+    if (text) text.textContent = currentTheme === 'light' ? 'Light' : 'Dark';
+    if (btn) btn.setAttribute('aria-pressed', currentTheme === 'light' ? 'true' : 'false');
+    try { localStorage.setItem('portfolio-theme', currentTheme); } catch (_) {}
+  }
+
+  function initThemeToggle() {
+    let saved = null;
+    try { saved = localStorage.getItem('portfolio-theme'); } catch (_) {}
+    applyTheme(saved === 'light' || saved === 'dark' ? saved : 'dark');
+
+    const btn = document.getElementById('theme-toggle');
+    if (btn) {
+      btn.addEventListener('click', () => {
+        applyTheme(currentTheme === 'light' ? 'dark' : 'light');
+      });
+    }
+  }
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+
+  function initStars() {
+    stars = [];
+    const count = Math.floor((W * H) / 5000);
+    for (let i = 0; i < count; i++) {
+      stars.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        r: Math.random() * 1.2,
+        a: Math.random() * 0.6,
+        speed: 0.002 + Math.random() * 0.004,
+        phase: Math.random() * Math.PI * 2,
+      });
+    }
+  }
+
+  function draw(t) {
+    ctx.clearRect(0, 0, W, H);
+    const starColor = getComputedStyle(document.body).getPropertyValue('--theme-star').trim() || 'rgba(240,238,232,1)';
+    for (const s of stars) {
+      const alpha = s.a * (0.4 + 0.6 * Math.sin(t * s.speed + s.phase));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = starColor.replace('1)', `${alpha})`);
+      ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+
+  initThemeToggle();
+  resize(); initStars(); requestAnimationFrame(draw);
+  window.addEventListener('resize', () => { resize(); initStars(); });
+</script>
+
+</body>
+</html>
