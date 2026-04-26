@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,8 +9,15 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
 
     :root {
       --action-blue: #0066cc;
@@ -41,8 +49,14 @@
       text-rendering: optimizeLegibility;
     }
 
-    a { color: inherit; }
-    img { max-width: 100%; display: block; }
+    a {
+      color: inherit;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
 
     .page {
       position: relative;
@@ -75,7 +89,9 @@
       white-space: nowrap;
     }
 
-    .nav-logo span { color: var(--sky-blue); }
+    .nav-logo span {
+      color: var(--sky-blue);
+    }
 
     .nav-links {
       display: flex;
@@ -86,7 +102,7 @@
       padding: 0;
     }
 
-    .nav-links > li {
+    .nav-links>li {
       position: relative;
     }
 
@@ -107,9 +123,11 @@
       transition: color 0.2s ease;
     }
 
-    .nav-links a:hover { color: var(--paper-white); }
+    .nav-links a:hover {
+      color: var(--paper-white);
+    }
 
-    .nav-dropdown > a::after {
+    .nav-dropdown>a::after {
       content: "▾";
       margin-left: 6px;
       font-size: 10px;
@@ -249,7 +267,9 @@
       animation: revealUp 0.9s ease 0.08s both;
     }
 
-    .hero-title .accent { color: var(--sky-blue); }
+    .hero-title .accent {
+      color: var(--sky-blue);
+    }
 
     .hero-sub {
       max-width: 34rem;
@@ -295,8 +315,14 @@
       border: 1px solid transparent;
     }
 
-    .btn-pill-primary:hover { opacity: 0.9; }
-    .btn-pill-primary:active { transform: scale(0.95); }
+    .btn-pill-primary:hover {
+      opacity: 0.9;
+    }
+
+    .btn-pill-primary:active {
+      transform: scale(0.95);
+    }
+
     .btn-pill-primary:focus-visible,
     .btn-pill-ghost:focus-visible,
     .social-pill:focus-visible,
@@ -312,8 +338,13 @@
       border: 1px solid var(--sky-blue);
     }
 
-    .btn-pill-ghost:hover { background: rgba(41, 151, 255, 0.1); }
-    .btn-pill-ghost:active { transform: scale(0.95); }
+    .btn-pill-ghost:hover {
+      background: rgba(41, 151, 255, 0.1);
+    }
+
+    .btn-pill-ghost:active {
+      transform: scale(0.95);
+    }
 
     .hero-aside {
       display: grid;
@@ -434,7 +465,23 @@
       text-transform: uppercase;
     }
 
-    .social-strip-left .label { margin-bottom: 6px; }
+    .social-strip-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .profile-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--hairline);
+    }
+
+    .social-strip-left .label {
+      margin-bottom: 6px;
+    }
 
     .social-strip-left .name {
       margin: 0;
@@ -483,10 +530,21 @@
       color: var(--near-black);
     }
 
-    .tile-dark .section-title { color: var(--paper-white); }
-    .tile-light .section-title { color: var(--near-black); }
-    .tile-dark .section-eyebrow { color: var(--sky-blue); }
-    .tile-light .section-eyebrow { color: var(--action-blue); }
+    .tile-dark .section-title {
+      color: var(--paper-white);
+    }
+
+    .tile-light .section-title {
+      color: var(--near-black);
+    }
+
+    .tile-dark .section-eyebrow {
+      color: var(--sky-blue);
+    }
+
+    .tile-light .section-eyebrow {
+      color: var(--action-blue);
+    }
 
     .tile-lead {
       max-width: 46rem;
@@ -562,8 +620,13 @@
       color: var(--action-blue);
     }
 
-    .project-card.rotoscope .project-icon { color: var(--near-black); }
-    .project-card.dark .project-icon { color: var(--sky-blue); }
+    .project-card.rotoscope .project-icon {
+      color: var(--near-black);
+    }
+
+    .project-card.dark .project-icon {
+      color: var(--sky-blue);
+    }
 
     .project-tag {
       display: inline-flex;
@@ -866,7 +929,9 @@
       color: var(--near-black);
     }
 
-    .footer-left .f-title span { color: var(--action-blue); }
+    .footer-left .f-title span {
+      color: var(--action-blue);
+    }
 
     .footer-left .f-sub {
       margin: 0;
@@ -889,7 +954,9 @@
       text-decoration: none;
     }
 
-    .footer-right a:hover { text-decoration: underline; }
+    .footer-right a:hover {
+      text-decoration: underline;
+    }
 
     .footer-note {
       margin-top: 12px;
@@ -902,17 +969,35 @@
     }
 
     @keyframes revealUp {
-      from { opacity: 0; transform: translateY(18px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     @keyframes chevronBounce {
-      0%, 100% { transform: rotate(45deg) translateY(0); opacity: 0.35; }
-      50% { transform: rotate(45deg) translateY(5px); opacity: 0.7; }
+
+      0%,
+      100% {
+        transform: rotate(45deg) translateY(0);
+        opacity: 0.35;
+      }
+
+      50% {
+        transform: rotate(45deg) translateY(5px);
+        opacity: 0.7;
+      }
     }
 
     @keyframes marquee {
-      to { transform: translateX(-50%); }
+      to {
+        transform: translateX(-50%);
+      }
     }
 
     @media (max-width: 1024px) {
@@ -932,8 +1017,14 @@
     }
 
     @media (max-width: 833px) {
-      nav { padding: 0 16px; }
-      .nav-links { display: none; }
+      nav {
+        padding: 0 16px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
       .hero,
       .tile,
       .process-strip,
@@ -942,14 +1033,38 @@
         padding-left: 24px;
         padding-right: 24px;
       }
-      .hero { padding-top: 100px; padding-bottom: 72px; }
+
+      .hero {
+        padding-top: 100px;
+        padding-bottom: 72px;
+      }
+
       .hero-sub,
-      .tile-lead { font-size: 18px; }
-      .project-card { min-height: 420px; padding: 42px 28px 34px; }
-      .project-arrow { right: 28px; bottom: 28px; }
-      .about-strip { grid-template-columns: 1fr; }
-      .about-col { padding: 32px 24px; }
-      .footer-right { text-align: left; }
+      .tile-lead {
+        font-size: 18px;
+      }
+
+      .project-card {
+        min-height: 420px;
+        padding: 42px 28px 34px;
+      }
+
+      .project-arrow {
+        right: 28px;
+        bottom: 28px;
+      }
+
+      .about-strip {
+        grid-template-columns: 1fr;
+      }
+
+      .about-col {
+        padding: 32px 24px;
+      }
+
+      .footer-right {
+        text-align: left;
+      }
     }
 
     @media (max-width: 1024px) {
@@ -1004,7 +1119,10 @@
     }
 
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
+
+      *,
+      *::before,
+      *::after {
         animation-duration: 0.001ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.001ms !important;
@@ -1013,6 +1131,7 @@
     }
   </style>
 </head>
+
 <body>
   <div class="page">
     <nav>
@@ -1063,7 +1182,8 @@
         <div class="hero-copy">
           <div class="hero-eyebrow">Multimedia &amp; Authoring</div>
           <h1 class="hero-title">Motion,<br><span class="accent">edited with care.</span></h1>
-          <p class="hero-sub">An Apple-style portfolio for Nico Barredo, focused on Blender 3D, rotoscoping, and clean presentation. The page keeps the movement in the work, not in the background.</p>
+          <p class="hero-sub">An Apple-style portfolio for Nico Barredo, focused on Blender 3D, rotoscoping, and clean
+            presentation. The page keeps the movement in the work, not in the background.</p>
           <div class="hero-ctas">
             <a href="#work" class="btn-pill-primary">View Work</a>
             <a href="blender/index.html" class="btn-pill-ghost">Open Blender</a>
@@ -1073,7 +1193,8 @@
         <aside class="hero-aside" aria-label="Portfolio summary">
           <div class="hero-panel">
             <div class="hero-panel-label">Current focus</div>
-            <p class="hero-panel-copy">I build motion-driven projects with a clear visual hierarchy, practical tools, and an editorial finish. The goal is to make every project page easy to scan and worth lingering on.</p>
+            <p class="hero-panel-copy">I build motion-driven projects with a clear visual hierarchy, practical tools,
+              and an editorial finish. The goal is to make every project page easy to scan and worth lingering on.</p>
           </div>
           <div class="hero-panel">
             <div class="hero-panel-label">What’s inside</div>
@@ -1093,38 +1214,46 @@
 
       <div class="social-strip">
         <div class="social-strip-left">
-          <div class="label">Connect</div>
-          <h2 class="name">Nico Barredo</h2>
+          <img src="media/pfp.jpg" alt="Nico Barredo" class="profile-avatar" />
+          <div>
+            <div class="label">Connect</div>
+            <h2 class="name">Nico Barredo</h2>
+          </div>
         </div>
         <div class="social-pills">
-          <a class="social-pill" href="https://instagram.com/" target="_blank" rel="noreferrer">Instagram</a>
-          <a class="social-pill" href="https://www.linkedin.com/" target="_blank" rel="noreferrer">LinkedIn</a>
-          <a class="social-pill" href="https://www.behance.net/" target="_blank" rel="noreferrer">Behance</a>
-          <a class="social-pill" href="https://github.com/" target="_blank" rel="noreferrer">GitHub</a>
+          <a class="social-pill" href="https://www.instagram.com/niiikkoo_0/" target="_blank"
+            rel="noreferrer">Instagram</a>
+          <a class="social-pill" href="https://www.facebook.com/elixqc" target="_blank" rel="noreferrer">Facebook</a>
+          <a class="social-pill" href="https://www.tiktok.com/@pitchblack721" target="_blank"
+            rel="noreferrer">TikTok</a>
+          <a class="social-pill" href="https://github.com/elixqc" target="_blank" rel="noreferrer">GitHub</a>
         </div>
       </div>
 
       <section class="tile tile-dark" id="work">
         <div class="section-eyebrow">Featured Work</div>
         <h2 class="section-title">The two projects.</h2>
-        <p class="tile-lead">The homepage is now built around the actual work. Each card keeps the copy short, specific, and useful so the projects feel like the center of the page rather than a sidebar to a visual effect.</p>
+        <p class="tile-lead">The homepage is now built around the actual work. Each card keeps the copy short, specific,
+          and useful so the projects feel like the center of the page rather than a sidebar to a visual effect.</p>
 
         <div class="featured-grid">
           <a href="blender/index.html" class="project-card dark blender">
             <div>
               <div class="project-num">Project 01</div>
               <div class="project-icon" aria-hidden="true">
-                <svg width="52" height="52" viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.4" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="28" cy="28" r="10"/>
-                  <ellipse cx="28" cy="28" rx="24" ry="8"/>
-                  <ellipse cx="28" cy="28" rx="24" ry="8" transform="rotate(60 28 28)"/>
-                  <ellipse cx="28" cy="28" rx="24" ry="8" transform="rotate(120 28 28)"/>
-                  <circle cx="28" cy="28" r="3" fill="currentColor" stroke="none"/>
+                <svg width="52" height="52" viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.4"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="28" cy="28" r="10" />
+                  <ellipse cx="28" cy="28" rx="24" ry="8" />
+                  <ellipse cx="28" cy="28" rx="24" ry="8" transform="rotate(60 28 28)" />
+                  <ellipse cx="28" cy="28" rx="24" ry="8" transform="rotate(120 28 28)" />
+                  <circle cx="28" cy="28" r="3" fill="currentColor" stroke="none" />
                 </svg>
               </div>
               <span class="project-tag">3D Animation</span>
               <h3 class="project-name">Blender Solar System</h3>
-              <p class="project-desc">A clean 3D study of orbit motion, planetary materials, and motion timing. The page inside this project can carry the technical detail while the homepage keeps the presentation calm.</p>
+              <p class="project-desc">A clean 3D study of orbit motion, planetary materials, and motion timing. The page
+                inside this project can carry the technical detail while the homepage keeps the presentation calm.</p>
               <div class="project-meta">
                 <span class="meta-chip">Video</span>
                 <span class="meta-chip">Description</span>
@@ -1140,21 +1269,23 @@
             <div>
               <div class="project-num">Project 02</div>
               <div class="project-icon" aria-hidden="true">
-                <svg width="52" height="52" viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.4" xmlns="http://www.w3.org/2000/svg">
-                  <rect x="8" y="14" width="40" height="30" rx="2"/>
-                  <line x1="8" y1="20" x2="48" y2="20"/>
-                  <line x1="14" y1="14" x2="14" y2="44"/>
-                  <line x1="42" y1="14" x2="42" y2="44"/>
-                  <circle cx="28" cy="31" r="7"/>
-                  <polygon points="26,28 26,34 33,31" fill="currentColor" stroke="none"/>
-                  <line x1="18" y1="8" x2="18" y2="14"/>
-                  <line x1="28" y1="8" x2="28" y2="14"/>
-                  <line x1="38" y1="8" x2="38" y2="14"/>
+                <svg width="52" height="52" viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.4"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <rect x="8" y="14" width="40" height="30" rx="2" />
+                  <line x1="8" y1="20" x2="48" y2="20" />
+                  <line x1="14" y1="14" x2="14" y2="44" />
+                  <line x1="42" y1="14" x2="42" y2="44" />
+                  <circle cx="28" cy="31" r="7" />
+                  <polygon points="26,28 26,34 33,31" fill="currentColor" stroke="none" />
+                  <line x1="18" y1="8" x2="18" y2="14" />
+                  <line x1="28" y1="8" x2="28" y2="14" />
+                  <line x1="38" y1="8" x2="38" y2="14" />
                 </svg>
               </div>
               <span class="project-tag">Video Compositing</span>
               <h3 class="project-name">Rotoscope Live Action</h3>
-              <p class="project-desc">A frame-by-frame rotoscoped piece shaped around timing, control, and rhythm. Weekly progress can stay on the project page while the homepage delivers the story in one glance.</p>
+              <p class="project-desc">A frame-by-frame rotoscoped piece shaped around timing, control, and rhythm.
+                Weekly progress can stay on the project page while the homepage delivers the story in one glance.</p>
               <div class="project-meta">
                 <span class="meta-chip">Live Action</span>
                 <span class="meta-chip">Final Video</span>
@@ -1206,55 +1337,7 @@
         </div>
       </div>
 
-      <section class="process-strip" id="process">
-        <div class="process-head">
-          <div class="section-eyebrow" style="color: var(--action-blue);">Process</div>
-          <h2 class="section-title">A straightforward way to present the work.</h2>
-          <p class="tile-lead" style="color: var(--muted-80); opacity: 1;">The layout follows the design doc: alternating light and dark tiles, quiet blue actions, generous spacing, and typography that stays readable instead of ornamental.</p>
-        </div>
 
-        <div class="process-grid">
-          <article class="process-step">
-            <div class="process-step-num">01</div>
-            <h3>Lead with the headline.</h3>
-            <p>The hero tells visitors what the page is about in one pass, with a short subhead and two clear actions.</p>
-          </article>
-          <article class="process-step">
-            <div class="process-step-num">02</div>
-            <h3>Use the projects as anchors.</h3>
-            <p>The two core pieces sit front and center, with enough metadata to be useful but not enough to crowd the card.</p>
-          </article>
-          <article class="process-step">
-            <div class="process-step-num">03</div>
-            <h3>Keep the rest lightweight.</h3>
-            <p>Support sections stay concise so the page feels designed, not overexplained. That gives the work room to breathe.</p>
-          </article>
-        </div>
-
-        <div class="support-grid" id="contact">
-          <div class="support-card dark">
-            <div class="eyebrow-tag">Contact</div>
-            <h3>Need a version tailored for class submissions or a cleaner academic intro?</h3>
-            <p>Swap in your real contact links and I can tighten the copy further, add a downloadable resume area, or turn the hero into a more formal portfolio statement.</p>
-            <div class="support-meta">
-              <span class="support-chip">Email</span>
-              <span class="support-chip">Resume</span>
-              <span class="support-chip">Project Links</span>
-            </div>
-          </div>
-
-          <div class="support-card">
-            <div class="eyebrow-tag">Quick Notes</div>
-            <h3>What this homepage now does well.</h3>
-            <p>It keeps the Apple-inspired look from the design doc, removes the solar system background entirely, and gives the portfolio a cleaner structure with specific copy and simple navigation.</p>
-            <div class="support-meta">
-              <span class="support-chip">No canvas bg</span>
-              <span class="support-chip">No GSAP</span>
-              <span class="support-chip">Responsive</span>
-            </div>
-          </div>
-        </div>
-      </section>
     </main>
 
     <footer>
@@ -1270,4 +1353,5 @@
     </footer>
   </div>
 </body>
+
 </html>

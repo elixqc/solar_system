@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Mercury — Blender Solar System</title>
+  <title>Jupiter — Blender Solar System</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
@@ -730,27 +730,27 @@
       <li><a href="index.html">Blender</a></li>
       <li><a href="../rotoscope/index.html">Rotoscope</a></li>
     </ul>
-    <div class="nav-badge">Mercury</div>
+    <div class="nav-badge">Jupiter</div>
   </nav>
 
   <main>
     <section class="hero">
       <div>
-        <div class="hero-eyebrow">Mercury</div>
-        <h1 class="hero-title">Small, rocky, and closest to the <span class="accent">Sun</span>.</h1>
-        <p class="hero-sub">Mercury is the smallest planet in the Solar System and the one nearest the Sun. It has a heavily cratered surface, almost no atmosphere, and an orbital period of about 88 Earth days.</p>
+        <div class="hero-eyebrow">Jupiter</div>
+        <h1 class="hero-title">The largest planet in the <span class="accent">Solar System</span>.</h1>
+        <p class="hero-sub">Jupiter is the fifth planet from the Sun and the largest in the Solar System. It is a gas giant with a mass more than two and a half times that of all the other planets in the Solar System combined.</p>
         <div class="hero-ctas">
           <a href="#media" class="btn-pill-primary">View the Render</a>
           <a href="index.html" class="btn-pill-ghost">Back to Blender Home</a>
         </div>
       </div>
 
-      <aside class="hero-aside" aria-label="Mercury notes">
+      <aside class="hero-aside" aria-label="Jupiter notes">
         <div class="hero-panel">
           <div class="hero-panel-label">Render note</div>
           <ul class="hero-list">
             <li>This video was created and rendered in Blender.</li>
-            <li>It presents Mercury's motion and surface characteristics in a short loop.</li>
+            <li>It presents Jupiter's motion and surface characteristics in a short loop.</li>
             <li>Keep autoplay muted and looped for a clean page load.</li>
           </ul>
         </div>
@@ -759,18 +759,18 @@
 
     <section class="tile tile-light" id="media">
       <div class="section-eyebrow">Planet Video</div>
-      <h2 class="section-title">Mercury render and explanation.</h2>
+      <h2 class="section-title">Jupiter render and explanation.</h2>
       <div class="media-grid">
         <div class="video-card">
           <div class="video-shell">
             <video autoplay muted loop playsinline preload="metadata">
-              <source src="media/mercury.mp4" type="video/mp4" />
+              <source src="media/jupiter.mp4" type="video/mp4" />
               Your browser does not support the video tag.
             </video>
           </div>
           <div class="video-caption">
             <div class="meta-kicker">Blender Render</div>
-            <h2>Mercury in a 10-second loop.</h2>
+            <h2>Jupiter in a 10-second loop.</h2>
             <p>This render was created in Blender. It is set to autoplay, stay muted, and loop so the page feels polished without showing playback controls.</p>
             <div class="meta-row">
               <span class="meta-chip">10 seconds</span>
@@ -782,18 +782,18 @@
         </div>
 
         <aside class="side-note">
-          <h3>Mercury summary</h3>
-          <p>Mercury is the smallest planet and the closest to the Sun. It has no moons, a thin exosphere, and extreme temperature swings between its daytime and nighttime sides.</p>
+          <h3>Jupiter summary</h3>
+          <p>Jupiter's familiar stripes and swirls are actually cold, windy clouds of ammonia and water, floating in an atmosphere of hydrogen and helium. Its iconic Great Red Spot is a giant storm.</p>
           <div class="age-calculator">
             <div class="age-calculator-label">Age converter</div>
-            <p class="age-calculator-hint">Enter your age in Earth years and see the Mercury equivalent. Mercury completes one orbit in about 87.97 Earth days, so one Earth year is about 4.15 Mercury years.</p>
+            <p class="age-calculator-hint">Enter your age in Earth years and see the Jupiter equivalent. Jupiter completes one orbit in about 11.86 Earth years (4,332.59 Earth days).</p>
             <div class="age-calculator-row">
               <div class="age-calculator-controls">
                 <button class="age-stepper" type="button" id="earth-age-minus" aria-label="Decrease Earth age by 1 year">−</button>
                 <input id="earth-age-input" type="number" min="0" step="1" value="20" aria-label="Your age in Earth years" />
                 <button class="age-stepper" type="button" id="earth-age-plus" aria-label="Increase Earth age by 1 year">+</button>
               </div>
-              <div class="age-calculator-output" id="mercury-age-output">You would be about <strong>83 years, 0 months, 0 days</strong> Mercury time.</div>
+              <div class="age-calculator-output" id="planet-age-output">You would be about <strong>1 year, 8 months, 7 days</strong> Jupiter time.</div>
             </div>
           </div>
         </aside>
@@ -813,8 +813,8 @@
             <p>Open the introduction page and the full system render.</p>
             <div class="planet-arrow">↗</div>
           </a>
-          <a href="mercury.html" class="planet-card current">
-            <div class="planet-tag">Current</div>
+          <a href="mercury.html" class="planet-card ">
+            <div class="planet-tag">Planet 01</div>
             <h3>Mercury</h3>
             <p>Small, rocky, fast, and closest to the Sun.</p>
             <div class="planet-arrow">↗</div>
@@ -837,8 +837,8 @@
             <p>Cold, dusty, and known for its red surface.</p>
             <div class="planet-arrow">↗</div>
           </a>
-          <a href="jupiter.html" class="planet-card ">
-            <div class="planet-tag">Planet 05</div>
+          <a href="jupiter.html" class="planet-card current">
+            <div class="planet-tag">Current</div>
             <h3>Jupiter</h3>
             <p>The largest planet, with huge storms and bands.</p>
             <div class="planet-arrow">↗</div>
@@ -869,21 +869,20 @@
   <footer>
     <div class="footer-left">
       <div class="f-title">Nico <span>Barredo</span></div>
-      <div class="f-sub">Mercury · Blender Planet Page</div>
-      <div class="footer-note">This page is ready to be duplicated for the rest of the solar-system series.</div>
+      <div class="f-sub">Jupiter · Blender Planet Page</div>
+      <div class="footer-note">This page is part of the solar-system series.</div>
     </div>
     <div class="footer-right">
       Back to <a href="index.html">Blender Home</a><br />
-      Media path: blender/media/mercury.mp4
+      Media path: blender/media/jupiter.mp4
     </div>
   </footer>
 
   <script>
     const earthAgeInput = document.getElementById('earth-age-input');
-    const mercuryAgeOutput = document.getElementById('mercury-age-output');
+    const planetAgeOutput = document.getElementById('planet-age-output');
     const earthAgeMinus = document.getElementById('earth-age-minus');
     const earthAgePlus = document.getElementById('earth-age-plus');
-    const mercuryYearInEarthYears = 87.9691 / 365.25;
 
     function formatPlanetAge(earthAge, planetYearInEarthDays) {
       const safeEarthAge = Number.isFinite(earthAge) && earthAge >= 0 ? earthAge : 0;
@@ -905,10 +904,10 @@
       return `${years} year${years === 1 ? '' : 's'}, ${months} month${months === 1 ? '' : 's'}, ${days} day${days === 1 ? '' : 's'}`;
     }
 
-    function updateMercuryAge() {
+    function updatePlanetAge() {
       const earthAge = Number(earthAgeInput.value);
-      const mercuryAge = formatPlanetAge(earthAge, 87.9691);
-      mercuryAgeOutput.innerHTML = `You would be about <strong>${mercuryAge}</strong> Mercury time.`;
+      const planetAge = formatPlanetAge(earthAge, 4332.59); // Jupiter orbital period
+      planetAgeOutput.innerHTML = `You would be about <strong>${planetAge}</strong> Jupiter time.`;
     }
 
     function adjustEarthAge(delta) {
@@ -916,13 +915,13 @@
       const safeAge = Number.isFinite(currentAge) && currentAge >= 0 ? currentAge : 0;
       const nextAge = Math.max(0, Math.round(safeAge + delta));
       earthAgeInput.value = nextAge;
-      updateMercuryAge();
+      updatePlanetAge();
     }
 
-    earthAgeInput.addEventListener('input', updateMercuryAge);
+    earthAgeInput.addEventListener('input', updatePlanetAge);
     earthAgeMinus.addEventListener('click', () => adjustEarthAge(-1));
     earthAgePlus.addEventListener('click', () => adjustEarthAge(1));
-    updateMercuryAge();
+    updatePlanetAge();
   </script>
 </body>
 </html>

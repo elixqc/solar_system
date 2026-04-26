@@ -394,9 +394,9 @@
     }
 
     .video-caption {
-      margin-top: 18px;
       display: grid;
-      gap: 10px;
+      gap: 12px;
+      align-content: center;
     }
 
     .video-caption h3 {
@@ -446,6 +446,7 @@
       border-radius: 18px;
       background: var(--paper-white);
       border: 1px solid var(--hairline);
+      color: var(--near-black);
     }
 
     .details-card.dark {
@@ -493,11 +494,23 @@
     }
 
     .render-shell {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(300px, 0.6fr);
+      gap: 40px;
+      align-items: center;
       margin-top: 44px;
       padding: 32px;
       border-radius: 18px;
       background: var(--dark-tile-2);
       border: 1px solid var(--hairline-dark);
+    }
+
+    @media (max-width: 833px) {
+      .render-shell {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 24px;
+      }
     }
 
     .render-placeholder {
@@ -734,7 +747,7 @@
       <div>
         <div class="hero-eyebrow">Blender Solar System</div>
         <h1 class="hero-title">A rendered journey through the <span class="accent">planets</span>.</h1>
-        <p class="hero-sub">This is the introduction page for the full Blender solar-system series. Use it as the front door for the complete render, then jump to any planet page with the selector or the planet grid below.</p>
+        <p class="hero-sub">Experience a cinematic 3D journey through our cosmic neighborhood. This project showcases meticulous orbital mechanics, dynamic lighting, and detailed planetary textures modeled entirely in Blender.</p>
         <div class="hero-ctas">
           <a href="#render" class="btn-pill-primary">Watch the Full Render</a>
           <a href="#planets" class="btn-pill-ghost">Select a Planet</a>
@@ -744,7 +757,7 @@
       <aside class="hero-aside" aria-label="Blender navigation">
         <div class="hero-panel">
           <div class="hero-panel-label">Series overview</div>
-          <p class="hero-panel-copy">This hub opens the full solar-system film at the top, then sends visitors to each planet page through the selector and the cards below.</p>
+          <p class="hero-panel-copy">This project demonstrates advanced 3D texturing, procedural materials, and realistic lighting to simulate the vastness of space and the unique characteristics of each planet.</p>
         </div>
         <div class="selector-card">
           <div class="selector-label">Planet selector</div>
@@ -770,7 +783,7 @@
     <section class="tile tile-light" id="render">
       <div class="section-eyebrow">Featured Render</div>
       <h2 class="section-title">Whole Solar System.</h2>
-      <p class="section-lead">This section presents the complete solar-system render. It is the cinematic opening for the Blender series before visitors move into a specific planet page.</p>
+      <p class="section-lead">Watch the full 3D animation that brings the planets to life in a continuous, cinematic sequence, highlighting their scale, rotation, and orbital dynamics.</p>
 
       <div class="render-shell">
         <div class="video-shell">
@@ -782,7 +795,7 @@
         <div class="video-caption">
           <div class="meta-kicker">Blender Render</div>
           <h3>Whole solar system in a 10-second loop.</h3>
-          <p>This is the full render for the Blender series. It is set to autoplay, stay muted, and loop so the landing page feels cinematic without showing playback controls.</p>
+          <p>This sequence is fully modeled, textured, and rendered entirely in Blender. It features physically based lighting, detailed material setups, and dynamic camera work to capture the majestic scale of deep space and planetary orbits.</p>
           <div class="meta-row">
             <span class="meta-chip">10 seconds</span>
             <span class="meta-chip">Autoplay</span>
@@ -796,7 +809,7 @@
     <section class="tile tile-dark" id="planets">
       <div class="section-eyebrow">Planet Navigator</div>
       <h2 class="section-title">Select a planet.</h2>
-      <p class="section-lead">Choose a planet from the dropdown above or use the cards below. Each page follows the same format, with its own facts, render, and age converter.</p>
+      <p class="section-lead">Explore each celestial body in detail. Select a planet to view its standalone loop, discover fascinating astronomical facts, and calculate your age on different worlds.</p>
 
       <div class="planet-grid">
         <a href="index.html" class="planet-card current">
