@@ -2,12 +2,12 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nico Barredo — Portfolio</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     *,
     *::before,
@@ -1145,7 +1145,8 @@
         <li><a href="#about">About</a></li>
         <li class="nav-dropdown">
           <a href="blender/index.html">Blender</a>
-          <nav class="nav-submenu" aria-label="Blender pages">
+          <!-- FIX: was <nav> opened but closed with </div> — unified to <div> -->
+          <div class="nav-submenu" role="navigation" aria-label="Blender pages">
             <a href="blender/index.html"><span>01</span>Whole Solar System</a>
             <a href="blender/mercury.html"><span>02</span>Mercury</a>
             <a href="blender/venus.html"><span>03</span>Venus</a>
@@ -1155,208 +1156,209 @@
             <a href="blender/saturn.html"><span>07</span>Saturn</a>
             <a href="blender/uranus.html"><span>08</span>Uranus</a>
             <a href="blender/neptune.html"><span>09</span>Neptune</a>
-  </div>
-  </li>
-  <li class="nav-dropdown nav-dropdown--end">
-    <a href="rotoscope/index.html">Rotoscope</a>
-    <div class="nav-submenu" role="navigation" aria-label="Rotoscope weeks">
-      <a href="rotoscope/week-1.html"><span>01</span>Week 1</a>
-      <a href="rotoscope/week-2.html"><span>02</span>Week 2</a>
-      <a href="rotoscope/week-3.html"><span>03</span>Week 3</a>
-      <a href="rotoscope/week-4.html"><span>04</span>Week 4</a>
-      <a href="rotoscope/week-5.html"><span>05</span>Week 5</a>
-      <a href="rotoscope/week-6.html"><span>06</span>Week 6</a>
-      <a href="rotoscope/week-7.html"><span>07</span>Week 7</a>
-      <a href="rotoscope/week-8.html"><span>08</span>Week 8</a>
-      <a href="rotoscope/week-9.html"><span>09</span>Week 9</a>
-      <a href="rotoscope/week-10.html"><span>10</span>Week 10</a>
-      <a href="rotoscope/week-11.html"><span>11</span>Week 11</a>
-      <a href="rotoscope/week-12.html"><span>12</span>Week 12</a>
-      <a href="rotoscope/week-13.html"><span>13</span>Week 13</a>
-      <a href="rotoscope/week-14.html"><span>14</span>Week 14</a>
-    </div>
-  </li>
-  </ul>
-  <div class="nav-badge">M&amp;A Portfolio</div>
-  </nav>
-
-  <main>
-    <section class="hero" id="hero">
-      <div class="hero-copy">
-        <div class="hero-eyebrow">Nico Barredo</div>
-        <h1 class="hero-title">Multimedia &amp; Authoring<br><span class="accent">Portfolio.</span></h1>
-        <p class="hero-sub">Welcome to my Multimedia &amp; Authoring portfolio. I specialize in bringing ideas to life
-          through 3D modeling, cinematic animation, and meticulous video compositing.</p>
-        <div class="hero-ctas">
-          <a href="#work" class="btn-pill-primary">View Work</a>
-          <a href="blender/index.html" class="btn-pill-ghost">Open Blender</a>
-        </div>
-      </div>
-
-      <aside class="hero-aside" aria-label="Portfolio summary">
-        <div class="hero-panel">
-          <div class="hero-panel-label">Current focus</div>
-          <p class="hero-panel-copy">I focus on creating immersive, motion-driven experiences. My workflow blends
-            technical precision in Blender with creative storytelling in post-production.</p>
-        </div>
-        <div class="hero-panel">
-          <div class="hero-panel-label">Featured skills</div>
-          <ul class="hero-list">
-            <li>3D modeling and texturing</li>
-            <li>Cinematic lighting & rendering</li>
-            <li>Live-action rotoscoping</li>
-          </ul>
-        </div>
-      </aside>
-
-      <div class="scroll-hint" aria-hidden="true">
-        <span class="scroll-hint-text">Scroll</span>
-        <span class="scroll-chevron"></span>
-      </div>
-    </section>
-
-    <div class="social-strip">
-      <div class="social-strip-left">
-        <img src="media/pfp.jpg" alt="Nico Barredo" class="profile-avatar" />
-        <div>
-          <div class="label">Connect</div>
-          <h2 class="name">Nico Barredo</h2>
-        </div>
-      </div>
-      <div class="social-pills">
-        <a class="social-pill" href="https://www.instagram.com/niiikkoo_0/" target="_blank"
-          rel="noreferrer">Instagram</a>
-        <a class="social-pill" href="https://www.facebook.com/elixqc" target="_blank" rel="noreferrer">Facebook</a>
-        <a class="social-pill" href="https://www.tiktok.com/@pitchblack721" target="_blank" rel="noreferrer">TikTok</a>
-        <a class="social-pill" href="https://github.com/elixqc" target="_blank" rel="noreferrer">GitHub</a>
-      </div>
-    </div>
-
-    <section class="tile tile-dark" id="work">
-      <div class="section-eyebrow">Featured Work</div>
-      <h2 class="section-title">Major explorations.</h2>
-      <p class="tile-lead">Dive into my two primary multimedia projects. Each project represents a deep dive into
-        specific techniques, from modeling an entire planetary system in 3D to executing precise frame-by-frame
-        rotoscoping.</p>
-
-      <div class="featured-grid">
-        <a href="blender/index.html" class="project-card dark blender">
-          <div>
-            <div class="project-num">Project 01</div>
-            <div class="project-icon" aria-hidden="true">
-              <svg width="52" height="52" viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.4"
-                xmlns="http://www.w3.org/2000/svg">
-                <circle cx="28" cy="28" r="10" />
-                <ellipse cx="28" cy="28" rx="24" ry="8" />
-                <ellipse cx="28" cy="28" rx="24" ry="8" transform="rotate(60 28 28)" />
-                <ellipse cx="28" cy="28" rx="24" ry="8" transform="rotate(120 28 28)" />
-                <circle cx="28" cy="28" r="3" fill="currentColor" stroke="none" />
-              </svg>
-            </div>
-            <span class="project-tag">3D Animation</span>
-            <h3 class="project-name">Blender Solar System</h3>
-            <p class="project-desc">A comprehensive 3D cinematic study of orbit motion, planetary materials, and
-              physically based rendering. The project includes individual pages for every planet, complete with
-              interactive age calculators.</p>
-            <div class="project-meta">
-              <span class="meta-chip">Video</span>
-              <span class="meta-chip">Description</span>
-              <span class="meta-chip">Method</span>
-              <span class="meta-chip">Age Calculator</span>
-              <span class="meta-chip">Script</span>
-            </div>
           </div>
-          <div class="project-arrow">↗</div>
-        </a>
-
-        <a href="rotoscope/index.html" class="project-card rotoscope">
-          <div>
-            <div class="project-num">Project 02</div>
-            <div class="project-icon" aria-hidden="true">
-              <svg width="52" height="52" viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.4"
-                xmlns="http://www.w3.org/2000/svg">
-                <rect x="8" y="14" width="40" height="30" rx="2" />
-                <line x1="8" y1="20" x2="48" y2="20" />
-                <line x1="14" y1="14" x2="14" y2="44" />
-                <line x1="42" y1="14" x2="42" y2="44" />
-                <circle cx="28" cy="31" r="7" />
-                <polygon points="26,28 26,34 33,31" fill="currentColor" stroke="none" />
-                <line x1="18" y1="8" x2="18" y2="14" />
-                <line x1="28" y1="8" x2="28" y2="14" />
-                <line x1="38" y1="8" x2="38" y2="14" />
-              </svg>
-            </div>
-            <span class="project-tag">Video Compositing</span>
-            <h3 class="project-name">Rotoscope Live Action</h3>
-            <p class="project-desc">A frame-by-frame live-action composite piece focused on masking precision, timing,
-              and visual rhythm. It chronicles a 14-week production timeline demonstrating the evolution of the final
-              video.</p>
-            <div class="project-meta">
-              <span class="meta-chip">Live Action</span>
-              <span class="meta-chip">Final Video</span>
-              <span class="meta-chip">Credits</span>
-              <span class="meta-chip">Procedure</span>
-              <span class="meta-chip">Weekly Progress</span>
-            </div>
+        </li>
+        <li class="nav-dropdown nav-dropdown--end">
+          <a href="rotoscope/index.html">Rotoscope</a>
+          <div class="nav-submenu" role="navigation" aria-label="Rotoscope weeks">
+            <a href="rotoscope/week-1.html"><span>01</span>Week 1</a>
+            <a href="rotoscope/week-2.html"><span>02</span>Week 2</a>
+            <a href="rotoscope/week-3.html"><span>03</span>Week 3</a>
+            <a href="rotoscope/week-4.html"><span>04</span>Week 4</a>
+            <a href="rotoscope/week-5.html"><span>05</span>Week 5</a>
+            <a href="rotoscope/week-6.html"><span>06</span>Week 6</a>
+            <a href="rotoscope/week-7.html"><span>07</span>Week 7</a>
+            <a href="rotoscope/week-8.html"><span>08</span>Week 8</a>
+            <a href="rotoscope/week-9.html"><span>09</span>Week 9</a>
+            <a href="rotoscope/week-10.html"><span>10</span>Week 10</a>
+            <a href="rotoscope/week-11.html"><span>11</span>Week 11</a>
+            <a href="rotoscope/week-12.html"><span>12</span>Week 12</a>
+            <a href="rotoscope/week-13.html"><span>13</span>Week 13</a>
+            <a href="rotoscope/week-14.html"><span>14</span>Week 14</a>
           </div>
-          <div class="project-arrow">↗</div>
-        </a>
-      </div>
-    </section>
+        </li>
+      </ul>
+      <div class="nav-badge">M&amp;A Portfolio</div>
+    </nav>
 
-    <div class="about-strip" id="about">
-      <div class="about-col">
-        <div class="about-col-label">Subject</div>
-        <div class="about-col-val">Multimedia &amp; Authoring</div>
-      </div>
-      <div class="about-col">
-        <div class="about-col-label">Projects</div>
-        <div class="about-col-val">Blender · Rotoscope</div>
-      </div>
-      <div class="about-col">
-        <div class="about-col-label">Tools Used</div>
-        <div class="about-col-val">Blender · DaVinci · Kdenlive</div>
-      </div>
-    </div>
+    <main>
+      <section class="hero" id="hero">
+        <div class="hero-copy">
+          <div class="hero-eyebrow">Nico Barredo</div>
+          <h1 class="hero-title">Multimedia &amp; Authoring<br><span class="accent">Portfolio.</span></h1>
+          <p class="hero-sub">Welcome to my Multimedia &amp; Authoring portfolio. I specialize in bringing ideas to life
+            through 3D modeling, cinematic animation, and meticulous video compositing.</p>
+          <div class="hero-ctas">
+            <a href="#work" class="btn-pill-primary">View Work</a>
+            <a href="blender/index.html" class="btn-pill-ghost">Open Blender</a>
+          </div>
+        </div>
 
-    <div class="marquee-section">
-      <div class="marquee-track" aria-hidden="true">
-        <span class="marquee-item"><span class="marquee-dot"></span>3D Animation</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>Rotoscoping</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>Video Editing</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>Compositing</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>Motion Design</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>Blender</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>DaVinci Resolve</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>Kdenlive</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>Portfolio Design</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>3D Animation</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>Rotoscoping</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>Video Editing</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>Compositing</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>Motion Design</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>Blender</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>DaVinci Resolve</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>Kdenlive</span>
-        <span class="marquee-item"><span class="marquee-dot"></span>Portfolio Design</span>
+        <aside class="hero-aside" aria-label="Portfolio summary">
+          <div class="hero-panel">
+            <div class="hero-panel-label">Current focus</div>
+            <p class="hero-panel-copy">I focus on creating immersive, motion-driven experiences. My workflow blends
+              technical precision in Blender with creative storytelling in post-production.</p>
+          </div>
+          <div class="hero-panel">
+            <div class="hero-panel-label">Featured skills</div>
+            <ul class="hero-list">
+              <li>3D modeling and texturing</li>
+              <li>Cinematic lighting &amp; rendering</li>
+              <li>Live-action rotoscoping</li>
+            </ul>
+          </div>
+        </aside>
+
+        <div class="scroll-hint" aria-hidden="true">
+          <span class="scroll-hint-text">Scroll</span>
+          <span class="scroll-chevron"></span>
+        </div>
+      </section>
+
+      <div class="social-strip">
+        <div class="social-strip-left">
+          <!-- FIX: removed trailing slash from void element -->
+          <img src="media/pfp.jpg" alt="Nico Barredo" class="profile-avatar">
+          <div>
+            <div class="label">Connect</div>
+            <h2 class="name">Nico Barredo</h2>
+          </div>
+        </div>
+        <div class="social-pills">
+          <a class="social-pill" href="https://www.instagram.com/niiikkoo_0/" target="_blank"
+            rel="noreferrer">Instagram</a>
+          <a class="social-pill" href="https://www.facebook.com/elixqc" target="_blank" rel="noreferrer">Facebook</a>
+          <a class="social-pill" href="https://www.tiktok.com/@pitchblack721" target="_blank"
+            rel="noreferrer">TikTok</a>
+          <a class="social-pill" href="https://github.com/elixqc" target="_blank" rel="noreferrer">GitHub</a>
+        </div>
       </div>
-    </div>
 
+      <section class="tile tile-dark" id="work">
+        <div class="section-eyebrow">Featured Work</div>
+        <h2 class="section-title">Major explorations.</h2>
+        <p class="tile-lead">Dive into my two primary multimedia projects. Each project represents a deep dive into
+          specific techniques, from modeling an entire planetary system in 3D to executing precise frame-by-frame
+          rotoscoping.</p>
 
-  </main>
+        <div class="featured-grid">
+          <a href="blender/index.html" class="project-card dark blender">
+            <div>
+              <div class="project-num">Project 01</div>
+              <div class="project-icon" aria-hidden="true">
+                <svg width="52" height="52" viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.4"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <circle cx="28" cy="28" r="10" />
+                  <ellipse cx="28" cy="28" rx="24" ry="8" />
+                  <ellipse cx="28" cy="28" rx="24" ry="8" transform="rotate(60 28 28)" />
+                  <ellipse cx="28" cy="28" rx="24" ry="8" transform="rotate(120 28 28)" />
+                  <circle cx="28" cy="28" r="3" fill="currentColor" stroke="none" />
+                </svg>
+              </div>
+              <span class="project-tag">3D Animation</span>
+              <h3 class="project-name">Blender Solar System</h3>
+              <p class="project-desc">A comprehensive 3D cinematic study of orbit motion, planetary materials, and
+                physically based rendering. The project includes individual pages for every planet, complete with
+                interactive age calculators.</p>
+              <div class="project-meta">
+                <span class="meta-chip">Video</span>
+                <span class="meta-chip">Description</span>
+                <span class="meta-chip">Method</span>
+                <span class="meta-chip">Age Calculator</span>
+                <span class="meta-chip">Script</span>
+              </div>
+            </div>
+            <div class="project-arrow">↗</div>
+          </a>
 
-  <footer>
-    <div class="footer-left">
-      <div class="f-title">Nico <span>Barredo</span></div>
-      <div class="f-sub">Multimedia &amp; Authoring · Academic Portfolio</div>
-      <div class="footer-note">Built with a clean, editorial rhythm and direct links to the two project pages.</div>
-    </div>
-    <div class="footer-right">
-      Social links above<br />
-      <a href="#hero">Back to top</a> · Local portfolio
-    </div>
-  </footer>
+          <a href="rotoscope/index.html" class="project-card rotoscope">
+            <div>
+              <div class="project-num">Project 02</div>
+              <div class="project-icon" aria-hidden="true">
+                <svg width="52" height="52" viewBox="0 0 56 56" fill="none" stroke="currentColor" stroke-width="1.4"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <rect x="8" y="14" width="40" height="30" rx="2" />
+                  <line x1="8" y1="20" x2="48" y2="20" />
+                  <line x1="14" y1="14" x2="14" y2="44" />
+                  <line x1="42" y1="14" x2="42" y2="44" />
+                  <circle cx="28" cy="31" r="7" />
+                  <polygon points="26,28 26,34 33,31" fill="currentColor" stroke="none" />
+                  <line x1="18" y1="8" x2="18" y2="14" />
+                  <line x1="28" y1="8" x2="28" y2="14" />
+                  <line x1="38" y1="8" x2="38" y2="14" />
+                </svg>
+              </div>
+              <span class="project-tag">Video Compositing</span>
+              <h3 class="project-name">Rotoscope Live Action</h3>
+              <p class="project-desc">A frame-by-frame live-action composite piece focused on masking precision, timing,
+                and visual rhythm. It chronicles a 14-week production timeline demonstrating the evolution of the final
+                video.</p>
+              <div class="project-meta">
+                <span class="meta-chip">Live Action</span>
+                <span class="meta-chip">Final Video</span>
+                <span class="meta-chip">Credits</span>
+                <span class="meta-chip">Procedure</span>
+                <span class="meta-chip">Weekly Progress</span>
+              </div>
+            </div>
+            <div class="project-arrow">↗</div>
+          </a>
+        </div>
+      </section>
+
+      <div class="about-strip" id="about">
+        <div class="about-col">
+          <div class="about-col-label">Subject</div>
+          <div class="about-col-val">Multimedia &amp; Authoring</div>
+        </div>
+        <div class="about-col">
+          <div class="about-col-label">Projects</div>
+          <div class="about-col-val">Blender · Rotoscope</div>
+        </div>
+        <div class="about-col">
+          <div class="about-col-label">Tools Used</div>
+          <div class="about-col-val">Blender · DaVinci · Kdenlive</div>
+        </div>
+      </div>
+
+      <div class="marquee-section">
+        <div class="marquee-track" aria-hidden="true">
+          <span class="marquee-item"><span class="marquee-dot"></span>3D Animation</span>
+          <span class="marquee-item"><span class="marquee-dot"></span>Rotoscoping</span>
+          <span class="marquee-item"><span class="marquee-dot"></span>Video Editing</span>
+          <span class="marquee-item"><span class="marquee-dot"></span>Compositing</span>
+          <span class="marquee-item"><span class="marquee-dot"></span>Motion Design</span>
+          <span class="marquee-item"><span class="marquee-dot"></span>Blender</span>
+          <span class="marquee-item"><span class="marquee-dot"></span>DaVinci Resolve</span>
+          <span class="marquee-item"><span class="marquee-dot"></span>Kdenlive</span>
+          <span class="marquee-item"><span class="marquee-dot"></span>Portfolio Design</span>
+          <span class="marquee-item"><span class="marquee-dot"></span>3D Animation</span>
+          <span class="marquee-item"><span class="marquee-dot"></span>Rotoscoping</span>
+          <span class="marquee-item"><span class="marquee-dot"></span>Video Editing</span>
+          <span class="marquee-item"><span class="marquee-dot"></span>Compositing</span>
+          <span class="marquee-item"><span class="marquee-dot"></span>Motion Design</span>
+          <span class="marquee-item"><span class="marquee-dot"></span>Blender</span>
+          <span class="marquee-item"><span class="marquee-dot"></span>DaVinci Resolve</span>
+          <span class="marquee-item"><span class="marquee-dot"></span>Kdenlive</span>
+          <span class="marquee-item"><span class="marquee-dot"></span>Portfolio Design</span>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <div class="footer-left">
+        <div class="f-title">Nico <span>Barredo</span></div>
+        <div class="f-sub">Multimedia &amp; Authoring · Academic Portfolio</div>
+        <div class="footer-note">Built with a clean, editorial rhythm and direct links to the two project pages.</div>
+      </div>
+      <div class="footer-right">
+        Social links above<br>
+        <a href="#hero">Back to top</a> · Local portfolio
+      </div>
+    </footer>
   </div>
+
   <script src="starfield.js"></script>
   <script>
     Starfield.setup({
