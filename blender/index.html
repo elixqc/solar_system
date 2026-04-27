@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,8 +9,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     :root {
       --action-blue: #0066cc;
       --focus-blue: #0071e3;
@@ -39,8 +48,15 @@
       text-rendering: optimizeLegibility;
     }
 
-    a { color: inherit; }
-    img, video { display: block; max-width: 100%; }
+    a {
+      color: inherit;
+    }
+
+    img,
+    video {
+      display: block;
+      max-width: 100%;
+    }
 
     nav {
       position: fixed;
@@ -68,7 +84,9 @@
       white-space: nowrap;
     }
 
-    .nav-logo span { color: var(--sky-blue); }
+    .nav-logo span {
+      color: var(--sky-blue);
+    }
 
     .nav-links {
       display: flex;
@@ -91,7 +109,9 @@
       transition: color 0.2s ease;
     }
 
-    .nav-links a:hover { color: var(--paper-white); }
+    .nav-links a:hover {
+      color: var(--paper-white);
+    }
 
     .nav-badge {
       font-size: 11px;
@@ -142,7 +162,9 @@
       max-width: 9ch;
     }
 
-    .hero-title .accent { color: var(--sky-blue); }
+    .hero-title .accent {
+      color: var(--sky-blue);
+    }
 
     .hero-sub {
       max-width: 34rem;
@@ -185,8 +207,14 @@
       border: 1px solid transparent;
     }
 
-    .btn-pill-primary:hover { opacity: 0.9; }
-    .btn-pill-primary:active { transform: scale(0.95); }
+    .btn-pill-primary:hover {
+      opacity: 0.9;
+    }
+
+    .btn-pill-primary:active {
+      transform: scale(0.95);
+    }
+
     .btn-pill-primary:focus-visible,
     .btn-pill-ghost:focus-visible,
     .inline-link:focus-visible,
@@ -201,8 +229,13 @@
       border: 1px solid var(--sky-blue);
     }
 
-    .btn-pill-ghost:hover { background: rgba(41, 151, 255, 0.1); }
-    .btn-pill-ghost:active { transform: scale(0.95); }
+    .btn-pill-ghost:hover {
+      background: rgba(41, 151, 255, 0.1);
+    }
+
+    .btn-pill-ghost:active {
+      transform: scale(0.95);
+    }
 
     .hero-aside {
       display: grid;
@@ -337,11 +370,25 @@
       font-weight: 600;
     }
 
-    .section-eyebrow { margin-bottom: 12px; }
-    .tile-light .section-eyebrow { color: var(--action-blue); }
-    .tile-dark .section-eyebrow { color: var(--sky-blue); }
-    .tile-light .section-title { color: var(--near-black); }
-    .tile-dark .section-title { color: var(--paper-white); }
+    .section-eyebrow {
+      margin-bottom: 12px;
+    }
+
+    .tile-light .section-eyebrow {
+      color: var(--action-blue);
+    }
+
+    .tile-dark .section-eyebrow {
+      color: var(--sky-blue);
+    }
+
+    .tile-light .section-title {
+      color: var(--near-black);
+    }
+
+    .tile-dark .section-title {
+      color: var(--paper-white);
+    }
 
     .intro-grid {
       display: grid;
@@ -462,7 +509,9 @@
       margin-bottom: 12px;
     }
 
-    .details-card.dark .meta-kicker { color: rgba(255, 255, 255, 0.48); }
+    .details-card.dark .meta-kicker {
+      color: rgba(255, 255, 255, 0.48);
+    }
 
     .details-card h3 {
       margin: 0 0 10px;
@@ -669,7 +718,9 @@
       color: var(--near-black);
     }
 
-    .footer-left .f-title span { color: var(--action-blue); }
+    .footer-left .f-title span {
+      color: var(--action-blue);
+    }
 
     .footer-left .f-sub,
     .footer-right,
@@ -681,7 +732,9 @@
       color: var(--muted-48);
     }
 
-    .footer-note { margin-top: 12px; }
+    .footer-note {
+      margin-top: 12px;
+    }
 
     .footer-right {
       text-align: right;
@@ -692,37 +745,87 @@
       text-decoration: none;
     }
 
-    .footer-right a:hover { text-decoration: underline; }
+    .footer-right a:hover {
+      text-decoration: underline;
+    }
 
     @media (max-width: 1024px) {
-      .hero { grid-template-columns: 1fr; }
+      .hero {
+        grid-template-columns: 1fr;
+      }
     }
 
     @media (max-width: 833px) {
-      nav { padding: 0 16px; }
-      .nav-links { display: none; }
+      nav {
+        padding: 0 16px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
       .hero,
       .tile,
-      footer { padding-left: 24px; padding-right: 24px; }
-      .hero { padding-top: 100px; padding-bottom: 72px; }
-      .hero-sub { font-size: 18px; }
-      .selector-row { grid-template-columns: 1fr; }
-      .selector-row .btn-pill-primary { width: 100%; }
-      .render-shell { padding: 20px; }
-      .planet-grid { grid-template-columns: 1fr 1fr; }
-      .footer-right { text-align: left; }
+      footer {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+
+      .hero {
+        padding-top: 100px;
+        padding-bottom: 72px;
+      }
+
+      .hero-sub {
+        font-size: 18px;
+      }
+
+      .selector-row {
+        grid-template-columns: 1fr;
+      }
+
+      .selector-row .btn-pill-primary {
+        width: 100%;
+      }
+
+      .render-shell {
+        padding: 20px;
+      }
+
+      .planet-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .footer-right {
+        text-align: left;
+      }
     }
 
     @media (max-width: 640px) {
-      .hero-title { font-size: clamp(40px, 14vw, 56px); }
-      .hero-ctas { flex-direction: column; align-items: stretch; }
+      .hero-title {
+        font-size: clamp(40px, 14vw, 56px);
+      }
+
+      .hero-ctas {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
       .btn-pill-primary,
-      .btn-pill-ghost { width: 100%; }
-      .planet-grid { grid-template-columns: 1fr; }
+      .btn-pill-ghost {
+        width: 100%;
+      }
+
+      .planet-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
+
+      *,
+      *::before,
+      *::after {
         animation-duration: 0.001ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.001ms !important;
@@ -731,6 +834,7 @@
     }
   </style>
 </head>
+
 <body>
   <nav>
     <a class="nav-logo" href="../index.html">Nico <span>Barredo</span></a>
@@ -749,7 +853,9 @@
       <div>
         <div class="hero-eyebrow">Blender Solar System</div>
         <h1 class="hero-title">A rendered journey through the <span class="accent">planets</span>.</h1>
-        <p class="hero-sub">Experience a cinematic 3D journey through our cosmic neighborhood. This project showcases meticulous orbital mechanics, dynamic lighting, and detailed planetary textures modeled entirely in Blender.</p>
+        <p class="hero-sub">Experience a cinematic 3D journey through our cosmic neighborhood. This project showcases
+          meticulous orbital mechanics, dynamic lighting, and detailed planetary textures modeled entirely in Blender.
+        </p>
         <div class="hero-ctas">
           <a href="#render" class="btn-pill-primary">Watch the Full Render</a>
           <a href="#planets" class="btn-pill-ghost">Select a Planet</a>
@@ -759,7 +865,8 @@
       <aside class="hero-aside" aria-label="Blender navigation">
         <div class="hero-panel">
           <div class="hero-panel-label">Series overview</div>
-          <p class="hero-panel-copy">This project demonstrates advanced 3D texturing, procedural materials, and realistic lighting to simulate the vastness of space and the unique characteristics of each planet.</p>
+          <p class="hero-panel-copy">This project demonstrates advanced 3D texturing, procedural materials, and
+            realistic lighting to simulate the vastness of space and the unique characteristics of each planet.</p>
         </div>
         <div class="selector-card">
           <div class="selector-label">Planet selector</div>
@@ -785,7 +892,8 @@
     <section class="tile tile-light" id="render">
       <div class="section-eyebrow">Featured Render</div>
       <h2 class="section-title">Whole Solar System.</h2>
-      <p class="section-lead">Watch the full 3D animation that brings the planets to life in a continuous, cinematic sequence, highlighting their scale, rotation, and orbital dynamics.</p>
+      <p class="section-lead">Watch the full 3D animation that brings the planets to life in a continuous, cinematic
+        sequence, highlighting their scale, rotation, and orbital dynamics.</p>
 
       <div class="render-shell">
         <div class="video-shell">
@@ -796,10 +904,12 @@
         </div>
         <div class="video-caption">
           <div class="meta-kicker">Blender Render</div>
-          <h3>Whole solar system in a 10-second loop.</h3>
-          <p>This sequence is fully modeled, textured, and rendered entirely in Blender. It features physically based lighting, detailed material setups, and dynamic camera work to capture the majestic scale of deep space and planetary orbits.</p>
+          <h3>Whole solar system in a 60-second loop.</h3>
+          <p>This sequence is fully modeled, textured, and rendered entirely in Blender. It features physically based
+            lighting, detailed material setups, and dynamic camera work to capture the majestic scale of deep space and
+            planetary orbits.</p>
           <div class="meta-row">
-            <span class="meta-chip">10 seconds</span>
+            <span class="meta-chip">60 seconds</span>
             <span class="meta-chip">Autoplay</span>
             <span class="meta-chip">Muted</span>
             <span class="meta-chip">Loop</span>
@@ -811,7 +921,8 @@
     <section class="tile tile-dark" id="planets">
       <div class="section-eyebrow">Planet Navigator</div>
       <h2 class="section-title">Select a planet.</h2>
-      <p class="section-lead">Explore each celestial body in detail. Select a planet to view its standalone loop, discover fascinating astronomical facts, and calculate your age on different worlds.</p>
+      <p class="section-lead">Explore each celestial body in detail. Select a planet to view its standalone loop,
+        discover fascinating astronomical facts, and calculate your age on different worlds.</p>
 
       <div class="planet-grid">
         <a href="index.html" class="planet-card current">
@@ -913,4 +1024,5 @@
     });
   </script>
 </body>
+
 </html>
