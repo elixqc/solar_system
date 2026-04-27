@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,8 +9,16 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    *, *::before, *::after { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     :root {
       --action-blue: #0066cc;
       --focus-blue: #0071e3;
@@ -25,6 +34,7 @@
       --hairline-dark: rgba(255, 255, 255, 0.12);
       --muted-80: rgba(0, 0, 0, 0.8);
       --muted-48: rgba(0, 0, 0, 0.48);
+      --error-red: #d93025;
     }
 
     body {
@@ -39,8 +49,15 @@
       text-rendering: optimizeLegibility;
     }
 
-    a { color: inherit; }
-    img, video { display: block; max-width: 100%; }
+    a {
+      color: inherit;
+    }
+
+    img,
+    video {
+      display: block;
+      max-width: 100%;
+    }
 
     nav {
       position: fixed;
@@ -68,7 +85,9 @@
       white-space: nowrap;
     }
 
-    .nav-logo span { color: var(--sky-blue); }
+    .nav-logo span {
+      color: var(--sky-blue);
+    }
 
     .nav-links {
       display: flex;
@@ -91,7 +110,9 @@
       transition: color 0.2s ease;
     }
 
-    .nav-links a:hover { color: var(--paper-white); }
+    .nav-links a:hover {
+      color: var(--paper-white);
+    }
 
     .nav-badge {
       font-size: 11px;
@@ -142,7 +163,9 @@
       max-width: 8ch;
     }
 
-    .hero-title .accent { color: var(--sky-blue); }
+    .hero-title .accent {
+      color: var(--sky-blue);
+    }
 
     .hero-sub {
       max-width: 34rem;
@@ -185,8 +208,14 @@
       border: 1px solid transparent;
     }
 
-    .btn-pill-primary:hover { opacity: 0.9; }
-    .btn-pill-primary:active { transform: scale(0.95); }
+    .btn-pill-primary:hover {
+      opacity: 0.9;
+    }
+
+    .btn-pill-primary:active {
+      transform: scale(0.95);
+    }
+
     .btn-pill-primary:focus-visible,
     .btn-pill-ghost:focus-visible,
     .inline-link:focus-visible,
@@ -201,8 +230,13 @@
       border: 1px solid var(--sky-blue);
     }
 
-    .btn-pill-ghost:hover { background: rgba(41, 151, 255, 0.1); }
-    .btn-pill-ghost:active { transform: scale(0.95); }
+    .btn-pill-ghost:hover {
+      background: rgba(41, 151, 255, 0.1);
+    }
+
+    .btn-pill-ghost:active {
+      transform: scale(0.95);
+    }
 
     .hero-aside {
       display: grid;
@@ -287,11 +321,25 @@
       font-weight: 600;
     }
 
-    .section-eyebrow { margin-bottom: 12px; }
-    .tile-light .section-eyebrow { color: var(--action-blue); }
-    .tile-dark .section-eyebrow { color: var(--sky-blue); }
-    .tile-light .section-title { color: var(--near-black); }
-    .tile-dark .section-title { color: var(--paper-white); }
+    .section-eyebrow {
+      margin-bottom: 12px;
+    }
+
+    .tile-light .section-eyebrow {
+      color: var(--action-blue);
+    }
+
+    .tile-dark .section-eyebrow {
+      color: var(--sky-blue);
+    }
+
+    .tile-light .section-title {
+      color: var(--near-black);
+    }
+
+    .tile-dark .section-title {
+      color: var(--paper-white);
+    }
 
     .media-grid {
       display: grid;
@@ -443,11 +491,23 @@
       transition: background 0.2s ease, transform 0.15s ease, border-color 0.2s ease;
     }
 
-    .age-stepper:hover { background: var(--pearl-btn); }
-    .age-stepper:active { transform: scale(0.96); }
+    .age-stepper:hover {
+      background: var(--pearl-btn);
+    }
+
+    .age-stepper:active {
+      transform: scale(0.96);
+    }
+
     .age-stepper:focus-visible {
       outline: 2px solid var(--focus-blue);
       outline-offset: 2px;
+    }
+
+    .age-stepper:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      transform: none;
     }
 
     .age-calculator input {
@@ -463,6 +523,7 @@
       appearance: textfield;
       text-align: center;
       -moz-appearance: textfield;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
     .age-calculator input::-webkit-outer-spin-button,
@@ -476,6 +537,11 @@
       box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.18);
     }
 
+    .age-calculator input.input-error {
+      border-color: var(--error-red);
+      box-shadow: 0 0 0 3px rgba(217, 48, 37, 0.15);
+    }
+
     .age-calculator-output {
       padding: 12px 14px;
       border-radius: 12px;
@@ -485,10 +551,31 @@
       line-height: 1.4;
       font-weight: 600;
       text-align: center;
+      transition: background 0.2s ease;
     }
 
     .age-calculator-output strong {
       color: var(--action-blue);
+    }
+
+    .age-calculator-output.output-error {
+      background: rgba(217, 48, 37, 0.08);
+    }
+
+    .age-calculator-output.output-error strong {
+      color: var(--error-red);
+    }
+
+    .validation-msg {
+      font-size: 12px;
+      color: var(--error-red);
+      font-weight: 500;
+      min-height: 16px;
+      display: none;
+    }
+
+    .validation-msg.visible {
+      display: block;
     }
 
     .age-calculator-hint {
@@ -524,7 +611,9 @@
       margin-bottom: 12px;
     }
 
-    .details-card.dark .meta-kicker { color: rgba(255, 255, 255, 0.48); }
+    .details-card.dark .meta-kicker {
+      color: rgba(255, 255, 255, 0.48);
+    }
 
     .details-card h3 {
       margin: 0 0 10px;
@@ -568,7 +657,9 @@
       color: var(--near-black);
     }
 
-    .footer-left .f-title span { color: var(--action-blue); }
+    .footer-left .f-title span {
+      color: var(--action-blue);
+    }
 
     .footer-left .f-sub,
     .footer-right,
@@ -580,7 +671,9 @@
       color: var(--muted-48);
     }
 
-    .footer-note { margin-top: 12px; }
+    .footer-note {
+      margin-top: 12px;
+    }
 
     .footer-right {
       text-align: right;
@@ -591,42 +684,81 @@
       text-decoration: none;
     }
 
-    .footer-right a:hover { text-decoration: underline; }
+    .footer-right a:hover {
+      text-decoration: underline;
+    }
 
     @media (max-width: 1024px) {
+
       .hero,
       .media-grid,
-      .details-grid { grid-template-columns: 1fr; }
+      .details-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     @media (max-width: 833px) {
-      nav { padding: 0 16px; }
-      .nav-links { display: none; }
+      nav {
+        padding: 0 16px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
       .hero,
       .tile,
-      footer { padding-left: 24px; padding-right: 24px; }
-      .hero { padding-top: 100px; padding-bottom: 72px; }
-      .hero-sub { font-size: 18px; }
-      .video-card { padding: 20px; }
-      .footer-right { text-align: left; }
+      footer {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+
+      .hero {
+        padding-top: 100px;
+        padding-bottom: 72px;
+      }
+
+      .hero-sub {
+        font-size: 18px;
+      }
+
+      .video-card {
+        padding: 20px;
+      }
+
+      .footer-right {
+        text-align: left;
+      }
     }
 
     @media (max-width: 640px) {
-      .hero-title { font-size: clamp(40px, 14vw, 56px); }
-      .hero-ctas { flex-direction: column; align-items: stretch; }
+      .hero-title {
+        font-size: clamp(40px, 14vw, 56px);
+      }
+
+      .hero-ctas {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
       .btn-pill-primary,
-      .btn-pill-ghost { width: 100%; }
+      .btn-pill-ghost {
+        width: 100%;
+      }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
+
+      *,
+      *::before,
+      *::after {
         animation-duration: 0.001ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.001ms !important;
         scroll-behavior: auto !important;
       }
     }
-  
+
     .planet-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
@@ -713,15 +845,19 @@
     }
 
     @media (max-width: 833px) {
-      .planet-grid { grid-template-columns: 1fr 1fr; }
+      .planet-grid {
+        grid-template-columns: 1fr 1fr;
+      }
     }
 
     @media (max-width: 640px) {
-      .planet-grid { grid-template-columns: 1fr; }
+      .planet-grid {
+        grid-template-columns: 1fr;
+      }
     }
-
   </style>
 </head>
+
 <body>
   <nav>
     <a class="nav-logo" href="index.html">Nico <span>Barredo</span></a>
@@ -740,7 +876,8 @@
       <div>
         <div class="hero-eyebrow">Mars</div>
         <h1 class="hero-title">The <span class="accent">Red</span> Planet.</h1>
-        <p class="hero-sub">Mars is the fourth planet from the Sun and the second-smallest planet in the Solar System. It is often called the "Red Planet" due to the iron oxide prevalent on its surface.</p>
+        <p class="hero-sub">Mars is the fourth planet from the Sun and the second-smallest planet in the Solar System.
+          It is often called the "Red Planet" due to the iron oxide prevalent on its surface.</p>
         <div class="hero-ctas">
           <a href="#media" class="btn-pill-primary">View the Render</a>
           <a href="index.html" class="btn-pill-ghost">Back to Blender Home</a>
@@ -773,7 +910,8 @@
           <div class="video-caption">
             <div class="meta-kicker">Blender Render</div>
             <h2>Mars in a 10-second loop.</h2>
-            <p>This render was created in Blender. It is set to autoplay, stay muted, and loop so the page feels polished without showing playback controls.</p>
+            <p>This render was created in Blender. It is set to autoplay, stay muted, and loop so the page feels
+              polished without showing playback controls.</p>
             <div class="meta-row">
               <span class="meta-chip">10 seconds</span>
               <span class="meta-chip">Autoplay</span>
@@ -785,87 +923,93 @@
 
         <aside class="side-note">
           <h3>Mars summary</h3>
-          <p>Mars is a dusty, cold, desert world with a very thin atmosphere. There is strong evidence Mars was—billions of years ago—wetter and warmer, with a thicker atmosphere.</p>
+          <p>Mars is a dusty, cold, desert world with a very thin atmosphere. There is strong evidence Mars was—billions
+            of years ago—wetter and warmer, with a thicker atmosphere.</p>
           <div class="age-calculator">
             <div class="age-calculator-label">Age converter</div>
-            <p class="age-calculator-hint">Enter your age in Earth years and see the Mars equivalent. Mars completes one orbit in about 687 Earth days, so one Earth year is about 0.53 Mars years.</p>
+            <p class="age-calculator-hint">Enter your age in Earth years and see the Mars equivalent. Mars completes one
+              orbit in about 687 Earth days, so one Earth year is about 0.53 Mars years.</p>
             <div class="age-calculator-row">
               <div class="age-calculator-controls">
-                <button class="age-stepper" type="button" id="earth-age-minus" aria-label="Decrease Earth age by 1 year">−</button>
-                <input id="earth-age-input" type="number" min="0" step="1" value="20" aria-label="Your age in Earth years" />
-                <button class="age-stepper" type="button" id="earth-age-plus" aria-label="Increase Earth age by 1 year">+</button>
+                <button class="age-stepper" type="button" id="earth-age-minus"
+                  aria-label="Decrease Earth age by 1 year">−</button>
+                <input id="earth-age-input" type="number" min="0" max="150" step="1" value="20"
+                  aria-label="Your age in Earth years" aria-describedby="validation-msg" />
+                <button class="age-stepper" type="button" id="earth-age-plus"
+                  aria-label="Increase Earth age by 1 year">+</button>
               </div>
-              <div class="age-calculator-output" id="planet-age-output">You would be about <strong>10 years, 7 months, 16 days</strong> Mars time.</div>
+              <div class="validation-msg" id="validation-msg" role="alert" aria-live="polite"></div>
+              <div class="age-calculator-output" id="planet-age-output">You would be about <strong>10 years, 7 months,
+                  16 days</strong> Mars time.</div>
             </div>
           </div>
         </aside>
       </div>
     </section>
 
+    <section class="tile tile-dark" id="planets">
+      <div class="section-eyebrow">Planet Navigator</div>
+      <h2 class="section-title">Select a planet.</h2>
+      <p class="section-lead">Explore each celestial body in detail. Select a planet to view its standalone loop,
+        discover fascinating astronomical facts, and calculate your age on different worlds.</p>
 
-      <section class="tile tile-dark" id="planets">
-        <div class="section-eyebrow">Planet Navigator</div>
-        <h2 class="section-title">Select a planet.</h2>
-        <p class="section-lead">Explore each celestial body in detail. Select a planet to view its standalone loop, discover fascinating astronomical facts, and calculate your age on different worlds.</p>
-
-        <div class="planet-grid">
-          <a href="index.html" class="planet-card">
-            <div class="planet-tag">Home</div>
-            <h3>Whole Solar System</h3>
-            <p>Open the introduction page and the full system render.</p>
-            <div class="planet-arrow">↗</div>
-          </a>
-          <a href="mercury.html" class="planet-card ">
-            <div class="planet-tag">Planet 01</div>
-            <h3>Mercury</h3>
-            <p>Small, rocky, fast, and closest to the Sun.</p>
-            <div class="planet-arrow">↗</div>
-          </a>
-          <a href="venus.html" class="planet-card ">
-            <div class="planet-tag">Planet 02</div>
-            <h3>Venus</h3>
-            <p>Hot, bright, and covered in dense cloud.</p>
-            <div class="planet-arrow">↗</div>
-          </a>
-          <a href="earth.html" class="planet-card ">
-            <div class="planet-tag">Planet 03</div>
-            <h3>Earth</h3>
-            <p>The blue planet and the one we live on.</p>
-            <div class="planet-arrow">↗</div>
-          </a>
-          <a href="mars.html" class="planet-card current">
-            <div class="planet-tag">Current</div>
-            <h3>Mars</h3>
-            <p>Cold, dusty, and known for its red surface.</p>
-            <div class="planet-arrow">↗</div>
-          </a>
-          <a href="jupiter.html" class="planet-card ">
-            <div class="planet-tag">Planet 05</div>
-            <h3>Jupiter</h3>
-            <p>The largest planet, with huge storms and bands.</p>
-            <div class="planet-arrow">↗</div>
-          </a>
-          <a href="saturn.html" class="planet-card ">
-            <div class="planet-tag">Planet 06</div>
-            <h3>Saturn</h3>
-            <p>Famous for its wide ring system and soft color.</p>
-            <div class="planet-arrow">↗</div>
-          </a>
-          <a href="uranus.html" class="planet-card ">
-            <div class="planet-tag">Planet 07</div>
-            <h3>Uranus</h3>
-            <p>An ice giant with a dramatic tilted axis.</p>
-            <div class="planet-arrow">↗</div>
-          </a>
-          <a href="neptune.html" class="planet-card ">
-            <div class="planet-tag">Planet 08</div>
-            <h3>Neptune</h3>
-            <p>The deep-blue outer planet with strong winds.</p>
-            <div class="planet-arrow">↗</div>
-          </a>
-        </div>
-      </section>
-
+      <div class="planet-grid">
+        <a href="index.html" class="planet-card">
+          <div class="planet-tag">Home</div>
+          <h3>Whole Solar System</h3>
+          <p>Open the introduction page and the full system render.</p>
+          <div class="planet-arrow">↗</div>
+        </a>
+        <a href="mercury.html" class="planet-card">
+          <div class="planet-tag">Planet 01</div>
+          <h3>Mercury</h3>
+          <p>Small, rocky, fast, and closest to the Sun.</p>
+          <div class="planet-arrow">↗</div>
+        </a>
+        <a href="venus.html" class="planet-card">
+          <div class="planet-tag">Planet 02</div>
+          <h3>Venus</h3>
+          <p>Hot, bright, and covered in dense cloud.</p>
+          <div class="planet-arrow">↗</div>
+        </a>
+        <a href="earth.html" class="planet-card">
+          <div class="planet-tag">Planet 03</div>
+          <h3>Earth</h3>
+          <p>The blue planet and the one we live on.</p>
+          <div class="planet-arrow">↗</div>
+        </a>
+        <a href="mars.html" class="planet-card current">
+          <div class="planet-tag">Current</div>
+          <h3>Mars</h3>
+          <p>Cold, dusty, and known for its red surface.</p>
+          <div class="planet-arrow">↗</div>
+        </a>
+        <a href="jupiter.html" class="planet-card">
+          <div class="planet-tag">Planet 05</div>
+          <h3>Jupiter</h3>
+          <p>The largest planet, with huge storms and bands.</p>
+          <div class="planet-arrow">↗</div>
+        </a>
+        <a href="saturn.html" class="planet-card">
+          <div class="planet-tag">Planet 06</div>
+          <h3>Saturn</h3>
+          <p>Famous for its wide ring system and soft color.</p>
+          <div class="planet-arrow">↗</div>
+        </a>
+        <a href="uranus.html" class="planet-card">
+          <div class="planet-tag">Planet 07</div>
+          <h3>Uranus</h3>
+          <p>An ice giant with a dramatic tilted axis.</p>
+          <div class="planet-arrow">↗</div>
+        </a>
+        <a href="neptune.html" class="planet-card">
+          <div class="planet-tag">Planet 08</div>
+          <h3>Neptune</h3>
+          <p>The deep-blue outer planet with strong winds.</p>
+          <div class="planet-arrow">↗</div>
+        </a>
+      </div>
+    </section>
   </main>
 
   <footer>
@@ -885,38 +1029,57 @@
     const planetAgeOutput = document.getElementById('planet-age-output');
     const earthAgeMinus = document.getElementById('earth-age-minus');
     const earthAgePlus = document.getElementById('earth-age-plus');
+    const validationMsg = document.getElementById('validation-msg');
+    const MAX_AGE = 150;
 
     function formatPlanetAge(earthAge, planetYearInEarthDays) {
-      const safeEarthAge = Number.isFinite(earthAge) && earthAge >= 0 ? earthAge : 0;
-      const totalPlanetYears = (safeEarthAge * 365.25) / planetYearInEarthDays;
+      const totalPlanetYears = (earthAge * 365.25) / planetYearInEarthDays;
       let years = Math.floor(totalPlanetYears);
       let months = Math.floor((totalPlanetYears - years) * 12);
       let days = Math.round((((totalPlanetYears - years) * 12) - months) * 30);
-
-      if (days >= 30) {
-        days -= 30;
-        months += 1;
-      }
-
-      if (months >= 12) {
-        months -= 12;
-        years += 1;
-      }
-
+      if (days >= 30) { days -= 30; months += 1; }
+      if (months >= 12) { months -= 12; years += 1; }
       return `${years} year${years === 1 ? '' : 's'}, ${months} month${months === 1 ? '' : 's'}, ${days} day${days === 1 ? '' : 's'}`;
     }
 
+    function validate(raw) {
+      if (raw === '' || raw === null) return { ok: false, msg: 'Please enter an age.' };
+      const num = Number(raw);
+      if (!Number.isFinite(num)) return { ok: false, msg: 'Please enter a valid number.' };
+      if (!Number.isInteger(num)) return { ok: false, msg: 'Age must be a whole number.' };
+      if (num < 0) return { ok: false, msg: 'Age cannot be negative.' };
+      if (num > MAX_AGE) return { ok: false, msg: `Age must be ${MAX_AGE} or under.` };
+      return { ok: true, value: num };
+    }
+
     function updatePlanetAge() {
-      const earthAge = Number(earthAgeInput.value);
-      const planetAge = formatPlanetAge(earthAge, 686.98); // Mars orbital period
-      planetAgeOutput.innerHTML = `You would be about <strong>${planetAge}</strong> Mars time.`;
+      const raw = earthAgeInput.value.trim();
+      const result = validate(raw);
+
+      if (!result.ok) {
+        validationMsg.textContent = result.msg;
+        validationMsg.classList.add('visible');
+        earthAgeInput.classList.add('input-error');
+        planetAgeOutput.classList.add('output-error');
+        planetAgeOutput.innerHTML = `<strong>—</strong>`;
+        earthAgeMinus.disabled = true;
+        earthAgePlus.disabled = true;
+        return;
+      }
+
+      validationMsg.textContent = '';
+      validationMsg.classList.remove('visible');
+      earthAgeInput.classList.remove('input-error');
+      planetAgeOutput.classList.remove('output-error');
+      earthAgeMinus.disabled = result.value <= 0;
+      earthAgePlus.disabled = result.value >= MAX_AGE;
+      planetAgeOutput.innerHTML = `You would be about <strong>${formatPlanetAge(result.value, 686.98)}</strong> Mars time.`;
     }
 
     function adjustEarthAge(delta) {
-      const currentAge = Number(earthAgeInput.value);
-      const safeAge = Number.isFinite(currentAge) && currentAge >= 0 ? currentAge : 0;
-      const nextAge = Math.max(0, Math.round(safeAge + delta));
-      earthAgeInput.value = nextAge;
+      const current = Number(earthAgeInput.value);
+      const safe = Number.isFinite(current) ? current : 0;
+      earthAgeInput.value = Math.min(MAX_AGE, Math.max(0, Math.round(safe + delta)));
       updatePlanetAge();
     }
 
@@ -940,4 +1103,5 @@
     });
   </script>
 </body>
+
 </html>
