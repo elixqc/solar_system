@@ -58,6 +58,7 @@
       max-width: 100%;
     }
 
+    /* ── NAV ── */
     nav {
       position: fixed;
       top: 0;
@@ -84,9 +85,7 @@
       white-space: nowrap;
     }
 
-    .nav-logo span {
-      color: var(--sky-blue);
-    }
+    .nav-logo span { color: var(--sky-blue); }
 
     .nav-links {
       display: flex;
@@ -109,9 +108,7 @@
       transition: color 0.2s ease;
     }
 
-    .nav-links a:hover {
-      color: var(--paper-white);
-    }
+    .nav-links a:hover { color: var(--paper-white); }
 
     .nav-badge {
       font-size: 11px;
@@ -120,6 +117,7 @@
       white-space: nowrap;
     }
 
+    /* ── HERO ── */
     .hero {
       position: relative;
       overflow: hidden;
@@ -162,9 +160,7 @@
       max-width: 9ch;
     }
 
-    .hero-title .accent {
-      color: var(--sky-blue);
-    }
+    .hero-title .accent { color: var(--sky-blue); }
 
     .hero-sub {
       max-width: 34rem;
@@ -199,6 +195,7 @@
       letter-spacing: -0.02em;
       transition: transform 0.15s ease, opacity 0.2s ease, background 0.2s ease, border-color 0.2s ease;
       white-space: nowrap;
+      cursor: pointer;
     }
 
     .btn-pill-primary {
@@ -207,18 +204,12 @@
       border: 1px solid transparent;
     }
 
-    .btn-pill-primary:hover {
-      opacity: 0.9;
-    }
-
-    .btn-pill-primary:active {
-      transform: scale(0.95);
-    }
+    .btn-pill-primary:hover { opacity: 0.9; }
+    .btn-pill-primary:active { transform: scale(0.95); }
 
     .btn-pill-primary:focus-visible,
     .btn-pill-ghost:focus-visible,
-    .inline-link:focus-visible,
-    .video-card a:focus-visible {
+    .inline-link:focus-visible {
       outline: 2px solid var(--focus-blue);
       outline-offset: 2px;
     }
@@ -229,18 +220,10 @@
       border: 1px solid var(--sky-blue);
     }
 
-    .btn-pill-ghost:hover {
-      background: rgba(41, 151, 255, 0.1);
-    }
+    .btn-pill-ghost:hover { background: rgba(41, 151, 255, 0.1); }
+    .btn-pill-ghost:active { transform: scale(0.95); }
 
-    .btn-pill-ghost:active {
-      transform: scale(0.95);
-    }
-
-    .hero-aside {
-      display: grid;
-      gap: 16px;
-    }
+    .hero-aside { display: grid; gap: 16px; }
 
     .hero-panel {
       padding: 24px;
@@ -348,19 +331,10 @@
       color: rgba(255, 255, 255, 0.7);
     }
 
-    .tile {
-      padding: 96px 40px;
-    }
-
-    .tile-light {
-      background: var(--paper-white);
-      color: var(--near-black);
-    }
-
-    .tile-dark {
-      background: var(--dark-tile-1);
-      color: var(--paper-white);
-    }
+    /* ── TILES ── */
+    .tile { padding: 96px 40px; }
+    .tile-light { background: var(--paper-white); color: var(--near-black); }
+    .tile-dark { background: var(--dark-tile-1); color: var(--paper-white); }
 
     .section-title {
       margin: 0;
@@ -370,170 +344,11 @@
       font-weight: 600;
     }
 
-    .section-eyebrow {
-      margin-bottom: 12px;
-    }
-
-    .tile-light .section-eyebrow {
-      color: var(--action-blue);
-    }
-
-    .tile-dark .section-eyebrow {
-      color: var(--sky-blue);
-    }
-
-    .tile-light .section-title {
-      color: var(--near-black);
-    }
-
-    .tile-dark .section-title {
-      color: var(--paper-white);
-    }
-
-    .intro-grid {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 20px;
-      margin-top: 44px;
-    }
-
-    .info-card {
-      padding: 28px;
-      border-radius: 18px;
-      background: var(--parchment);
-      border: 1px solid var(--hairline);
-    }
-
-    .info-card h3 {
-      margin: 0 0 10px;
-      font-size: 22px;
-      line-height: 1.12;
-      letter-spacing: -0.04em;
-      font-weight: 600;
-      color: var(--near-black);
-    }
-
-    .info-card p {
-      margin: 0;
-      font-size: 15px;
-      line-height: 1.55;
-      color: var(--muted-80);
-    }
-
-    .video-card {
-      margin-top: 44px;
-      padding: 32px;
-      border-radius: 18px;
-      background: var(--dark-tile-2);
-      border: 1px solid var(--hairline-dark);
-    }
-
-    .video-shell {
-      overflow: hidden;
-      border-radius: 18px;
-      background: #000;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .video-shell video {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      object-fit: cover;
-      background: #000;
-    }
-
-    .video-caption {
-      display: grid;
-      gap: 12px;
-      align-content: center;
-    }
-
-    .video-caption h3 {
-      margin: 0;
-      font-size: 24px;
-      line-height: 1.12;
-      letter-spacing: -0.04em;
-      font-weight: 600;
-      color: var(--paper-white);
-    }
-
-    .video-caption p {
-      margin: 0;
-      font-size: 15px;
-      line-height: 1.55;
-      color: rgba(255, 255, 255, 0.78);
-    }
-
-    .meta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 16px;
-    }
-
-    .meta-chip {
-      display: inline-flex;
-      align-items: center;
-      min-height: 28px;
-      padding: 0 12px;
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      color: rgba(255, 255, 255, 0.84);
-      font-size: 12px;
-    }
-
-    .details-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 20px;
-      margin-top: 44px;
-    }
-
-    .details-card {
-      padding: 28px;
-      border-radius: 18px;
-      background: var(--paper-white);
-      border: 1px solid var(--hairline);
-      color: var(--near-black);
-    }
-
-    .details-card.dark {
-      background: var(--dark-tile-2);
-      color: var(--paper-white);
-      border-color: var(--hairline-dark);
-    }
-
-    .details-card .meta-kicker {
-      color: var(--muted-48);
-      margin-bottom: 12px;
-    }
-
-    .details-card.dark .meta-kicker {
-      color: rgba(255, 255, 255, 0.48);
-    }
-
-    .details-card h3 {
-      margin: 0 0 10px;
-      font-size: 22px;
-      line-height: 1.12;
-      letter-spacing: -0.04em;
-      font-weight: 600;
-      color: inherit;
-    }
-
-    .details-card p {
-      margin: 0;
-      font-size: 15px;
-      line-height: 1.55;
-      color: inherit;
-      opacity: 0.84;
-    }
-
-    .details-card .inline-link {
-      color: var(--action-blue);
-      font-weight: 600;
-    }
+    .section-eyebrow { margin-bottom: 12px; }
+    .tile-light .section-eyebrow { color: var(--action-blue); }
+    .tile-dark .section-eyebrow { color: var(--sky-blue); }
+    .tile-light .section-title { color: var(--near-black); }
+    .tile-dark .section-title { color: var(--paper-white); }
 
     .section-lead {
       max-width: 46rem;
@@ -544,160 +359,565 @@
       opacity: 0.78;
     }
 
-    .render-shell {
-      display: grid;
-      grid-template-columns: minmax(0, 1.4fr) minmax(300px, 0.6fr);
-      gap: 40px;
-      align-items: center;
-      margin-top: 44px;
-      padding: 32px;
-      border-radius: 18px;
-      background: var(--dark-tile-2);
-      border: 1px solid var(--hairline-dark);
-    }
-
-    @media (max-width: 833px) {
-      .render-shell {
-        grid-template-columns: 1fr;
-        gap: 20px;
-        padding: 24px;
-      }
-    }
-
-    .render-placeholder {
-      min-height: 420px;
-      border-radius: 18px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+    /* ── MAIN RENDER — CINEMATIC ── */
+    .render-section {
+      position: relative;
       background: #000;
-      display: grid;
-      place-items: center;
-      text-align: center;
-      padding: 48px 36px;
+      overflow: hidden;
+      padding: 0;
     }
 
-    .render-placeholder-inner {
-      max-width: 38rem;
-      display: grid;
-      gap: 14px;
-      justify-items: center;
+    .render-section::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 110%, rgba(41,151,255,0.18) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 20% 50%, rgba(0,80,180,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 50%, rgba(0,40,120,0.10) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 1;
     }
 
-    .render-placeholder-badge {
+    .render-inner {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 80px 40px 0;
+    }
+
+    .render-header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: flex-end;
+      gap: 32px;
+      margin-bottom: 36px;
+    }
+
+    .render-eyebrow {
       display: inline-flex;
       align-items: center;
-      min-height: 28px;
-      padding: 0 12px;
-      border-radius: 980px;
-      background: rgba(41, 151, 255, 0.14);
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
       color: var(--sky-blue);
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+      margin-bottom: 14px;
     }
 
-    .render-placeholder h3 {
+    .render-eyebrow::before {
+      content: "";
+      width: 24px;
+      height: 1px;
+      background: var(--sky-blue);
+      opacity: 0.7;
+    }
+
+    .render-title {
       margin: 0;
-      font-size: clamp(28px, 4vw, 48px);
-      line-height: 1.04;
-      letter-spacing: -0.04em;
+      font-size: clamp(36px, 5vw, 68px);
+      line-height: 0.96;
+      letter-spacing: -0.05em;
       font-weight: 600;
       color: var(--paper-white);
     }
 
-    .render-placeholder p {
-      margin: 0;
-      max-width: 32rem;
-      font-size: 17px;
-      line-height: 1.55;
-      color: rgba(255, 255, 255, 0.72);
+    .render-title em {
+      font-style: normal;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(255,255,255,0.35);
     }
 
-    .planet-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-      gap: 20px;
-      margin-top: 44px;
+    .render-desc {
+      max-width: 36rem;
+      margin: 14px 0 0;
+      font-size: 16px;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.52);
     }
 
-    .planet-card {
-      position: relative;
-      display: grid;
-      gap: 12px;
-      padding: 24px;
-      border-radius: 18px;
-      border: 1px solid var(--hairline-dark);
-      background: rgba(255, 255, 255, 0.04);
-      color: var(--paper-white);
-      text-decoration: none;
-      transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
-      min-height: 154px;
-    }
-
-    .planet-card:hover {
-      transform: translateY(-4px);
-      background: rgba(255, 255, 255, 0.07);
-      border-color: rgba(255, 255, 255, 0.18);
-    }
-
-    .planet-card.current {
-      background: rgba(41, 151, 255, 0.16);
-      border-color: rgba(41, 151, 255, 0.28);
-    }
-
-    .planet-card .planet-tag {
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.5);
-    }
-
-    .planet-card.current .planet-tag {
-      color: rgba(255, 255, 255, 0.84);
-    }
-
-    .planet-card h3 {
-      margin: 0;
-      font-size: 24px;
-      line-height: 1.06;
-      letter-spacing: -0.04em;
-      font-weight: 600;
-      color: inherit;
-    }
-
-    .planet-card p {
-      margin: 0;
+    .render-fs-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 44px;
+      padding: 11px 22px;
+      border-radius: 980px;
       font-size: 14px;
-      line-height: 1.5;
-      color: rgba(255, 255, 255, 0.72);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.14);
+      color: rgba(255,255,255,0.84);
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
     }
 
-    .planet-card .planet-arrow {
-      align-self: end;
-      justify-self: end;
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
+    .render-fs-btn:hover {
+      background: rgba(41,151,255,0.15);
+      border-color: rgba(41,151,255,0.4);
+      color: var(--paper-white);
+    }
+
+    .render-fs-btn:active { transform: scale(0.96); }
+    .render-fs-btn svg { flex: 0 0 auto; }
+
+    .render-frame {
+      position: relative;
+      border-radius: 20px 20px 0 0;
+      overflow: hidden;
+      background: #000;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-bottom: none;
+      box-shadow:
+        0 0 0 1px rgba(41,151,255,0.08),
+        0 -24px 80px rgba(41,151,255,0.08),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+    }
+
+    .render-frame video {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      display: block;
+      background: #000;
+    }
+
+    .render-frame::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 3px,
+        rgba(0,0,0,0.04) 3px,
+        rgba(0,0,0,0.04) 4px
+      );
+      pointer-events: none;
+    }
+
+    .render-stats {
       display: grid;
-      place-items: center;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      color: rgba(255, 255, 255, 0.72);
-      transition: transform 0.25s ease, background 0.25s ease, color 0.25s ease;
+      grid-template-columns: repeat(4, 1fr) auto;
+      align-items: center;
+      gap: 0;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-top: 1px solid rgba(41,151,255,0.15);
+      border-radius: 0 0 20px 20px;
+      overflow: hidden;
     }
 
-    .planet-card:hover .planet-arrow {
-      transform: rotate(45deg);
+    .render-stat {
+      padding: 22px 28px;
+      border-right: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .render-stat-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.32);
+      margin-bottom: 6px;
+    }
+
+    .render-stat-value {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      color: var(--paper-white);
+    }
+
+    .render-stat-value .unit {
+      font-size: 13px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.4);
+      margin-left: 2px;
+      letter-spacing: 0;
+    }
+
+    .render-stats-cta {
+      padding: 18px 28px;
+      border-left: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .render-watch-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 38px;
+      padding: 9px 18px;
+      border-radius: 980px;
+      font-size: 13px;
+      font-weight: 600;
       background: var(--action-blue);
       color: var(--paper-white);
-      border-color: var(--action-blue);
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+      text-decoration: none;
+      transition: opacity 0.2s ease, transform 0.15s ease;
     }
 
-    .planet-card.current .planet-arrow {
-      background: rgba(255, 255, 255, 0.08);
+    .render-watch-btn:hover { opacity: 0.88; }
+    .render-watch-btn:active { transform: scale(0.95); }
+
+    @media (max-width: 900px) {
+      .render-header { grid-template-columns: 1fr; gap: 20px; align-items: flex-start; }
+      .render-stats { grid-template-columns: 1fr 1fr; }
+      .render-stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
+      .render-stat:nth-child(odd) { border-right: 1px solid rgba(255,255,255,0.06); }
+      .render-stats-cta { grid-column: 1 / -1; border-left: none; border-top: 1px solid rgba(255,255,255,0.06); }
+    }
+
+    @media (max-width: 640px) {
+      .render-inner { padding: 60px 24px 0; }
+      .render-stats { grid-template-columns: 1fr 1fr; }
+    }
+
+    /* ── PLANET VIDEO GRID ── */
+    .video-tile {
+      background: #0a0a0b;
+      padding: 96px 40px;
+    }
+
+    .video-tile .section-eyebrow { color: var(--sky-blue); }
+    .video-tile .section-title { color: var(--paper-white); }
+    .video-tile .section-lead { color: rgba(255,255,255,0.65); opacity: 1; }
+
+    .planet-video-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 48px;
+    }
+
+    .planet-video-block {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      cursor: pointer;
+      background: #111;
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94),
+                  border-color 0.3s ease,
+                  box-shadow 0.3s ease;
+      group: planet-block;
+    }
+
+    .planet-video-block:hover {
+      transform: translateY(-6px) scale(1.01);
+      border-color: rgba(41, 151, 255, 0.4);
+      box-shadow: 0 24px 64px rgba(0,0,0,0.6), 0 0 0 1px rgba(41,151,255,0.2);
+    }
+
+    .planet-video-block video {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      display: block;
+      background: #000;
+    }
+
+    .planet-video-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(0,0,0,0.88) 0%,
+        rgba(0,0,0,0.3) 50%,
+        rgba(0,0,0,0) 100%
+      );
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 20px 22px;
+      transition: background 0.3s ease;
+    }
+
+    .planet-video-block:hover .planet-video-overlay {
+      background: linear-gradient(
+        to top,
+        rgba(0,0,0,0.92) 0%,
+        rgba(0,0,0,0.45) 55%,
+        rgba(0,0,0,0.1) 100%
+      );
+    }
+
+    .planet-video-tag {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sky-blue);
+      margin-bottom: 4px;
+    }
+
+    .planet-video-name {
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      color: var(--paper-white);
+      margin: 0 0 8px;
+    }
+
+    .planet-video-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .planet-video-block:hover .planet-video-hint {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .planet-video-hint svg {
+      width: 14px;
+      height: 14px;
+      flex: 0 0 auto;
+    }
+
+    /* ── MODAL ── */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      background: rgba(0,0,0,0.92);
+      backdrop-filter: blur(20px) saturate(120%);
+      -webkit-backdrop-filter: blur(20px) saturate(120%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal-backdrop.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal {
+      position: relative;
+      width: 100%;
+      max-width: 960px;
+      max-height: calc(100vh - 48px);
+      overflow-y: auto;
+      border-radius: 28px;
+      background: #111214;
+      border: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 48px 120px rgba(0,0,0,0.8);
+      transform: translateY(28px) scale(0.97);
+      transition: transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,0.12) transparent;
+    }
+
+    .modal-backdrop.open .modal {
+      transform: translateY(0) scale(1);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      z-index: 10;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.8);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease;
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .modal-close:hover {
+      background: rgba(255,255,255,0.16);
       color: var(--paper-white);
     }
 
+    .modal-video-shell {
+      position: relative;
+      border-radius: 28px 28px 0 0;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .modal-video-shell video {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      display: block;
+    }
+
+    .modal-video-controls {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .modal-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 38px;
+      padding: 0 16px;
+      border-radius: 980px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      cursor: pointer;
+      border: none;
+      transition: transform 0.15s ease, opacity 0.2s ease;
+    }
+
+    .modal-btn:hover { opacity: 0.88; }
+    .modal-btn:active { transform: scale(0.95); }
+
+    .modal-btn-fs {
+      background: rgba(255,255,255,0.14);
+      color: var(--paper-white);
+      border: 1px solid rgba(255,255,255,0.2);
+      backdrop-filter: blur(8px);
+    }
+
+    .modal-btn-primary {
+      background: var(--action-blue);
+      color: var(--paper-white);
+    }
+
+    .modal-body {
+      padding: 36px 40px 40px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 32px;
+      align-items: start;
+    }
+
+    .modal-badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 26px;
+      padding: 0 10px;
+      border-radius: 6px;
+      background: rgba(41, 151, 255, 0.14);
+      border: 1px solid rgba(41,151,255,0.24);
+      color: var(--sky-blue);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .modal-title {
+      margin: 0 0 12px;
+      font-size: clamp(32px, 5vw, 52px);
+      line-height: 1;
+      letter-spacing: -0.05em;
+      font-weight: 600;
+      color: var(--paper-white);
+    }
+
+    .modal-desc {
+      margin: 0;
+      font-size: 16px;
+      line-height: 1.65;
+      color: rgba(255,255,255,0.72);
+      max-width: 44rem;
+    }
+
+    .modal-facts {
+      margin-top: 28px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .modal-fact {
+      padding: 16px 18px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .modal-fact-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 6px;
+    }
+
+    .modal-fact-value {
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      color: var(--paper-white);
+    }
+
+    .modal-side {
+      display: grid;
+      gap: 10px;
+      min-width: 160px;
+    }
+
+    .modal-page-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 44px;
+      padding: 11px 22px;
+      border-radius: 980px;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.2s ease, transform 0.15s ease;
+      border: none;
+      white-space: nowrap;
+    }
+
+    .modal-page-btn-primary {
+      background: var(--action-blue);
+      color: var(--paper-white);
+    }
+
+    .modal-page-btn-ghost {
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.8);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .modal-page-btn:hover { opacity: 0.85; }
+    .modal-page-btn:active { transform: scale(0.95); }
+
+    /* ── FOOTER ── */
     footer {
       background: var(--parchment);
       border-top: 1px solid var(--hairline);
@@ -718,9 +938,7 @@
       color: var(--near-black);
     }
 
-    .footer-left .f-title span {
-      color: var(--action-blue);
-    }
+    .footer-left .f-title span { color: var(--action-blue); }
 
     .footer-left .f-sub,
     .footer-right,
@@ -732,40 +950,27 @@
       color: var(--muted-48);
     }
 
-    .footer-note {
-      margin-top: 12px;
-    }
+    .footer-note { margin-top: 12px; }
+    .footer-right { text-align: right; }
+    .footer-right a { color: var(--action-blue); text-decoration: none; }
+    .footer-right a:hover { text-decoration: underline; }
 
-    .footer-right {
-      text-align: right;
-    }
-
-    .footer-right a {
-      color: var(--action-blue);
-      text-decoration: none;
-    }
-
-    .footer-right a:hover {
-      text-decoration: underline;
-    }
-
+    /* ── RESPONSIVE ── */
     @media (max-width: 1024px) {
-      .hero {
-        grid-template-columns: 1fr;
+      .hero { grid-template-columns: 1fr; }
+
+      .planet-video-grid {
+        grid-template-columns: repeat(2, 1fr);
       }
     }
 
     @media (max-width: 833px) {
-      nav {
-        padding: 0 16px;
-      }
-
-      .nav-links {
-        display: none;
-      }
+      nav { padding: 0 16px; }
+      .nav-links { display: none; }
 
       .hero,
       .tile,
+      .video-tile,
       footer {
         padding-left: 24px;
         padding-right: 24px;
@@ -776,35 +981,38 @@
         padding-bottom: 72px;
       }
 
-      .hero-sub {
-        font-size: 18px;
-      }
+      .hero-sub { font-size: 18px; }
 
       .selector-row {
         grid-template-columns: 1fr;
       }
 
-      .selector-row .btn-pill-primary {
-        width: 100%;
-      }
+      .selector-row .btn-pill-primary { width: 100%; }
 
       .render-shell {
-        padding: 20px;
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 24px;
       }
 
-      .planet-grid {
+      .planet-video-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .modal-body {
+        grid-template-columns: 1fr;
+        padding: 24px;
+      }
+
+      .modal-facts {
         grid-template-columns: 1fr 1fr;
       }
 
-      .footer-right {
-        text-align: left;
-      }
+      .footer-right { text-align: left; }
     }
 
     @media (max-width: 640px) {
-      .hero-title {
-        font-size: clamp(40px, 14vw, 56px);
-      }
+      .hero-title { font-size: clamp(40px, 14vw, 56px); }
 
       .hero-ctas {
         flex-direction: column;
@@ -812,17 +1020,12 @@
       }
 
       .btn-pill-primary,
-      .btn-pill-ghost {
-        width: 100%;
-      }
+      .btn-pill-ghost { width: 100%; }
 
-      .planet-grid {
-        grid-template-columns: 1fr;
-      }
+      .modal-facts { grid-template-columns: 1fr; }
     }
 
     @media (prefers-reduced-motion: reduce) {
-
       *,
       *::before,
       *::after {
@@ -849,6 +1052,7 @@
   </nav>
 
   <main>
+    <!-- ── HERO ── -->
     <section class="hero">
       <div>
         <div class="hero-eyebrow">Blender Solar System</div>
@@ -858,7 +1062,7 @@
         </p>
         <div class="hero-ctas">
           <a href="#render" class="btn-pill-primary">Watch the Full Render</a>
-          <a href="#planets" class="btn-pill-ghost">Select a Planet</a>
+          <a href="#planet-videos" class="btn-pill-ghost">Browse Planets</a>
         </div>
       </div>
 
@@ -889,111 +1093,75 @@
       </aside>
     </section>
 
-    <section class="tile tile-light" id="render">
-      <div class="section-eyebrow">Featured Render</div>
-      <h2 class="section-title">Whole Solar System.</h2>
-      <p class="section-lead">Watch the full 3D animation that brings the planets to life in a continuous, cinematic
-        sequence, highlighting their scale, rotation, and orbital dynamics.</p>
+    <!-- ── MAIN RENDER — CINEMATIC ── -->
+    <section class="render-section" id="render">
+      <div class="render-inner">
+        <div class="render-header">
+          <div class="render-header-left">
+            <div class="render-eyebrow">Featured Render</div>
+            <h2 class="render-title">Whole <em>Solar</em><br>System.</h2>
+            <p class="render-desc">A continuous, cinematic loop through all eight planets — modeled, textured,
+              and lit entirely in Blender with physically based materials and dynamic camera work.</p>
+          </div>
+          <button class="render-fs-btn" id="render-fs-btn" aria-label="Watch fullscreen">
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 6V1H6M10 1H15V6M15 10V15H10M6 15H1V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Watch Fullscreen
+          </button>
+        </div>
 
-      <div class="render-shell">
-        <div class="video-shell">
-          <video autoplay muted loop playsinline preload="metadata">
+        <div class="render-frame">
+          <video id="render-video" autoplay muted loop playsinline preload="metadata">
             <source src="media/solar_system.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
           </video>
         </div>
-        <div class="video-caption">
-          <div class="meta-kicker">Blender Render</div>
-          <h3>Whole solar system in a 60-second loop.</h3>
-          <p>This sequence is fully modeled, textured, and rendered entirely in Blender. It features physically based
-            lighting, detailed material setups, and dynamic camera work to capture the majestic scale of deep space and
-            planetary orbits.</p>
-          <div class="meta-row">
-            <span class="meta-chip">60 seconds</span>
-            <span class="meta-chip">Autoplay</span>
-            <span class="meta-chip">Muted</span>
-            <span class="meta-chip">Loop</span>
+
+        <div class="render-stats">
+          <div class="render-stat">
+            <div class="render-stat-label">Duration</div>
+            <div class="render-stat-value">60 <span class="unit">sec</span></div>
+          </div>
+          <div class="render-stat">
+            <div class="render-stat-label">Bodies</div>
+            <div class="render-stat-value">9 <span class="unit">objects</span></div>
+          </div>
+          <div class="render-stat">
+            <div class="render-stat-label">Engine</div>
+            <div class="render-stat-value">Cycles</div>
+          </div>
+          <div class="render-stat">
+            <div class="render-stat-label">Playback</div>
+            <div class="render-stat-value">Loop</div>
+          </div>
+          <div class="render-stats-cta">
+            <a href="#planet-videos" class="render-watch-btn">
+              Browse Planets ↓
+            </a>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="tile tile-dark" id="planets">
-      <div class="section-eyebrow">Planet Navigator</div>
-      <h2 class="section-title">Select a planet.</h2>
-      <p class="section-lead">Explore each celestial body in detail. Select a planet to view its standalone loop,
-        discover fascinating astronomical facts, and calculate your age on different worlds.</p>
+    <!-- ── PLANET VIDEO GRID ── -->
+    <section class="video-tile" id="planet-videos">
+      <div class="section-eyebrow">Planet Renders</div>
+      <h2 class="section-title">Every planet. Up close.</h2>
+      <p class="section-lead">Each body rendered individually — click any planet to explore its full details, facts, and
+        a fullscreen view of its render loop.</p>
 
-      <div class="planet-grid">
-        <a href="index.html" class="planet-card current">
-          <div class="planet-tag">Current</div>
-          <h3>Whole Solar System</h3>
-          <p>Open the introduction page and the full system render.</p>
-          <div class="planet-arrow">↗</div>
-        </a>
-        <a href="sun.html" class="planet-card">
-          <div class="planet-tag">Star</div>
-          <h3>Sun</h3>
-          <p>The central star of our solar system.</p>
-          <div class="planet-arrow">↗</div>
-        </a>
-        <a href="mercury.html" class="planet-card">
-          <div class="planet-tag">Planet 01</div>
-          <h3>Mercury</h3>
-          <p>Small, rocky, fast, and closest to the Sun.</p>
-          <div class="planet-arrow">↗</div>
-        </a>
-        <a href="venus.html" class="planet-card">
-          <div class="planet-tag">Planet 02</div>
-          <h3>Venus</h3>
-          <p>Hot, bright, and covered in dense cloud.</p>
-          <div class="planet-arrow">↗</div>
-        </a>
-        <a href="earth.html" class="planet-card">
-          <div class="planet-tag">Planet 03</div>
-          <h3>Earth</h3>
-          <p>The blue planet and the one we live on.</p>
-          <div class="planet-arrow">↗</div>
-        </a>
-        <a href="mars.html" class="planet-card">
-          <div class="planet-tag">Planet 04</div>
-          <h3>Mars</h3>
-          <p>Cold, dusty, and known for its red surface.</p>
-          <div class="planet-arrow">↗</div>
-        </a>
-        <a href="jupiter.html" class="planet-card">
-          <div class="planet-tag">Planet 05</div>
-          <h3>Jupiter</h3>
-          <p>The largest planet, with huge storms and bands.</p>
-          <div class="planet-arrow">↗</div>
-        </a>
-        <a href="saturn.html" class="planet-card">
-          <div class="planet-tag">Planet 06</div>
-          <h3>Saturn</h3>
-          <p>Famous for its wide ring system and soft color.</p>
-          <div class="planet-arrow">↗</div>
-        </a>
-        <a href="uranus.html" class="planet-card">
-          <div class="planet-tag">Planet 07</div>
-          <h3>Uranus</h3>
-          <p>An ice giant with a dramatic tilted axis.</p>
-          <div class="planet-arrow">↗</div>
-        </a>
-        <a href="neptune.html" class="planet-card">
-          <div class="planet-tag">Planet 08</div>
-          <h3>Neptune</h3>
-          <p>The deep-blue outer planet with strong winds.</p>
-          <div class="planet-arrow">↗</div>
-        </a>
+      <div class="planet-video-grid" id="planet-video-grid">
+        <!-- Cards injected by JS -->
       </div>
     </section>
+
   </main>
 
   <footer>
     <div class="footer-left">
       <div class="f-title">Nico <span>Barredo</span></div>
       <div class="f-sub">Blender Solar System Intro</div>
-      <div class="footer-note">Use the selector or the cards to move between the solar-system pages.</div>
+      <div class="footer-note">Use the selector above to move between the solar-system pages.</div>
     </div>
     <div class="footer-right">
       Back to <a href="index.html">Blender Home</a><br />
@@ -1001,33 +1169,327 @@
     </div>
   </footer>
 
+  <!-- ── MODAL ── -->
+  <div class="modal-backdrop" id="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modal-planet-title">
+    <div class="modal" id="modal">
+      <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
+
+      <div class="modal-video-shell">
+        <video id="modal-video" autoplay muted loop playsinline preload="metadata">
+          <source id="modal-video-src" src="" type="video/mp4" />
+        </video>
+        <div class="modal-video-controls">
+          <button class="modal-btn modal-btn-fs" id="modal-fullscreen-btn">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 6V1H6M10 1H15V6M15 10V15H10M6 15H1V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Fullscreen
+          </button>
+        </div>
+      </div>
+
+      <div class="modal-body">
+        <div>
+          <div class="modal-badge" id="modal-badge"></div>
+          <h2 class="modal-title" id="modal-planet-title"></h2>
+          <p class="modal-desc" id="modal-desc"></p>
+          <div class="modal-facts" id="modal-facts"></div>
+        </div>
+        <div class="modal-side">
+          <a class="modal-page-btn modal-page-btn-primary" id="modal-page-link" href="#">
+            View Planet Page ↗
+          </a>
+          <button class="modal-page-btn modal-page-btn-ghost" id="modal-close-btn">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
+    /* ─────────────────────────────────────────────
+       RENDER FULLSCREEN
+    ───────────────────────────────────────────── */
+    const renderVideo = document.getElementById('render-video');
+    const renderFsBtn = document.getElementById('render-fs-btn');
+
+    renderFsBtn.addEventListener('click', () => {
+      const v = renderVideo;
+      if (v.requestFullscreen) v.requestFullscreen();
+      else if (v.webkitRequestFullscreen) v.webkitRequestFullscreen();
+      else if (v.mozRequestFullScreen) v.mozRequestFullScreen();
+    });
+
+    /* ─────────────────────────────────────────────
+       PLANET DATA
+    ───────────────────────────────────────────── */
+    const planets = [
+      {
+        id: "sun",
+        tag: "Star",
+        name: "Sun",
+        file: "sun.mp4",
+        page: "sun.html",
+        desc: "The Sun is the star at the heart of our solar system — a massive, blazing sphere of plasma that provides the light, heat, and gravitational anchor that makes life on Earth possible.",
+        facts: [
+          { label: "Type", value: "G-type Star" },
+          { label: "Diameter", value: "1,392,700 km" },
+          { label: "Surface Temp", value: "5,500 °C" },
+        ]
+      },
+      {
+        id: "mercury",
+        tag: "Planet 01",
+        name: "Mercury",
+        file: "mercury.mp4",
+        page: "mercury.html",
+        desc: "Mercury is the smallest planet in the solar system and the closest to the Sun. Its surface is heavily cratered, resembling the Moon, and it experiences extreme temperature swings between day and night.",
+        facts: [
+          { label: "Orbit Period", value: "88 Earth days" },
+          { label: "Diameter", value: "4,879 km" },
+          { label: "Moons", value: "0" },
+        ]
+      },
+      {
+        id: "venus",
+        tag: "Planet 02",
+        name: "Venus",
+        file: "venus.mp4",
+        page: "venus.html",
+        desc: "Venus is the hottest planet, shrouded in thick clouds of sulfuric acid. Despite being farther from the Sun than Mercury, its runaway greenhouse effect makes its surface hotter than any other planet.",
+        facts: [
+          { label: "Orbit Period", value: "225 Earth days" },
+          { label: "Diameter", value: "12,104 km" },
+          { label: "Surface Temp", value: "465 °C" },
+        ]
+      },
+      {
+        id: "earth",
+        tag: "Planet 03",
+        name: "Earth",
+        file: "earth.mp4",
+        page: "earth.html",
+        desc: "Earth is the only known planet to harbor life. With vast oceans, a breathable atmosphere, and a protective magnetic field, it is a unique blue marble in the cosmic void.",
+        facts: [
+          { label: "Orbit Period", value: "365.25 days" },
+          { label: "Diameter", value: "12,742 km" },
+          { label: "Moons", value: "1" },
+        ]
+      },
+      {
+        id: "mars",
+        tag: "Planet 04",
+        name: "Mars",
+        file: "mars.mp4",
+        page: "mars.html",
+        desc: "Mars, the Red Planet, has the tallest volcano and the longest canyon in the solar system. Scientists are actively exploring it as a potential candidate for future human habitation.",
+        facts: [
+          { label: "Orbit Period", value: "687 Earth days" },
+          { label: "Diameter", value: "6,779 km" },
+          { label: "Moons", value: "2" },
+        ]
+      },
+      {
+        id: "jupiter",
+        tag: "Planet 05",
+        name: "Jupiter",
+        file: "jupiter.mp4",
+        page: "jupiter.html",
+        desc: "Jupiter is the largest planet in the solar system — so massive that all other planets could fit inside it. Its iconic Great Red Spot is a storm that has raged for centuries.",
+        facts: [
+          { label: "Orbit Period", value: "11.9 Earth years" },
+          { label: "Diameter", value: "139,820 km" },
+          { label: "Moons", value: "95" },
+        ]
+      },
+      {
+        id: "saturn",
+        tag: "Planet 06",
+        name: "Saturn",
+        file: "saturn.mp4",
+        page: "saturn.html",
+        desc: "Saturn is the jewel of the solar system, famous for its breathtaking ring system made of ice and rock. It is a gas giant so light that it would float in water.",
+        facts: [
+          { label: "Orbit Period", value: "29.5 Earth years" },
+          { label: "Diameter", value: "116,460 km" },
+          { label: "Ring Span", value: "~282,000 km" },
+        ]
+      },
+      {
+        id: "uranus",
+        tag: "Planet 07",
+        name: "Uranus",
+        file: "uranus.mp4",
+        page: "uranus.html",
+        desc: "Uranus is an ice giant that rotates on its side with an axial tilt of 98°. Its pale blue-green color comes from methane in its atmosphere, which absorbs red light.",
+        facts: [
+          { label: "Orbit Period", value: "84 Earth years" },
+          { label: "Diameter", value: "50,724 km" },
+          { label: "Axial Tilt", value: "97.77°" },
+        ]
+      },
+      {
+        id: "neptune",
+        tag: "Planet 08",
+        name: "Neptune",
+        file: "neptune.mp4",
+        page: "neptune.html",
+        desc: "Neptune is the farthest planet from the Sun and the windiest in the solar system. Its winds can reach over 2,000 km/h, and its deep blue color is one of the most striking in the solar system.",
+        facts: [
+          { label: "Orbit Period", value: "165 Earth years" },
+          { label: "Diameter", value: "49,244 km" },
+          { label: "Wind Speed", value: "2,100 km/h" },
+        ]
+      },
+    ];
+
+    /* ─────────────────────────────────────────────
+       BUILD VIDEO GRID
+    ───────────────────────────────────────────── */
+    const grid = document.getElementById('planet-video-grid');
+
+    planets.forEach((planet) => {
+      const block = document.createElement('div');
+      block.className = 'planet-video-block';
+      block.setAttribute('role', 'button');
+      block.setAttribute('tabindex', '0');
+      block.setAttribute('aria-label', `Open ${planet.name} details`);
+
+      block.innerHTML = `
+        <video autoplay muted loop playsinline preload="metadata">
+          <source src="media/${planet.file}" type="video/mp4" />
+        </video>
+        <div class="planet-video-overlay">
+          <div class="planet-video-tag">${planet.tag}</div>
+          <div class="planet-video-name">${planet.name}</div>
+          <div class="planet-video-hint">
+            <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.4"/>
+              <path d="M6 8h4M8 6l2 2-2 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Click to explore
+          </div>
+        </div>
+      `;
+
+      block.addEventListener('click', () => openModal(planet));
+      block.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openModal(planet);
+        }
+      });
+
+      grid.appendChild(block);
+    });
+
+    /* ─────────────────────────────────────────────
+       MODAL LOGIC
+    ───────────────────────────────────────────── */
+    const backdrop   = document.getElementById('modal-backdrop');
+    const modal      = document.getElementById('modal');
+    const modalVideo = document.getElementById('modal-video');
+    const modalSrc   = document.getElementById('modal-video-src');
+    const modalBadge = document.getElementById('modal-badge');
+    const modalTitle = document.getElementById('modal-planet-title');
+    const modalDesc  = document.getElementById('modal-desc');
+    const modalFacts = document.getElementById('modal-facts');
+    const modalLink  = document.getElementById('modal-page-link');
+    const closeBtns  = [
+      document.getElementById('modal-close'),
+      document.getElementById('modal-close-btn'),
+    ];
+    const fsBtn = document.getElementById('modal-fullscreen-btn');
+
+    function openModal(planet) {
+      // Set content
+      modalBadge.textContent = planet.tag;
+      modalTitle.textContent = planet.name;
+      modalDesc.textContent  = planet.desc;
+      modalLink.href         = planet.page;
+
+      // Facts
+      modalFacts.innerHTML = planet.facts.map(f => `
+        <div class="modal-fact">
+          <div class="modal-fact-label">${f.label}</div>
+          <div class="modal-fact-value">${f.value}</div>
+        </div>
+      `).join('');
+
+      // Video
+      modalSrc.src = `media/${planet.file}`;
+      modalVideo.load();
+      modalVideo.play().catch(() => {});
+
+      // Open
+      backdrop.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      modal.scrollTop = 0;
+
+      // Focus trap seed
+      setTimeout(() => fsBtn.focus(), 350);
+    }
+
+    function closeModal() {
+      backdrop.classList.remove('open');
+      document.body.style.overflow = '';
+      modalVideo.pause();
+      modalSrc.src = '';
+      modalVideo.load();
+    }
+
+    closeBtns.forEach(b => b.addEventListener('click', closeModal));
+
+    backdrop.addEventListener('click', (e) => {
+      if (e.target === backdrop) closeModal();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && backdrop.classList.contains('open')) closeModal();
+    });
+
+    /* Fullscreen */
+    fsBtn.addEventListener('click', () => {
+      if (modalVideo.requestFullscreen) {
+        modalVideo.requestFullscreen();
+      } else if (modalVideo.webkitRequestFullscreen) {
+        modalVideo.webkitRequestFullscreen();
+      } else if (modalVideo.mozRequestFullScreen) {
+        modalVideo.mozRequestFullScreen();
+      }
+    });
+
+    /* ─────────────────────────────────────────────
+       PLANET SELECT NAV
+    ───────────────────────────────────────────── */
     const planetSelect = document.getElementById('planet-select');
-    const planetOpen = document.getElementById('planet-open');
+    const planetOpen   = document.getElementById('planet-open');
 
     function openSelectedPlanet() {
-      if (!planetSelect.value) {
-        return;
-      }
+      if (!planetSelect.value) return;
       window.location.href = planetSelect.value;
     }
 
     planetOpen.addEventListener('click', openSelectedPlanet);
     planetSelect.addEventListener('change', openSelectedPlanet);
   </script>
+
   <script src="../starfield.js"></script>
   <script>
-    Starfield.setup({
-      starColor: "rgb(58, 85, 217)",
-      hueJitter: 0,
-      trailLength: 0.8,
-      baseSpeed: 3,
-      maxAcceleration: 2,
-      accelerationRate: 0.05,
-      decelerationRate: 0.05,
-      minSpawnRadius: 80,
-      maxSpawnRadius: 500
-    });
+    if (typeof Starfield !== 'undefined') {
+      Starfield.setup({
+        starColor: "rgb(58, 85, 217)",
+        hueJitter: 0,
+        trailLength: 0.8,
+        baseSpeed: 3,
+        maxAcceleration: 2,
+        accelerationRate: 0.05,
+        decelerationRate: 0.05,
+        minSpawnRadius: 80,
+        maxSpawnRadius: 500
+      });
+    }
   </script>
 </body>
 
