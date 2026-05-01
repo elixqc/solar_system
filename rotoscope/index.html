@@ -1238,6 +1238,12 @@
           <p>Added typographic elements including title cards and animated text. Performed final color grading. Exported
             the completed video at full quality and prepared all project documentation and credits.</p>
         </div>
+        <div class="details-card">
+          <div class="meta-kicker">Week 6</div>
+          <h3>Final Review & Submission</h3>
+          <p>Conducted a final pass for quality assurance: fixed minor timing issues, optimized exports for web, and
+            compiled supporting documentation. Submitted the project and prepared presentation materials.</p>
+        </div>
       </div>
     </section>
 
@@ -1397,6 +1403,19 @@
           { label: "Status", value: "Complete" }
         ]
       }
+      ,
+      {
+        num: 6,
+        tag: "Week 06",
+        name: "Final Review & Submission",
+        file: "WEEKLY/WEEKLY6.mp4",
+        desc: "Finalized the composition with quality checks, export optimizations, and prepared documentation for submission.",
+        facts: [
+          { label: "Phase", value: "Delivery" },
+          { label: "Focus", value: "QA & Export" },
+          { label: "Status", value: "Complete" }
+        ]
+      }
     ];
 
     /* ─────────────────────────────────────────────
@@ -1412,20 +1431,13 @@
       block.setAttribute('tabindex', '0');
       block.setAttribute('aria-label', `Open ${week.tag} details`);
 
+      // Only show the week tag in the overlay (e.g., "Week 01")
       block.innerHTML = `
         <video autoplay muted loop playsinline preload="metadata">
           <source src="${week.file}" type="video/mp4" />
         </video>
         <div class="weekly-video-overlay">
           <div class="weekly-video-tag">${week.tag}</div>
-          <div class="weekly-video-name">${week.name}</div>
-          <div class="weekly-video-hint">
-            <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.4"/>
-              <path d="M6 8h4M8 6l2 2-2 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            Click to watch
-          </div>
         </div>
       `;
 
@@ -1458,16 +1470,16 @@
     const fsBtn = document.getElementById('modal-fullscreen-btn');
 
     function openModal(week) {
-      modalBadge.textContent = week.tag;
-      modalTitle.textContent = week.name;
-      modalDesc.textContent  = week.desc;
-
-      modalFacts.innerHTML = week.facts.map(f => `
-        <div class="modal-fact">
-          <div class="modal-fact-label">${f.label}</div>
-          <div class="modal-fact-value">${f.value}</div>
-        </div>
-      `).join('');
+      // Show only the week tag/number in the modal
+      modalBadge.style.display = 'none';
+      modalTitle.textContent = week.tag;
+      modalDesc.style.display = 'none';
+      modalDesc.textContent  = '';
+      modalFacts.style.display = 'none';
+      modalFacts.innerHTML = '';
+      // hide modal-side (right column) so only the title is visible
+      const modalSide = modal.querySelector('.modal-side');
+      if (modalSide) modalSide.style.display = 'none';
 
       modalSrc.src = week.file;
       modalVideo.load();
@@ -1486,6 +1498,12 @@
       modalVideo.pause();
       modalSrc.src = '';
       modalVideo.load();
+      // restore hidden elements for next modal open
+      modalBadge.style.display = '';
+      modalDesc.style.display = '';
+      modalFacts.style.display = '';
+      const modalSide = modal.querySelector('.modal-side');
+      if (modalSide) modalSide.style.display = '';
     }
 
     closeBtns.forEach(b => b.addEventListener('click', closeModal));
