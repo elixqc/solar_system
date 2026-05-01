@@ -1085,6 +1085,7 @@
               <option value="saturn.html">Saturn</option>
               <option value="uranus.html">Uranus</option>
               <option value="neptune.html">Neptune</option>
+              <option value="pluto.html">Pluto</option>
             </select>
             <button class="btn-pill-primary" type="button" id="planet-open">Open</button>
           </div>
@@ -1196,6 +1197,12 @@
           <div class="modal-facts" id="modal-facts"></div>
         </div>
         <div class="modal-side">
+          <a class="modal-page-btn modal-page-btn-primary" id="modal-download-blend" href="#" download>
+            Download .blend ↗
+          </a>
+          <button class="modal-page-btn modal-page-btn-ghost" id="modal-download-textures">
+            Download Textures
+          </button>
           <a class="modal-page-btn modal-page-btn-primary" id="modal-page-link" href="#">
             View Planet Page ↗
           </a>
@@ -1342,11 +1349,53 @@
           { label: "Wind Speed", value: "2,100 km/h" },
         ]
       },
+      {
+        id: "pluto",
+        tag: "Dwarf Planet",
+        name: "Pluto",
+        file: "pluto.mp4",
+        page: "pluto.html",
+        desc: "Pluto is a dwarf planet in the Kuiper Belt, reclassified from its planetary status in 2006. Despite its small size, it has a complex surface featuring nitrogen ice plains, mountain ranges of water ice, and a thin atmosphere that expands and collapses with its 248-year orbit.",
+        facts: [
+          { label: "Orbit Period", value: "248 Earth years" },
+          { label: "Diameter", value: "2,377 km" },
+          { label: "Moons", value: "5" },
+        ]
+      },
     ];
 
-    /* ─────────────────────────────────────────────
+     /* ─────────────────────────────────────────────
+       TEXTURES & BLEND MAPPINGS
+     ───────────────────────────────────────────── */
+     const textureMap = {
+      sun: ['textures/sunmap.jpg','textures/sun_surface.jpg','textures/stars.jpg'],
+      mercury: ['textures/mercury_color.jpg','textures/mercury_bump.jpg','textures/mercury_surface.jpg'],
+      venus: ['textures/venus_surface.jpg','textures/venus_clouds.jpg'],
+      earth: ['textures/earth_daymap.jpg','textures/earth_nightmap.jpg','textures/earth_clouds.jpg','textures/earth_bump.jpg','textures/earth_specular.jpg'],
+      mars: ['textures/mars_surface.jpg','textures/mars_bump.jpg','textures/mars_normal.jpg'],
+      jupiter: ['textures/jupiter_map.jpg'],
+      saturn: ['textures/saturn_map.jpg','textures/saturn_rings.png','textures/saturn_ring.png','textures/saturn_color.jpg'],
+      uranus: ['textures/uranus_map.jpg','textures/uranus.jpg','textures/uranus_rings.png'],
+      neptune: ['textures/neptune_map.jpg','textures/neptune_surface.jpg'],
+      pluto: ['textures/pluto_map.jpg','textures/pluto_bump.jpg','textures/charon_map.jpg']
+     };
+
+     const blendMap = {
+      sun: 'codes/sun.blend',
+      mercury: 'codes/mercury.blend',
+      venus: 'codes/venus.blend',
+      earth: 'codes/earth.blend',
+      mars: 'codes/mars.blend',
+      jupiter: 'codes/jupiter.blend',
+      saturn: 'codes/saturn.blend',
+      uranus: 'codes/uranus.blend',
+      neptune: 'codes/neptune.blend',
+      pluto: 'codes/pluto.blend'
+     };
+
+     /* ─────────────────────────────────────────────
        BUILD VIDEO GRID
-    ───────────────────────────────────────────── */
+     ───────────────────────────────────────────── */
     const grid = document.getElementById('planet-video-grid');
 
     planets.forEach((planet) => {
@@ -1396,6 +1445,8 @@
     const modalDesc  = document.getElementById('modal-desc');
     const modalFacts = document.getElementById('modal-facts');
     const modalLink  = document.getElementById('modal-page-link');
+    const modalDownloadBlend = document.getElementById('modal-download-blend');
+    const modalDownloadTextures = document.getElementById('modal-download-textures');
     const closeBtns  = [
       document.getElementById('modal-close'),
       document.getElementById('modal-close-btn'),
@@ -1421,6 +1472,37 @@
       modalSrc.src = `media/${planet.file}`;
       modalVideo.load();
       modalVideo.play().catch(() => {});
+
+      // Set blend download link
+      if (blendMap[planet.id]) {
+        modalDownloadBlend.href = blendMap[planet.id];
+        modalDownloadBlend.style.display = '';
+        modalDownloadBlend.setAttribute('download', '');
+      } else {
+        modalDownloadBlend.style.display = 'none';
+      }
+
+      // Set textures download handler (downloads individual texture files sequentially)
+      if (textureMap[planet.id] && textureMap[planet.id].length) {
+        modalDownloadTextures.style.display = '';
+        modalDownloadTextures.disabled = false;
+        modalDownloadTextures.onclick = (e) => {
+          e.preventDefault();
+          const files = textureMap[planet.id];
+          files.forEach((f, idx) => {
+            setTimeout(() => {
+              const a = document.createElement('a');
+              a.href = f;
+              a.download = f.split('/').pop();
+              document.body.appendChild(a);
+              a.click();
+              a.remove();
+            }, idx * 250);
+          });
+        };
+      } else {
+        modalDownloadTextures.style.display = 'none';
+      }
 
       // Open
       backdrop.classList.add('open');
