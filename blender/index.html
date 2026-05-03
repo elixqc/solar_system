@@ -148,6 +148,14 @@
       background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
       backdrop-filter: blur(12px); display: grid; gap: 14px;
     }
+    .project-card {
+      padding: 18px; border-radius: 16px;
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+      display: grid; gap: 10px;
+    }
+    .project-label { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.48); }
+    .project-copy { margin: 0; font-size: 14px; color: rgba(255,255,255,0.75); }
+    .project-actions { display: flex; gap: 8px; }
     .selector-label { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.48); }
     .selector-row { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 10px; align-items: center; }
     .planet-select {
@@ -776,24 +784,13 @@
           <p class="hero-panel-copy">This project demonstrates advanced 3D texturing, procedural materials, and
             realistic lighting to simulate the vastness of space and the unique characteristics of each planet.</p>
         </div>
-        <div class="selector-card">
-          <div class="selector-label">Planet selector</div>
-          <div class="selector-row">
-            <select id="planet-select" class="planet-select" aria-label="Select a planet page">
-              <option value="index.html">Whole Solar System</option>
-              <option value="mercury.html">Mercury</option>
-              <option value="venus.html">Venus</option>
-              <option value="earth.html">Earth</option>
-              <option value="mars.html">Mars</option>
-              <option value="jupiter.html">Jupiter</option>
-              <option value="saturn.html">Saturn</option>
-              <option value="uranus.html">Uranus</option>
-              <option value="neptune.html">Neptune</option>
-              <option value="pluto.html">Pluto</option>
-            </select>
-            <button class="btn-pill-primary" type="button" id="planet-open">Open</button>
+        <div class="project-card" id="whole-project-card">
+          <div class="project-label">Whole Solar System</div>
+          <p class="project-copy">Download the full project or open the whole-system notes and media.</p>
+          <div class="project-actions">
+            <button class="btn-pill-primary" id="open-whole-project" type="button">Open Project</button>
+            <a class="btn-pill-ghost" id="download-whole-blend" href="#" download>Download .blend</a>
           </div>
-          <p class="selector-note">Pick a planet and jump straight to its page.</p>
         </div>
       </aside>
     </section>
@@ -865,6 +862,7 @@
     <div class="footer-right">
       Back to <a href="index.html">Blender Home</a><br />
       Intro render: blender/media/solar-system.mp4
+      <div class="footer-note">Use the navigation links above to move between solar-system pages.</div>
     </div>
   </footer>
 
@@ -1103,6 +1101,18 @@
       pluto: 'codes/pluto.blend'
     };
 
+    // Whole-solar project entry (UI access for downloadable .blend and notes)
+    const wholePlanet = {
+      id: 'whole_solar', tag: 'Project', name: 'Whole Solar System', file: 'solar_system.mp4', page: 'index.html',
+      orbitalPeriod: 1, desc: 'Full solar system render and project files.', facts: [
+        { label: 'Content', value: 'Full render + assets' },
+        { label: 'Format', value: 'Blender .blend + textures + notes' },
+      ]
+    };
+
+    // Add to blendMap so modal download logic works for the project
+    blendMap[wholePlanet.id] = 'codes/whole_solar.blend';
+
     /* ── BUILD VIDEO GRID ── */
     const grid = document.getElementById('planet-video-grid');
     planets.forEach((planet) => {
@@ -1136,6 +1146,15 @@
       grid.appendChild(block);
     });
 
+      // Hook up hero 'Whole Solar System' project card
+      const openWholeBtn = document.getElementById('open-whole-project');
+      const downloadWholeBlend = document.getElementById('download-whole-blend');
+      if (openWholeBtn) openWholeBtn.addEventListener('click', () => openModal(wholePlanet));
+      if (downloadWholeBlend) {
+        downloadWholeBlend.href = blendMap[wholePlanet.id] || '#';
+        if (!blendMap[wholePlanet.id]) downloadWholeBlend.style.display = 'none';
+      }
+
     /* ── MODAL REFS ── */
     const backdrop             = document.getElementById('modal-backdrop');
     const modal                = document.getElementById('modal');
@@ -1161,6 +1180,7 @@
     const ageErrorMsg       = document.getElementById('age-error-msg');
     const ageResult         = document.getElementById('age-result');
     const ageNoCalc         = document.getElementById('age-no-calc');
+    const ageCalcEl         = document.getElementById('age-calc');
     const resultPlanetLabel = document.getElementById('result-planet-label');
     const resultPlanetBadge = document.getElementById('result-planet-badge');
     const resultValue       = document.getElementById('result-value');
@@ -1382,6 +1402,13 @@
       calcPlanetName.textContent = planet.name;
       resetCalcUI();
 
+      // Hide age calculator for the whole-solar project (it does not apply there)
+      if (planet.id === 'whole_solar') {
+        if (ageCalcEl) ageCalcEl.style.display = 'none';
+      } else {
+        if (ageCalcEl) ageCalcEl.style.display = '';
+      }
+
       // Code block
       modalCodeBlock.style.display = '';
       loadPlanetCode(planet);
@@ -1460,17 +1487,7 @@
       else if (modalVideo.mozRequestFullScreen) modalVideo.mozRequestFullScreen();
     });
 
-    /* ── PLANET SELECT NAV ── */
-    const planetSelect = document.getElementById('planet-select');
-    const planetOpen   = document.getElementById('planet-open');
-
-    function openSelectedPlanet() {
-      if (!planetSelect.value) return;
-      window.location.href = planetSelect.value;
-    }
-
-    planetOpen.addEventListener('click', openSelectedPlanet);
-    planetSelect.addEventListener('change', openSelectedPlanet);
+    /* Planet selector removed from hero; no JS needed. */
   </script>
 
   <script src="../starfield.js"></script>
