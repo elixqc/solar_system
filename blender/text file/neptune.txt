@@ -1,0 +1,135 @@
+import bpy
+import math
+import os
+from mathutils import Vector
+
+
+texture_dir = r"C:\solar_system"
+
+def load_texture(name):
+    for ext in [".jpg", ".png", ".jpeg", ".tif"]:
+        path = os.path.join(texture_dir, name + ext)
+        if os.path.exists(path):
+            return bpy.data.images.load(path)
+    print("Missing:", name)
+    return None
+
+
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+
+EARTH_RADIUS = 2.0
+MARS_RADIUS = EARTH_RADIUS * 0.532  
+MARS_TILT = 25.2
+
+scene = bpy.context.scene
+scene.render.engine = 'BLENDER_EEVEE'
+scene.eevee.taa_render_samples = 32  
+scene.eevee.taa_samples = 16        
+scene.eevee.use_soft_shadows = True
+
+
+bpy.ops.mesh.primitive_uv_sphere_add(radius=MARS_RADIUS, location=(0, 0, 0))
+mars = bpy.context.object
+mars.name = "Mars"
+mars.rotation_euler[0] = math.radians(MARS_TILT)
+bpy.ops.object.shade_smooth()
+
+
+mat = bpy.data.materials.new("Mars_Material")
+mat.use_nodes = True
+nodes = mat.node_tree.nodes
+links = mat.node_tree.links
+nodes.clear()
+
+out = nodes.new("ShaderNodeOutputMaterial")
+bsdf = nodes.new("ShaderNodeBsdfPrincipled")
+
+tex = nodes.new("ShaderNodeTexImage")
+tex.image = load_texture("mars_surface")
+if tex.image:
+    tex.image.colorspace_settings.name = 'sRGB'
+
+links.new(tex.outputs["Color"], bsdf.inputs["Base Color"])
+
+# Softer look
+bsdf.inputs["Roughness"].default_value = 0.7
+bsdf.inputs["Specular"].default_value = 0.2
+
+# Subtle emission for visibility
+emission = nodes.new("ShaderNodeEmission")
+emission.inputs["Strength"].default_value = 0.1
+links.new(tex.outputs["Color"], emission.inputs["Color"])
+
+mix = nodes.new("ShaderNodeMixShader")
+mix.inputs["Fac"].default_value = 0.2
+links.new(bsdf.outputs["BSDF"], mix.inputs[1])
+links.new(emission.outputs["Emission"], mix.inputs[2])
+links.new(mix.outputs["Shader"], out.inputs["Surface"])
+
+mars.data.materials.append(mat)
+
+
+bpy.ops.object.light_add(type='SUN', location=(10, -10, 10))
+sun = bpy.context.object
+sun.name = "Sun_Light"
+sun.data.energy = 3
+sun.rotation_euler = (math.radians(45), 0, math.radians(30))
+
+bpy.ops.object.light_add(type='AREA', location=(5, 5, 5))
+fill1 = bpy.context.object
+fill1.name = "Fill1"
+fill1.data.energy = 30
+fill1.data.size = 8
+
+bpy.ops.object.light_add(type='AREA', location=(-5, -5, -5))
+fill2 = bpy.context.object
+fill2.name = "Fill2"
+fill2.data.energy = 30
+fill2.data.size = 8
+
+
+world = bpy.context.scene.world
+world.use_nodes = True
+nodes = world.node_tree.nodes
+links = world.node_tree.links
+nodes.clear()
+
+bg = nodes.new("ShaderNodeBackground")
+env = nodes.new("ShaderNodeTexEnvironment")
+out_world = nodes.new("ShaderNodeOutputWorld")
+
+env.image = load_texture("stars")
+links.new(env.outputs["Color"], bg.inputs["Color"])
+bg.inputs["Strength"].default_value = 1.0
+links.new(bg.outputs["Background"], out_world.inputs["Surface"])
+
+
+CAM_DIST = MARS_RADIUS * 16  # ~17
+
+bpy.ops.object.camera_add(location=(0, -CAM_DIST * 0.94, CAM_DIST * 0.34))
+cam = bpy.context.object
+cam.data.lens = 55
+cam.data.clip_start = 0.01
+cam.data.clip_end = 10000
+
+direction = Vector((0, 0, 0)) - cam.location
+cam.rotation_euler = direction.to_track_quat('-Z', 'Y').to_euler()
+scene.camera = cam
+
+
+scene.frame_start = 1
+scene.frame_end = 240
+
+mars.rotation_euler[2] = 0
+mars.keyframe_insert(data_path="rotation_euler", frame=1)
+mars.rotation_euler[2] = math.radians(350)  # ~1 rotation
+mars.keyframe_insert(data_path="rotation_euler", frame=240)
+
+if mars.animation_data:
+    for fcurve in mars.animation_data.action.fcurves:
+        for kp in fcurve.keyframe_points:
+            kp.interpolation = 'LINEAR'
+
+print("✅ DONE: Mars — Eevee optimized, matte material, Sun + fills, stars bg, lens=55mm")

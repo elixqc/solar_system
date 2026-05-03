@@ -1,0 +1,274 @@
+import bpy
+import math
+import os
+from mathutils import Vector
+
+# -----------------------------
+# TEXTURE PATH
+# -----------------------------
+texture_dir = r"C:\solar_system"
+
+def load_texture(name):
+    for ext in [".jpg", ".png", ".jpeg"]:
+        path = os.path.join(texture_dir, name + ext)
+        if os.path.exists(path):
+            return bpy.data.images.load(path)
+    print("Missing:", name)
+    return None
+
+# -----------------------------
+# CLEAN SCENE
+# -----------------------------
+bpy.ops.object.select_all(action='SELECT')
+bpy.ops.object.delete(use_global=False)
+
+scene = bpy.context.scene
+
+# ✅ EEVEE — fast, glare/bloom works great here
+scene.render.engine = 'BLENDER_EEVEE'
+scene.eevee.taa_render_samples = 64
+scene.eevee.taa_samples = 32
+scene.eevee.use_soft_shadows = True
+
+# ✅ BLOOM — the single most impactful change for making the sun glow
+scene.eevee.use_bloom = True
+scene.eevee.bloom_threshold = 0.6      # start glow at this brightness
+scene.eevee.bloom_intensity = 1.2      # how bright the glow radiates
+scene.eevee.bloom_radius = 6.5         # how wide the bloom spreads
+scene.eevee.bloom_color = (1.0, 0.65, 0.15)  # warm orange-gold bloom
+
+# -----------------------------
+# SUN SPHERE
+# ✅ FIX: 256×128 segments = silky smooth, no disco-ball facets
+# -----------------------------
+SUN_RADIUS = 6.0
+
+bpy.ops.mesh.primitive_uv_sphere_add(
+    radius=SUN_RADIUS,
+    segments=256,
+    ring_count=128,
+    location=(0, 0, 0)
+)
+sun_obj = bpy.context.object
+sun_obj.name = "Sun"
+bpy.ops.object.shade_smooth()
+
+# -----------------------------
+# SUN MATERIAL — fiery emission
+# ✅ Multi-layered: texture + procedural fire noise + color ramp
+# -----------------------------
+mat = bpy.data.materials.new("Sun_Material")
+mat.use_nodes = True
+nodes = mat.node_tree.nodes
+links = mat.node_tree.links
+nodes.clear()
+
+out      = nodes.new("ShaderNodeOutputMaterial")
+emission = nodes.new("ShaderNodeEmission")
+mix_rgb  = nodes.new("ShaderNodeMixRGB")
+ramp     = nodes.new("ShaderNodeValToRGB")
+noise1   = nodes.new("ShaderNodeTexNoise")   # large fire cells
+noise2   = nodes.new("ShaderNodeTexNoise")   # fine granularity
+mix_n    = nodes.new("ShaderNodeMixRGB")
+tex      = nodes.new("ShaderNodeTexImage")
+
+tex.image = load_texture("sun_surface")
+if tex.image:
+    tex.image.colorspace_settings.name = 'sRGB'
+
+# Large slow noise — solar plumes
+noise1.inputs["Scale"].default_value  = 3.0
+noise1.inputs["Detail"].default_value = 12.0
+noise1.inputs["Roughness"].default_value = 0.65
+noise1.inputs["Distortion"].default_value = 1.5
+
+# Fine noise — granulation texture
+noise2.inputs["Scale"].default_value  = 18.0
+noise2.inputs["Detail"].default_value = 8.0
+noise2.inputs["Roughness"].default_value = 0.5
+
+# Blend the two noise layers
+mix_n.blend_type = 'OVERLAY'
+mix_n.inputs["Fac"].default_value = 0.55
+links.new(noise1.outputs["Fac"], mix_n.inputs[1])
+links.new(noise2.outputs["Fac"], mix_n.inputs[2])
+
+# Blend noise with surface texture
+mix_rgb.blend_type = 'SCREEN'
+mix_rgb.inputs["Fac"].default_value = 0.5
+if tex.image:
+    links.new(tex.outputs["Color"], mix_rgb.inputs[1])
+else:
+    mix_rgb.inputs[1].default_value = (0.9, 0.5, 0.1, 1)
+links.new(mix_n.outputs["Color"], mix_rgb.inputs[2])
+
+# Color ramp: dark magma core → orange → bright yellow-white corona edge
+ramp.color_ramp.interpolation = 'EASE'
+ramp.color_ramp.elements[0].position = 0.0
+ramp.color_ramp.elements[0].color = (0.6, 0.05, 0.0, 1)   # deep red-magma
+ramp.color_ramp.elements.new(0.3)
+ramp.color_ramp.elements[1].color = (1.0, 0.25, 0.0, 1)   # orange fire
+ramp.color_ramp.elements.new(0.6)
+ramp.color_ramp.elements[2].color = (1.0, 0.65, 0.05, 1)  # gold
+ramp.color_ramp.elements[3].position = 1.0
+ramp.color_ramp.elements[3].color = (1.0, 0.95, 0.6, 1)   # hot white-yellow
+
+links.new(mix_rgb.outputs["Color"], ramp.inputs["Fac"])
+links.new(ramp.outputs["Color"], emission.inputs["Color"])
+
+# ✅ HIGH emission strength — makes bloom kick in hard
+emission.inputs["Strength"].default_value = 25.0
+
+links.new(emission.outputs["Emission"], out.inputs["Surface"])
+sun_obj.data.materials.append(mat)
+
+# -----------------------------
+# CORONA — outer glow shell
+# ✅ NEW: large transparent sphere for limb brightening effect
+# -----------------------------
+bpy.ops.mesh.primitive_uv_sphere_add(
+    radius=SUN_RADIUS * 1.08,
+    segments=128,
+    ring_count=64,
+    location=(0, 0, 0)
+)
+corona = bpy.context.object
+corona.name = "Corona"
+
+mat_cor = bpy.data.materials.new("Corona_Mat")
+mat_cor.use_nodes = True
+nodes_c = mat_cor.node_tree.nodes
+links_c = mat_cor.node_tree.links
+nodes_c.clear()
+
+out_c       = nodes_c.new("ShaderNodeOutputMaterial")
+emission_c  = nodes_c.new("ShaderNodeEmission")
+transparent = nodes_c.new("ShaderNodeBsdfTransparent")
+mix_c       = nodes_c.new("ShaderNodeMixShader")
+layer       = nodes_c.new("ShaderNodeLayerWeight")
+fresnel     = nodes_c.new("ShaderNodeFresnel")
+
+# Facing weight: bright at edge (limb), transparent at center
+layer.inputs["Blend"].default_value = 0.3
+links_c.new(layer.outputs["Facing"], mix_c.inputs["Fac"])
+
+emission_c.inputs["Color"].default_value    = (1.0, 0.6, 0.1, 1)
+emission_c.inputs["Strength"].default_value = 8.0  # corona glow
+
+links_c.new(transparent.outputs["BSDF"],       mix_c.inputs[1])
+links_c.new(emission_c.outputs["Emission"],     mix_c.inputs[2])
+links_c.new(mix_c.outputs["Shader"],            out_c.inputs["Surface"])
+
+mat_cor.blend_method = 'BLEND'
+mat_cor.shadow_method = 'NONE'
+corona.data.materials.append(mat_cor)
+
+# -----------------------------
+# OUTER HALO — diffuse corona rays
+# ✅ NEW: second, even larger shell for wide solar halo
+# -----------------------------
+bpy.ops.mesh.primitive_uv_sphere_add(
+    radius=SUN_RADIUS * 1.25,
+    segments=64,
+    ring_count=32,
+    location=(0, 0, 0)
+)
+halo = bpy.context.object
+halo.name = "SolarHalo"
+
+mat_halo = bpy.data.materials.new("Halo_Mat")
+mat_halo.use_nodes = True
+nodes_h = mat_halo.node_tree.nodes
+links_h = mat_halo.node_tree.links
+nodes_h.clear()
+
+out_h        = nodes_h.new("ShaderNodeOutputMaterial")
+emission_h   = nodes_h.new("ShaderNodeEmission")
+transparent_h= nodes_h.new("ShaderNodeBsdfTransparent")
+mix_h        = nodes_h.new("ShaderNodeMixShader")
+layer_h      = nodes_h.new("ShaderNodeLayerWeight")
+
+layer_h.inputs["Blend"].default_value = 0.15   # only limb visible
+links_h.new(layer_h.outputs["Facing"], mix_h.inputs["Fac"])
+
+emission_h.inputs["Color"].default_value    = (1.0, 0.75, 0.2, 1)
+emission_h.inputs["Strength"].default_value = 3.0
+
+links_h.new(transparent_h.outputs["BSDF"],   mix_h.inputs[1])
+links_h.new(emission_h.outputs["Emission"],  mix_h.inputs[2])
+links_h.new(mix_h.outputs["Shader"],         out_h.inputs["Surface"])
+
+mat_halo.blend_method = 'BLEND'
+mat_halo.shadow_method = 'NONE'
+halo.data.materials.append(mat_halo)
+
+# -----------------------------
+# POINT LIGHT — actual illumination source
+# ✅ Very high energy to cast sharp solar shadows
+# -----------------------------
+bpy.ops.object.light_add(type='POINT', location=(0, 0, 0))
+sun_light = bpy.context.object
+sun_light.name = "Solar_Point_Light"
+sun_light.data.energy        = 50000
+sun_light.data.color         = (1.0, 0.92, 0.7)
+sun_light.data.shadow_soft_size = 2.0
+sun_light.data.use_shadow    = True
+
+# Directional sun ray light from slightly offset
+bpy.ops.object.light_add(type='SUN', location=(0, 0, 0))
+ray_light = bpy.context.object
+ray_light.name = "Solar_Ray_Light"
+ray_light.data.energy = 12
+ray_light.data.color  = (1.0, 0.88, 0.6)
+ray_light.data.angle  = math.radians(0.5)
+
+# -----------------------------
+# STARS BACKGROUND
+# -----------------------------
+world = bpy.context.scene.world
+world.use_nodes = True
+nodes_w = world.node_tree.nodes
+links_w = world.node_tree.links
+nodes_w.clear()
+
+bg      = nodes_w.new("ShaderNodeBackground")
+env     = nodes_w.new("ShaderNodeTexEnvironment")
+out_w   = nodes_w.new("ShaderNodeOutputWorld")
+
+env.image = load_texture("stars")
+links_w.new(env.outputs["Color"], bg.inputs["Color"])
+bg.inputs["Strength"].default_value = 0.6   # darker bg = sun contrast pops
+links_w.new(bg.outputs["Background"], out_w.inputs["Surface"])
+
+# -----------------------------
+# CAMERA — Uniform Formula
+# -----------------------------
+CAM_DIST = SUN_RADIUS * 16  # = 96
+
+bpy.ops.object.camera_add(location=(0, -CAM_DIST * 0.94, CAM_DIST * 0.34))
+cam = bpy.context.object
+cam.data.lens       = 55
+cam.data.clip_start = 0.01
+cam.data.clip_end   = 10000
+
+direction = Vector((0, 0, 0)) - cam.location
+cam.rotation_euler = direction.to_track_quat('-Z', 'Y').to_euler()
+scene.camera = cam
+
+# -----------------------------
+# ANIMATION — LINEAR rotation
+# -----------------------------
+scene.frame_start = 1
+scene.frame_end   = 240
+
+sun_obj.rotation_euler[2] = 0
+sun_obj.keyframe_insert(data_path="rotation_euler", frame=1)
+sun_obj.rotation_euler[2] = math.radians(360)
+sun_obj.keyframe_insert(data_path="rotation_euler", frame=240)
+
+if sun_obj.animation_data:
+    for fcurve in sun_obj.animation_data.action.fcurves:
+        for kp in fcurve.keyframe_points:
+            kp.interpolation = 'LINEAR'
+
+print("✅ DONE: Sun — Eevee + Bloom, smooth 256×128 sphere, corona + halo shells, fiery color ramp, solar point light, lens=55mm")

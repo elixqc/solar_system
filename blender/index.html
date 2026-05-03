@@ -48,22 +48,13 @@
       text-rendering: optimizeLegibility;
     }
 
-    a {
-      color: inherit;
-    }
-
-    img,
-    video {
-      display: block;
-      max-width: 100%;
-    }
+    a { color: inherit; }
+    img, video { display: block; max-width: 100%; }
 
     /* ── NAV ── */
     nav {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       z-index: 200;
       height: 44px;
       display: flex;
@@ -77,879 +68,632 @@
     }
 
     .nav-logo {
-      font-size: 18px;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      color: var(--paper-white);
-      text-decoration: none;
-      white-space: nowrap;
+      font-size: 18px; font-weight: 600; letter-spacing: -0.02em;
+      color: var(--paper-white); text-decoration: none; white-space: nowrap;
     }
-
     .nav-logo span { color: var(--sky-blue); }
 
     .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 2px;
-      list-style: none;
-      margin: 0;
-      padding: 0;
+      display: flex; align-items: center; gap: 2px;
+      list-style: none; margin: 0; padding: 0;
     }
-
     .nav-links a {
-      display: inline-flex;
-      align-items: center;
-      min-height: 32px;
-      padding: 0 14px;
-      font-size: 12px;
-      letter-spacing: -0.01em;
-      color: rgba(255, 255, 255, 0.84);
-      text-decoration: none;
-      transition: color 0.2s ease;
+      display: inline-flex; align-items: center; min-height: 32px;
+      padding: 0 14px; font-size: 12px; letter-spacing: -0.01em;
+      color: rgba(255,255,255,0.84); text-decoration: none; transition: color 0.2s ease;
     }
-
     .nav-links a:hover { color: var(--paper-white); }
 
     .nav-badge {
-      font-size: 11px;
-      letter-spacing: 0.01em;
-      color: rgba(255, 255, 255, 0.52);
-      white-space: nowrap;
+      font-size: 11px; letter-spacing: 0.01em;
+      color: rgba(255,255,255,0.52); white-space: nowrap;
     }
 
     /* ── HERO ── */
     .hero {
-      position: relative;
-      overflow: hidden;
-      min-height: 100vh;
-      padding: 120px 40px 80px;
-      background: var(--pure-black);
-      color: var(--paper-white);
-      display: grid;
-      grid-template-columns: minmax(0, 1.1fr) minmax(300px, 0.9fr);
-      gap: 48px;
-      align-items: center;
+      position: relative; overflow: hidden; min-height: 100vh;
+      padding: 120px 40px 80px; background: var(--pure-black); color: var(--paper-white);
+      display: grid; grid-template-columns: minmax(0,1.1fr) minmax(300px,0.9fr);
+      gap: 48px; align-items: center;
     }
 
     .hero-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 20px;
-      color: var(--sky-blue);
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+      display: inline-flex; align-items: center; gap: 10px; margin-bottom: 20px;
+      color: var(--sky-blue); font-size: 12px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
     }
-
     .hero-eyebrow::before {
-      content: "";
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      background: var(--sky-blue);
+      content: ""; width: 8px; height: 8px; border-radius: 999px; background: var(--sky-blue);
     }
 
     .hero-title {
-      margin: 0;
-      font-size: clamp(44px, 7.2vw, 88px);
-      line-height: 0.98;
-      letter-spacing: -0.055em;
-      font-weight: 600;
-      max-width: 9ch;
+      margin: 0; font-size: clamp(44px,7.2vw,88px); line-height: 0.98;
+      letter-spacing: -0.055em; font-weight: 600; max-width: 9ch;
     }
-
     .hero-title .accent { color: var(--sky-blue); }
 
     .hero-sub {
-      max-width: 34rem;
-      margin: 24px 0 0;
-      font-size: 21px;
-      line-height: 1.38;
-      color: rgba(255, 255, 255, 0.66);
+      max-width: 34rem; margin: 24px 0 0; font-size: 21px;
+      line-height: 1.38; color: rgba(255,255,255,0.66);
     }
 
-    .hero-ctas {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      margin-top: 36px;
-    }
+    .hero-ctas { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 36px; }
 
-    .btn-pill-primary,
-    .btn-pill-ghost,
-    .inline-link {
-      text-decoration: none;
-    }
-
-    .btn-pill-primary,
-    .btn-pill-ghost {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 44px;
-      padding: 11px 24px;
-      border-radius: 980px;
-      font-size: 17px;
+    .btn-pill-primary, .btn-pill-ghost, .inline-link { text-decoration: none; }
+    .btn-pill-primary, .btn-pill-ghost {
+      display: inline-flex; align-items: center; justify-content: center;
+      min-height: 44px; padding: 11px 24px; border-radius: 980px; font-size: 17px;
       letter-spacing: -0.02em;
       transition: transform 0.15s ease, opacity 0.2s ease, background 0.2s ease, border-color 0.2s ease;
-      white-space: nowrap;
-      cursor: pointer;
+      white-space: nowrap; cursor: pointer;
     }
-
-    .btn-pill-primary {
-      background: var(--action-blue);
-      color: var(--paper-white);
-      border: 1px solid transparent;
-    }
-
+    .btn-pill-primary { background: var(--action-blue); color: var(--paper-white); border: 1px solid transparent; }
     .btn-pill-primary:hover { opacity: 0.9; }
     .btn-pill-primary:active { transform: scale(0.95); }
-
-    .btn-pill-primary:focus-visible,
-    .btn-pill-ghost:focus-visible,
-    .inline-link:focus-visible {
-      outline: 2px solid var(--focus-blue);
-      outline-offset: 2px;
-    }
-
-    .btn-pill-ghost {
-      background: transparent;
-      color: var(--sky-blue);
-      border: 1px solid var(--sky-blue);
-    }
-
-    .btn-pill-ghost:hover { background: rgba(41, 151, 255, 0.1); }
+    .btn-pill-ghost { background: transparent; color: var(--sky-blue); border: 1px solid var(--sky-blue); }
+    .btn-pill-ghost:hover { background: rgba(41,151,255,0.1); }
     .btn-pill-ghost:active { transform: scale(0.95); }
 
     .hero-aside { display: grid; gap: 16px; }
-
     .hero-panel {
-      padding: 24px;
-      border-radius: 24px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 24px; border-radius: 24px;
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
       backdrop-filter: blur(12px);
     }
-
-    .hero-panel-label,
-    .section-eyebrow,
-    .meta-kicker {
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-
-    .hero-panel-label {
-      margin-bottom: 14px;
-      color: rgba(255, 255, 255, 0.48);
-    }
-
-    .hero-panel-copy {
-      margin: 0;
-      font-size: 17px;
-      line-height: 1.55;
-      color: rgba(255, 255, 255, 0.8);
-    }
-
-    .hero-list {
-      display: grid;
-      gap: 12px;
-      margin: 18px 0 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    .hero-list li {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      font-size: 14px;
-      line-height: 1.45;
-      color: rgba(255, 255, 255, 0.7);
-    }
-
-    .hero-list li::before {
-      content: "";
-      width: 8px;
-      height: 8px;
-      border-radius: 999px;
-      margin-top: 0.45em;
-      background: var(--sky-blue);
-      flex: 0 0 auto;
-    }
+    .hero-panel-label { margin-bottom: 14px; color: rgba(255,255,255,0.48); font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    .hero-panel-copy { margin: 0; font-size: 17px; line-height: 1.55; color: rgba(255,255,255,0.8); }
 
     .selector-card {
-      padding: 24px;
-      border-radius: 24px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(12px);
-      display: grid;
-      gap: 14px;
+      padding: 24px; border-radius: 24px;
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+      backdrop-filter: blur(12px); display: grid; gap: 14px;
     }
-
-    .selector-label {
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: rgba(255, 255, 255, 0.48);
-    }
-
-    .selector-row {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      gap: 10px;
-      align-items: center;
-    }
-
+    .selector-label { font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.48); }
+    .selector-row { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 10px; align-items: center; }
     .planet-select {
-      min-width: 0;
-      min-height: 44px;
-      padding: 0 16px;
-      border-radius: 980px;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      background: rgba(255, 255, 255, 0.95);
-      color: var(--near-black);
-      font: inherit;
-      appearance: none;
-      outline: none;
+      min-width: 0; min-height: 44px; padding: 0 16px; border-radius: 980px;
+      border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.95);
+      color: var(--near-black); font: inherit; appearance: none; outline: none;
     }
-
-    .planet-select:focus-visible {
-      outline: 2px solid var(--focus-blue);
-      outline-offset: 2px;
-    }
-
-    .selector-note {
-      margin: 0;
-      font-size: 14px;
-      line-height: 1.45;
-      color: rgba(255, 255, 255, 0.7);
-    }
+    .selector-note { margin: 0; font-size: 14px; line-height: 1.45; color: rgba(255,255,255,0.7); }
 
     /* ── TILES ── */
     .tile { padding: 96px 40px; }
     .tile-light { background: var(--paper-white); color: var(--near-black); }
     .tile-dark { background: var(--dark-tile-1); color: var(--paper-white); }
 
-    .section-title {
-      margin: 0;
-      font-size: clamp(34px, 4.8vw, 60px);
-      line-height: 1.05;
-      letter-spacing: -0.04em;
-      font-weight: 600;
-    }
-
-    .section-eyebrow { margin-bottom: 12px; }
+    .section-title { margin: 0; font-size: clamp(34px,4.8vw,60px); line-height: 1.05; letter-spacing: -0.04em; font-weight: 600; }
+    .section-eyebrow { margin-bottom: 12px; font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
     .tile-light .section-eyebrow { color: var(--action-blue); }
     .tile-dark .section-eyebrow { color: var(--sky-blue); }
-    .tile-light .section-title { color: var(--near-black); }
-    .tile-dark .section-title { color: var(--paper-white); }
+    .section-lead { max-width: 46rem; margin: 18px 0 0; font-size: 21px; line-height: 1.38; opacity: 0.78; }
 
-    .section-lead {
-      max-width: 46rem;
-      margin: 18px 0 0;
-      font-size: 21px;
-      line-height: 1.38;
-      color: inherit;
-      opacity: 0.78;
-    }
-
-    /* ── MAIN RENDER — CINEMATIC ── */
-    .render-section {
-      position: relative;
-      background: #000;
-      overflow: hidden;
-      padding: 0;
-    }
-
+    /* ── MAIN RENDER ── */
+    .render-section { position: relative; background: #000; overflow: hidden; padding: 0; }
     .render-section::before {
-      content: "";
-      position: absolute;
-      inset: 0;
+      content: ""; position: absolute; inset: 0;
       background:
         radial-gradient(ellipse 80% 60% at 50% 110%, rgba(41,151,255,0.18) 0%, transparent 70%),
         radial-gradient(ellipse 60% 40% at 20% 50%, rgba(0,80,180,0.12) 0%, transparent 60%),
         radial-gradient(ellipse 60% 40% at 80% 50%, rgba(0,40,120,0.10) 0%, transparent 60%);
-      pointer-events: none;
-      z-index: 1;
+      pointer-events: none; z-index: 1;
     }
-
-    .render-inner {
-      position: relative;
-      z-index: 2;
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 80px 40px 0;
-    }
-
-    .render-header {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      align-items: flex-end;
-      gap: 32px;
-      margin-bottom: 36px;
-    }
-
+    .render-inner { position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; padding: 80px 40px 0; }
+    .render-header { display: grid; grid-template-columns: 1fr auto; align-items: flex-end; gap: 32px; margin-bottom: 36px; }
     .render-eyebrow {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--sky-blue);
-      margin-bottom: 14px;
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--sky-blue); margin-bottom: 14px;
     }
-
-    .render-eyebrow::before {
-      content: "";
-      width: 24px;
-      height: 1px;
-      background: var(--sky-blue);
-      opacity: 0.7;
-    }
-
-    .render-title {
-      margin: 0;
-      font-size: clamp(36px, 5vw, 68px);
-      line-height: 0.96;
-      letter-spacing: -0.05em;
-      font-weight: 600;
-      color: var(--paper-white);
-    }
-
-    .render-title em {
-      font-style: normal;
-      color: transparent;
-      -webkit-text-stroke: 1px rgba(255,255,255,0.35);
-    }
-
-    .render-desc {
-      max-width: 36rem;
-      margin: 14px 0 0;
-      font-size: 16px;
-      line-height: 1.6;
-      color: rgba(255,255,255,0.52);
-    }
-
+    .render-eyebrow::before { content: ""; width: 24px; height: 1px; background: var(--sky-blue); opacity: 0.7; }
+    .render-title { margin: 0; font-size: clamp(36px,5vw,68px); line-height: 0.96; letter-spacing: -0.05em; font-weight: 600; color: var(--paper-white); }
+    .render-title em { font-style: normal; color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.35); }
+    .render-desc { max-width: 36rem; margin: 14px 0 0; font-size: 16px; line-height: 1.6; color: rgba(255,255,255,0.52); }
     .render-fs-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      min-height: 44px;
-      padding: 11px 22px;
-      border-radius: 980px;
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.14);
-      color: rgba(255,255,255,0.84);
-      cursor: pointer;
-      text-decoration: none;
-      white-space: nowrap;
-      flex-shrink: 0;
-      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+      display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 11px 22px;
+      border-radius: 980px; font-size: 14px; font-weight: 600; letter-spacing: -0.01em;
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.14);
+      color: rgba(255,255,255,0.84); cursor: pointer; text-decoration: none; white-space: nowrap;
+      flex-shrink: 0; transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
     }
-
-    .render-fs-btn:hover {
-      background: rgba(41,151,255,0.15);
-      border-color: rgba(41,151,255,0.4);
-      color: var(--paper-white);
-    }
-
+    .render-fs-btn:hover { background: rgba(41,151,255,0.15); border-color: rgba(41,151,255,0.4); color: var(--paper-white); }
     .render-fs-btn:active { transform: scale(0.96); }
-    .render-fs-btn svg { flex: 0 0 auto; }
 
     .render-frame {
-      position: relative;
-      border-radius: 20px 20px 0 0;
-      overflow: hidden;
-      background: #000;
-      border: 1px solid rgba(255,255,255,0.1);
-      border-bottom: none;
-      box-shadow:
-        0 0 0 1px rgba(41,151,255,0.08),
-        0 -24px 80px rgba(41,151,255,0.08),
-        inset 0 1px 0 rgba(255,255,255,0.08);
+      position: relative; border-radius: 20px 20px 0 0; overflow: hidden;
+      background: #000; border: 1px solid rgba(255,255,255,0.1); border-bottom: none;
+      box-shadow: 0 0 0 1px rgba(41,151,255,0.08), 0 -24px 80px rgba(41,151,255,0.08), inset 0 1px 0 rgba(255,255,255,0.08);
     }
-
-    .render-frame video {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      object-fit: cover;
-      display: block;
-      background: #000;
-    }
-
+    .render-frame video { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; background: #000; }
     .render-frame::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: repeating-linear-gradient(
-        to bottom,
-        transparent 0px,
-        transparent 3px,
-        rgba(0,0,0,0.04) 3px,
-        rgba(0,0,0,0.04) 4px
-      );
+      content: ""; position: absolute; inset: 0;
+      background: repeating-linear-gradient(to bottom, transparent 0px, transparent 3px, rgba(0,0,0,0.04) 3px, rgba(0,0,0,0.04) 4px);
       pointer-events: none;
     }
 
     .render-stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr) auto;
-      align-items: center;
-      gap: 0;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-top: 1px solid rgba(41,151,255,0.15);
-      border-radius: 0 0 20px 20px;
-      overflow: hidden;
+      display: grid; grid-template-columns: repeat(4,1fr) auto; align-items: center; gap: 0;
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+      border-top: 1px solid rgba(41,151,255,0.15); border-radius: 0 0 20px 20px; overflow: hidden;
     }
-
-    .render-stat {
-      padding: 22px 28px;
-      border-right: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .render-stat-label {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.32);
-      margin-bottom: 6px;
-    }
-
-    .render-stat-value {
-      font-size: 18px;
-      font-weight: 600;
-      letter-spacing: -0.03em;
-      color: var(--paper-white);
-    }
-
-    .render-stat-value .unit {
-      font-size: 13px;
-      font-weight: 400;
-      color: rgba(255,255,255,0.4);
-      margin-left: 2px;
-      letter-spacing: 0;
-    }
-
-    .render-stats-cta {
-      padding: 18px 28px;
-      border-left: 1px solid rgba(255,255,255,0.06);
-    }
-
+    .render-stat { padding: 22px 28px; border-right: 1px solid rgba(255,255,255,0.06); }
+    .render-stat-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.32); margin-bottom: 6px; }
+    .render-stat-value { font-size: 18px; font-weight: 600; letter-spacing: -0.03em; color: var(--paper-white); }
+    .render-stat-value .unit { font-size: 13px; font-weight: 400; color: rgba(255,255,255,0.4); margin-left: 2px; letter-spacing: 0; }
+    .render-stats-cta { padding: 18px 28px; border-left: 1px solid rgba(255,255,255,0.06); }
     .render-watch-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      min-height: 38px;
-      padding: 9px 18px;
-      border-radius: 980px;
-      font-size: 13px;
-      font-weight: 600;
-      background: var(--action-blue);
-      color: var(--paper-white);
-      border: none;
-      cursor: pointer;
-      white-space: nowrap;
-      text-decoration: none;
-      transition: opacity 0.2s ease, transform 0.15s ease;
+      display: inline-flex; align-items: center; gap: 8px; min-height: 38px; padding: 9px 18px;
+      border-radius: 980px; font-size: 13px; font-weight: 600; background: var(--action-blue);
+      color: var(--paper-white); border: none; cursor: pointer; white-space: nowrap;
+      text-decoration: none; transition: opacity 0.2s ease, transform 0.15s ease;
     }
-
     .render-watch-btn:hover { opacity: 0.88; }
-    .render-watch-btn:active { transform: scale(0.95); }
-
-    @media (max-width: 900px) {
-      .render-header { grid-template-columns: 1fr; gap: 20px; align-items: flex-start; }
-      .render-stats { grid-template-columns: 1fr 1fr; }
-      .render-stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
-      .render-stat:nth-child(odd) { border-right: 1px solid rgba(255,255,255,0.06); }
-      .render-stats-cta { grid-column: 1 / -1; border-left: none; border-top: 1px solid rgba(255,255,255,0.06); }
-    }
-
-    @media (max-width: 640px) {
-      .render-inner { padding: 60px 24px 0; }
-      .render-stats { grid-template-columns: 1fr 1fr; }
-    }
 
     /* ── PLANET VIDEO GRID ── */
-    .video-tile {
-      background: #0a0a0b;
-      padding: 96px 40px;
-    }
-
+    .video-tile { background: #0a0a0b; padding: 96px 40px; }
     .video-tile .section-eyebrow { color: var(--sky-blue); }
     .video-tile .section-title { color: var(--paper-white); }
     .video-tile .section-lead { color: rgba(255,255,255,0.65); opacity: 1; }
 
-    .planet-video-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      margin-top: 48px;
-    }
+    .planet-video-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 20px; margin-top: 48px; }
 
     .planet-video-block {
-      position: relative;
-      border-radius: 20px;
-      overflow: hidden;
-      cursor: pointer;
-      background: #111;
-      border: 1px solid rgba(255,255,255,0.08);
-      transition: transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94),
-                  border-color 0.3s ease,
-                  box-shadow 0.3s ease;
-      group: planet-block;
+      position: relative; border-radius: 20px; overflow: hidden; cursor: pointer;
+      background: #111; border: 1px solid rgba(255,255,255,0.08);
+      transition: transform 0.3s cubic-bezier(0.25,0.46,0.45,0.94), border-color 0.3s ease, box-shadow 0.3s ease;
     }
-
     .planet-video-block:hover {
-      transform: translateY(-6px) scale(1.01);
-      border-color: rgba(41, 151, 255, 0.4);
+      transform: translateY(-6px) scale(1.01); border-color: rgba(41,151,255,0.4);
       box-shadow: 0 24px 64px rgba(0,0,0,0.6), 0 0 0 1px rgba(41,151,255,0.2);
     }
-
-    .planet-video-block video {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      object-fit: cover;
-      display: block;
-      background: #000;
-    }
+    .planet-video-block video { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; background: #000; }
 
     .planet-video-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        to top,
-        rgba(0,0,0,0.88) 0%,
-        rgba(0,0,0,0.3) 50%,
-        rgba(0,0,0,0) 100%
-      );
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 20px 22px;
-      transition: background 0.3s ease;
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.88) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0) 100%);
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 20px 22px; transition: background 0.3s ease;
     }
-
     .planet-video-block:hover .planet-video-overlay {
-      background: linear-gradient(
-        to top,
-        rgba(0,0,0,0.92) 0%,
-        rgba(0,0,0,0.45) 55%,
-        rgba(0,0,0,0.1) 100%
-      );
+      background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.45) 55%, rgba(0,0,0,0.1) 100%);
     }
-
-    .planet-video-tag {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--sky-blue);
-      margin-bottom: 4px;
-    }
-
-    .planet-video-name {
-      font-size: 22px;
-      font-weight: 600;
-      letter-spacing: -0.03em;
-      color: var(--paper-white);
-      margin: 0 0 8px;
-    }
-
+    .planet-video-tag { font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--sky-blue); margin-bottom: 4px; }
+    .planet-video-name { font-size: 22px; font-weight: 600; letter-spacing: -0.03em; color: var(--paper-white); margin: 0 0 8px; }
     .planet-video-hint {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      color: rgba(255,255,255,0.6);
-      opacity: 0;
-      transform: translateY(6px);
+      display: inline-flex; align-items: center; gap: 6px; font-size: 12px;
+      color: rgba(255,255,255,0.6); opacity: 0; transform: translateY(6px);
       transition: opacity 0.25s ease, transform 0.25s ease;
     }
-
-    .planet-video-block:hover .planet-video-hint {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .planet-video-hint svg {
-      width: 14px;
-      height: 14px;
-      flex: 0 0 auto;
-    }
+    .planet-video-block:hover .planet-video-hint { opacity: 1; transform: translateY(0); }
 
     /* ── MODAL ── */
     .modal-backdrop {
-      position: fixed;
-      inset: 0;
-      z-index: 500;
+      position: fixed; inset: 0; z-index: 500;
       background: rgba(0,0,0,0.92);
       backdrop-filter: blur(20px) saturate(120%);
       -webkit-backdrop-filter: blur(20px) saturate(120%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
     }
-
-    .modal-backdrop.open {
-      opacity: 1;
-      pointer-events: auto;
-    }
+    .modal-backdrop.open { opacity: 1; pointer-events: auto; }
 
     .modal {
-      position: relative;
-      width: 100%;
-      max-width: 960px;
-      max-height: calc(100vh - 48px);
-      overflow-y: auto;
-      border-radius: 28px;
-      background: #111214;
+      position: relative; width: 100%; max-width: 960px;
+      max-height: calc(100vh - 48px); overflow-y: auto;
+      border-radius: 28px; background: #111214;
       border: 1px solid rgba(255,255,255,0.1);
       box-shadow: 0 48px 120px rgba(0,0,0,0.8);
       transform: translateY(28px) scale(0.97);
       transition: transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
-      scrollbar-width: thin;
-      scrollbar-color: rgba(255,255,255,0.12) transparent;
+      scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.12) transparent;
     }
-
-    .modal-backdrop.open .modal {
-      transform: translateY(0) scale(1);
-    }
+    .modal-backdrop.open .modal { transform: translateY(0) scale(1); }
 
     .modal-close {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      z-index: 10;
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.12);
-      color: rgba(255,255,255,0.8);
-      display: grid;
-      place-items: center;
-      cursor: pointer;
-      transition: background 0.2s ease, color 0.2s ease;
-      font-size: 18px;
-      line-height: 1;
+      position: absolute; top: 20px; right: 20px; z-index: 10;
+      width: 38px; height: 38px; border-radius: 50%;
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.8); display: grid; place-items: center;
+      cursor: pointer; transition: background 0.2s ease, color 0.2s ease;
+      font-size: 18px; line-height: 1;
     }
+    .modal-close:hover { background: rgba(255,255,255,0.16); color: var(--paper-white); }
 
-    .modal-close:hover {
-      background: rgba(255,255,255,0.16);
-      color: var(--paper-white);
-    }
+    .modal-video-shell { position: relative; border-radius: 28px 28px 0 0; overflow: hidden; background: #000; }
+    .modal-video-shell video { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
 
-    .modal-video-shell {
-      position: relative;
-      border-radius: 28px 28px 0 0;
-      overflow: hidden;
-      background: #000;
-    }
-
-    .modal-video-shell video {
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      object-fit: cover;
-      display: block;
-    }
-
-    .modal-video-controls {
-      position: absolute;
-      bottom: 20px;
-      right: 20px;
-      display: flex;
-      gap: 10px;
-    }
-
+    .modal-video-controls { position: absolute; bottom: 20px; right: 20px; display: flex; gap: 10px; }
     .modal-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      min-height: 38px;
-      padding: 0 16px;
-      border-radius: 980px;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      cursor: pointer;
-      border: none;
-      transition: transform 0.15s ease, opacity 0.2s ease;
+      display: inline-flex; align-items: center; gap: 8px; min-height: 38px; padding: 0 16px;
+      border-radius: 980px; font-size: 13px; font-weight: 600; letter-spacing: -0.01em;
+      cursor: pointer; border: none; transition: transform 0.15s ease, opacity 0.2s ease;
     }
-
     .modal-btn:hover { opacity: 0.88; }
     .modal-btn:active { transform: scale(0.95); }
-
-    .modal-btn-fs {
-      background: rgba(255,255,255,0.14);
-      color: var(--paper-white);
-      border: 1px solid rgba(255,255,255,0.2);
-      backdrop-filter: blur(8px);
-    }
-
-    .modal-btn-primary {
-      background: var(--action-blue);
-      color: var(--paper-white);
-    }
+    .modal-btn-fs { background: rgba(255,255,255,0.14); color: var(--paper-white); border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(8px); }
 
     .modal-body {
       padding: 36px 40px 40px;
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 32px;
-      align-items: start;
+      display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: start;
     }
+
+    /* Allow grid children to shrink so long pre/code blocks don't expand the modal */
+    .modal, .modal-body, .modal-body > div, .modal-side, .planet-code-block, .code-block-container { min-width: 0; }
 
     .modal-badge {
-      display: inline-flex;
-      align-items: center;
-      min-height: 26px;
-      padding: 0 10px;
-      border-radius: 6px;
-      background: rgba(41, 151, 255, 0.14);
-      border: 1px solid rgba(41,151,255,0.24);
-      color: var(--sky-blue);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 12px;
+      display: inline-flex; align-items: center; min-height: 26px; padding: 0 10px;
+      border-radius: 6px; background: rgba(41,151,255,0.14); border: 1px solid rgba(41,151,255,0.24);
+      color: var(--sky-blue); font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; margin-bottom: 12px;
     }
+    .modal-title { margin: 0 0 12px; font-size: clamp(32px,5vw,52px); line-height: 1; letter-spacing: -0.05em; font-weight: 600; color: var(--paper-white); }
+    .modal-desc { margin: 0; font-size: 16px; line-height: 1.65; color: rgba(255,255,255,0.72); max-width: 44rem; }
 
-    .modal-title {
-      margin: 0 0 12px;
-      font-size: clamp(32px, 5vw, 52px);
-      line-height: 1;
-      letter-spacing: -0.05em;
-      font-weight: 600;
-      color: var(--paper-white);
-    }
+    .modal-facts { margin-top: 28px; display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+    .modal-fact { padding: 16px 18px; border-radius: 14px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
+    .modal-fact-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 6px; }
+    .modal-fact-value { font-size: 17px; font-weight: 600; letter-spacing: -0.03em; color: var(--paper-white); }
 
-    .modal-desc {
-      margin: 0;
-      font-size: 16px;
-      line-height: 1.65;
-      color: rgba(255,255,255,0.72);
-      max-width: 44rem;
-    }
-
-    .modal-facts {
+    /* ── AGE CALCULATOR ── */
+    .age-calc {
       margin-top: 28px;
+      padding: 24px;
+      border-radius: 18px;
+      background: rgba(41, 151, 255, 0.06);
+      border: 1px solid rgba(41, 151, 255, 0.18);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .age-calc::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(41,151,255,0.5), transparent);
+    }
+
+    .age-calc-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .age-calc-icon {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      background: rgba(41,151,255,0.15);
+      border: 1px solid rgba(41,151,255,0.25);
+      display: grid; place-items: center;
+      font-size: 14px;
+      flex: 0 0 auto;
+      color: var(--sky-blue);
+    }
+
+    .age-calc-title {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--sky-blue);
+    }
+
+    .age-calc-sub {
+      font-size: 12px;
+      color: rgba(255,255,255,0.42);
+      margin-top: 1px;
+      letter-spacing: -0.01em;
+    }
+
+    .age-calc-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .age-input-wrap {
+      position: relative;
+      flex: 1;
+    }
+
+    .age-input {
+      width: 100%;
+      min-height: 48px;
+      padding: 0 16px 0 44px;
+      border-radius: 12px;
+      border: 1.5px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: var(--paper-white);
+      font: inherit;
+      font-size: 16px;
+      letter-spacing: -0.02em;
+      outline: none;
+      transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+      appearance: textfield;
+      -moz-appearance: textfield;
+    }
+    .age-input::-webkit-outer-spin-button,
+    .age-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    .age-input::placeholder { color: rgba(255,255,255,0.28); }
+    .age-input:focus {
+      border-color: rgba(41,151,255,0.6);
+      background: rgba(41,151,255,0.07);
+      box-shadow: 0 0 0 3px rgba(41,151,255,0.12);
+    }
+    .age-input.error {
+      border-color: rgba(255, 80, 80, 0.7);
+      background: rgba(255,50,50,0.06);
+      box-shadow: 0 0 0 3px rgba(255,80,80,0.1);
+    }
+
+    .age-input-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px;
+      pointer-events: none;
+      line-height: 1;
+      color: rgba(41, 151, 255, 0.5);
+    }
+
+    .age-calc-btn {
+      min-height: 48px;
+      padding: 0 20px;
+      border-radius: 12px;
+      border: none;
+      background: var(--action-blue);
+      color: var(--paper-white);
+      font: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: opacity 0.2s ease, transform 0.15s ease, background 0.2s ease;
+      flex-shrink: 0;
+    }
+    .age-calc-btn:hover { opacity: 0.88; }
+    .age-calc-btn:active { transform: scale(0.95); }
+
+    .age-error {
+      display: none;
+      margin-top: 8px;
+      padding: 10px 14px;
+      font-size: 12px;
+      color: rgba(255, 100, 100, 0.9);
+      letter-spacing: -0.01em;
+      background: rgba(255, 80, 80, 0.08);
+      border: 1px solid rgba(255, 100, 100, 0.2);
+      border-radius: 10px;
+    }
+    .age-error.visible { display: block; }
+
+    .age-result {
+      display: none;
+      margin-top: 18px;
+      padding: 18px 20px;
+      border-radius: 14px;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.07);
+      animation: resultFade 0.35s ease;
+    }
+    .age-result.visible { display: block; }
+
+    @keyframes resultFade {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .age-result-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 8px;
+    }
+
+    .age-result-main {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .age-result-value {
+      font-size: 38px;
+      font-weight: 700;
+      letter-spacing: -0.05em;
+      color: var(--paper-white);
+      line-height: 1;
+    }
+
+    .age-result-unit {
+      font-size: 16px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: -0.02em;
+    }
+
+    .age-result-planet-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--sky-blue);
+      letter-spacing: 0.02em;
+    }
+
+    .age-result-breakdown {
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid rgba(255,255,255,0.08);
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 12px;
     }
 
-    .modal-fact {
-      padding: 16px 18px;
-      border-radius: 14px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
+    .age-breakdown-item {
+      text-align: center;
+      padding: 10px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.02);
     }
 
-    .modal-fact-label {
+    .age-breakdown-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--sky-blue);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .age-breakdown-unit {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+    }
+
+    .age-result-calculation {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      font-size: 12px;
+      color: rgba(255,255,255,0.4);
+      line-height: 1.5;
+    }
+
+    .age-result-calculation strong { color: rgba(255,255,255,0.6); font-weight: 600; }
+
+    .age-no-calc {
+      display: none;
+      margin-top: 16px;
+      padding: 14px 18px;
+      border-radius: 12px;
+      background: rgba(255,200,80,0.07);
+      border: 1px solid rgba(255,200,80,0.15);
+      font-size: 13px;
+      color: rgba(255,200,80,0.8);
+    }
+    .age-no-calc.visible { display: block; }
+
+    /* ── CODE BLOCK ── */
+    .planet-code-block {
+      margin-top: 28px;
+      padding: 20px;
+      border-radius: 14px;
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.08);
+      overflow: hidden;
+    }
+
+    .code-block-label {
       font-size: 10px;
       font-weight: 700;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.4);
-      margin-bottom: 6px;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 12px;
     }
 
-    .modal-fact-value {
-      font-size: 17px;
-      font-weight: 600;
-      letter-spacing: -0.03em;
-      color: var(--paper-white);
+    .code-block-container {
+      position: relative;
+      border-radius: 10px;
+      background: rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.06);
+      overflow: hidden;
+      max-width: 100%;
     }
 
-    .modal-side {
-      display: grid;
-      gap: 10px;
-      min-width: 160px;
-    }
-
-    .modal-page-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      min-height: 44px;
-      padding: 11px 22px;
-      border-radius: 980px;
-      font-size: 14px;
+    .code-copy-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 10;
+      min-height: 32px;
+      padding: 0 12px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.7);
+      font: inherit;
+      font-size: 11px;
       font-weight: 600;
       letter-spacing: -0.01em;
       cursor: pointer;
-      text-decoration: none;
-      transition: opacity 0.2s ease, transform 0.15s ease;
-      border: none;
-      white-space: nowrap;
+      transition: opacity 0.2s ease, background 0.2s ease;
+    }
+    .code-copy-btn:hover { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.9); }
+    .code-copy-btn:active { transform: scale(0.95); }
+    .code-copy-btn.copied { color: rgba(41,151,255,0.9); }
+
+    .code-content {
+      padding: 20px;
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+      font-size: 12px;
+      line-height: 1.6;
+      color: rgba(255,255,255,0.7);
+      overflow-x: auto;
+      max-height: 260px;
+      height: 260px; /* fixed height so the block won't push modal height */
+      overflow-y: auto;
+      white-space: pre; /* preserve formatting */
+      margin: 0; box-sizing: border-box; max-width: 100%;
+      word-break: normal; overflow-wrap: normal;
     }
 
-    .modal-page-btn-primary {
-      background: var(--action-blue);
-      color: var(--paper-white);
+    .code-content::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .code-content::-webkit-scrollbar-track {
+      background: rgba(255,255,255,0.04);
+      border-radius: 3px;
+    }
+    .code-content::-webkit-scrollbar-thumb {
+      background: rgba(255,255,255,0.12);
+      border-radius: 3px;
+    }
+    .code-content::-webkit-scrollbar-thumb:hover {
+      background: rgba(255,255,255,0.2);
     }
 
-    .modal-page-btn-ghost {
-      background: rgba(255,255,255,0.06);
-      color: rgba(255,255,255,0.8);
-      border: 1px solid rgba(255,255,255,0.12);
+    .code-line {
+      white-space: pre-wrap;
+      word-wrap: break-word;
     }
 
+    .code-keyword { color: rgba(241,141,225,1); }     /* Pink for keywords */
+    .code-string { color: rgba(144,205,117,1); }      /* Green for strings */
+    .code-comment { color: rgba(120,119,122,1); }     /* Gray for comments */
+    .code-function { color: rgba(167,198,255,1); }    /* Light blue for functions */
+    .code-number { color: rgba(255,198,109,1); }      /* Orange for numbers */
+
+    /* ── MODAL SIDE ── */
+    .modal-side { display: grid; gap: 10px; min-width: 160px; }
+    .modal-page-btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      min-height: 44px; padding: 11px 22px; border-radius: 980px; font-size: 14px;
+      font-weight: 600; letter-spacing: -0.01em; cursor: pointer; text-decoration: none;
+      transition: opacity 0.2s ease, transform 0.15s ease; border: none; white-space: nowrap;
+    }
+    .modal-page-btn-primary { background: var(--action-blue); color: var(--paper-white); }
+    .modal-page-btn-ghost { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.8); border: 1px solid rgba(255,255,255,0.12); }
     .modal-page-btn:hover { opacity: 0.85; }
     .modal-page-btn:active { transform: scale(0.95); }
 
     /* ── FOOTER ── */
     footer {
-      background: var(--parchment);
-      border-top: 1px solid var(--hairline);
-      padding: 56px 40px;
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 24px;
-      flex-wrap: wrap;
+      background: var(--parchment); border-top: 1px solid var(--hairline);
+      padding: 56px 40px; display: flex; align-items: flex-end;
+      justify-content: space-between; gap: 24px; flex-wrap: wrap;
     }
-
-    .footer-left .f-title {
-      margin: 0 0 6px;
-      font-size: clamp(26px, 2.8vw, 34px);
-      line-height: 1.06;
-      letter-spacing: -0.04em;
-      font-weight: 600;
-      color: var(--near-black);
-    }
-
+    .footer-left .f-title { margin: 0 0 6px; font-size: clamp(26px,2.8vw,34px); line-height: 1.06; letter-spacing: -0.04em; font-weight: 600; color: var(--near-black); }
     .footer-left .f-title span { color: var(--action-blue); }
-
-    .footer-left .f-sub,
-    .footer-right,
-    .footer-note {
-      font-size: 12px;
-      line-height: 1.9;
-      letter-spacing: -0.01em;
-      text-transform: uppercase;
-      color: var(--muted-48);
-    }
-
+    .footer-left .f-sub, .footer-right, .footer-note { font-size: 12px; line-height: 1.9; letter-spacing: -0.01em; text-transform: uppercase; color: var(--muted-48); }
     .footer-note { margin-top: 12px; }
     .footer-right { text-align: right; }
     .footer-right a { color: var(--action-blue); text-decoration: none; }
@@ -958,77 +702,38 @@
     /* ── RESPONSIVE ── */
     @media (max-width: 1024px) {
       .hero { grid-template-columns: 1fr; }
-
-      .planet-video-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
+      .planet-video-grid { grid-template-columns: repeat(2,1fr); }
     }
-
+    @media (max-width: 900px) {
+      .render-header { grid-template-columns: 1fr; gap: 20px; align-items: flex-start; }
+      .render-stats { grid-template-columns: 1fr 1fr; }
+      .render-stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
+      .render-stat:nth-child(odd) { border-right: 1px solid rgba(255,255,255,0.06); }
+      .render-stats-cta { grid-column: 1 / -1; border-left: none; border-top: 1px solid rgba(255,255,255,0.06); }
+    }
     @media (max-width: 833px) {
       nav { padding: 0 16px; }
       .nav-links { display: none; }
-
-      .hero,
-      .tile,
-      .video-tile,
-      footer {
-        padding-left: 24px;
-        padding-right: 24px;
-      }
-
-      .hero {
-        padding-top: 100px;
-        padding-bottom: 72px;
-      }
-
+      .hero, .tile, .video-tile, footer { padding-left: 24px; padding-right: 24px; }
+      .hero { padding-top: 100px; padding-bottom: 72px; }
       .hero-sub { font-size: 18px; }
-
-      .selector-row {
-        grid-template-columns: 1fr;
-      }
-
+      .selector-row { grid-template-columns: 1fr; }
       .selector-row .btn-pill-primary { width: 100%; }
-
-      .render-shell {
-        grid-template-columns: 1fr;
-        gap: 20px;
-        padding: 24px;
-      }
-
-      .planet-video-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .modal-body {
-        grid-template-columns: 1fr;
-        padding: 24px;
-      }
-
-      .modal-facts {
-        grid-template-columns: 1fr 1fr;
-      }
-
+      .planet-video-grid { grid-template-columns: 1fr; }
+      .modal-body { grid-template-columns: 1fr; padding: 24px; }
+      .modal-facts { grid-template-columns: 1fr 1fr; }
       .footer-right { text-align: left; }
+      .age-calc-row { grid-template-columns: 1fr; }
     }
-
     @media (max-width: 640px) {
-      .hero-title { font-size: clamp(40px, 14vw, 56px); }
-
-      .hero-ctas {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .btn-pill-primary,
-      .btn-pill-ghost { width: 100%; }
-
+      .hero-title { font-size: clamp(40px,14vw,56px); }
+      .hero-ctas { flex-direction: column; align-items: stretch; }
+      .btn-pill-primary, .btn-pill-ghost { width: 100%; }
       .modal-facts { grid-template-columns: 1fr; }
+      .age-result-value { font-size: 30px; }
     }
-
     @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
+      *, *::before, *::after {
         animation-duration: 0.001ms !important;
         animation-iteration-count: 1 !important;
         transition-duration: 0.001ms !important;
@@ -1058,8 +763,7 @@
         <div class="hero-eyebrow">Blender Solar System</div>
         <h1 class="hero-title">A rendered journey through the <span class="accent">planets</span>.</h1>
         <p class="hero-sub">Experience a cinematic 3D journey through our cosmic neighborhood. This project showcases
-          meticulous orbital mechanics, dynamic lighting, and detailed planetary textures modeled entirely in Blender.
-        </p>
+          meticulous orbital mechanics, dynamic lighting, and detailed planetary textures modeled entirely in Blender.</p>
         <div class="hero-ctas">
           <a href="#render" class="btn-pill-primary">Watch the Full Render</a>
           <a href="#planet-videos" class="btn-pill-ghost">Browse Planets</a>
@@ -1094,7 +798,7 @@
       </aside>
     </section>
 
-    <!-- ── MAIN RENDER — CINEMATIC ── -->
+    <!-- ── MAIN RENDER ── -->
     <section class="render-section" id="render">
       <div class="render-inner">
         <div class="render-header">
@@ -1136,9 +840,7 @@
             <div class="render-stat-value">Loop</div>
           </div>
           <div class="render-stats-cta">
-            <a href="#planet-videos" class="render-watch-btn">
-              Browse Planets ↓
-            </a>
+            <a href="#planet-videos" class="render-watch-btn">Browse Planets ↓</a>
           </div>
         </div>
       </div>
@@ -1150,12 +852,8 @@
       <h2 class="section-title">Every planet. Up close.</h2>
       <p class="section-lead">Each body rendered individually — click any planet to explore its full details, facts, and
         a fullscreen view of its render loop.</p>
-
-      <div class="planet-video-grid" id="planet-video-grid">
-        <!-- Cards injected by JS -->
-      </div>
+      <div class="planet-video-grid" id="planet-video-grid"></div>
     </section>
-
   </main>
 
   <footer>
@@ -1195,7 +893,65 @@
           <h2 class="modal-title" id="modal-planet-title"></h2>
           <p class="modal-desc" id="modal-desc"></p>
           <div class="modal-facts" id="modal-facts"></div>
+
+          <!-- ── AGE CALCULATOR ── -->
+          <div class="age-calc" id="age-calc">
+            <div class="age-calc-header">
+              <div class="age-calc-icon">◯</div>
+              <div>
+                <div class="age-calc-title">Age Calculator</div>
+                <div class="age-calc-sub">How old are you on <span id="calc-planet-name">this planet</span>?</div>
+              </div>
+            </div>
+
+            <div class="age-calc-row">
+              <div class="age-input-wrap">
+                <span class="age-input-icon">●</span>
+                <input
+                  type="number"
+                  id="age-input"
+                  class="age-input"
+                  placeholder="Enter your Earth age"
+                  min="1"
+                  max="150"
+                  step="1"
+                  inputmode="numeric"
+                  aria-label="Your age in Earth years"
+                />
+              </div>
+              <button class="age-calc-btn" id="age-calc-btn" type="button">Calculate</button>
+            </div>
+
+            <div class="age-error" id="age-error" role="alert">
+              <span id="age-error-msg">Please enter a valid age.</span>
+            </div>
+
+            <div class="age-result" id="age-result" aria-live="polite">
+              <div class="age-result-label">Your age on <span id="result-planet-label">this planet</span></div>
+              <div class="age-result-main">
+                <span class="age-result-value" id="result-value">—</span>
+                <span class="age-result-unit"><span id="result-planet-badge"></span> years</span>
+              </div>
+              <div class="age-result-breakdown" id="result-breakdown"></div>
+              <div class="age-result-calculation" id="result-calculation"></div>
+            </div>
+
+            <!-- Shown for Sun (no orbital period) -->
+            <div class="age-no-calc" id="age-no-calc">
+              The Sun is a star, not a planet — it doesn't orbit anything, so there's no "Sun year" to calculate.
+            </div>
+          </div>
+
+          <!-- ── PLANET CODE ── -->
+          <div class="planet-code-block" id="planet-code-block">
+            <div class="code-block-label">Planet Code in Python</div>
+            <div class="code-block-container">
+              <button class="code-copy-btn" id="code-copy-btn" type="button">Copy code</button>
+              <pre class="code-content" id="planet-code-content">Loading code...</pre>
+            </div>
+          </div>
         </div>
+
         <div class="modal-side">
           <a class="modal-page-btn modal-page-btn-primary" id="modal-download-blend" href="#" download>
             Download .blend ↗
@@ -1203,9 +959,6 @@
           <button class="modal-page-btn modal-page-btn-ghost" id="modal-download-textures">
             Download Textures
           </button>
-          <a class="modal-page-btn modal-page-btn-primary" id="modal-page-link" href="#">
-            View Planet Page ↗
-          </a>
           <button class="modal-page-btn modal-page-btn-ghost" id="modal-close-btn">
             Close
           </button>
@@ -1215,12 +968,9 @@
   </div>
 
   <script>
-    /* ─────────────────────────────────────────────
-       RENDER FULLSCREEN
-    ───────────────────────────────────────────── */
+    /* ── RENDER FULLSCREEN ── */
     const renderVideo = document.getElementById('render-video');
     const renderFsBtn = document.getElementById('render-fs-btn');
-
     renderFsBtn.addEventListener('click', () => {
       const v = renderVideo;
       if (v.requestFullscreen) v.requestFullscreen();
@@ -1228,16 +978,11 @@
       else if (v.mozRequestFullScreen) v.mozRequestFullScreen();
     });
 
-    /* ─────────────────────────────────────────────
-       PLANET DATA
-    ───────────────────────────────────────────── */
+    /* ── PLANET DATA ── */
     const planets = [
       {
-        id: "sun",
-        tag: "Star",
-        name: "Sun",
-        file: "sun.mp4",
-        page: "sun.html",
+        id: "sun", tag: "Star", name: "Sun", file: "sun.mp4", page: "sun.html",
+        orbitalPeriod: null, // Star — no orbit
         desc: "The Sun is the star at the heart of our solar system — a massive, blazing sphere of plasma that provides the light, heat, and gravitational anchor that makes life on Earth possible.",
         facts: [
           { label: "Type", value: "G-type Star" },
@@ -1246,11 +991,8 @@
         ]
       },
       {
-        id: "mercury",
-        tag: "Planet 01",
-        name: "Mercury",
-        file: "mercury.mp4",
-        page: "mercury.html",
+        id: "mercury", tag: "Planet 01", name: "Mercury", file: "mercury.mp4", page: "mercury.html",
+        orbitalPeriod: 0.2408,
         desc: "Mercury is the smallest planet in the solar system and the closest to the Sun. Its surface is heavily cratered, resembling the Moon, and it experiences extreme temperature swings between day and night.",
         facts: [
           { label: "Orbit Period", value: "88 Earth days" },
@@ -1259,11 +1001,8 @@
         ]
       },
       {
-        id: "venus",
-        tag: "Planet 02",
-        name: "Venus",
-        file: "venus.mp4",
-        page: "venus.html",
+        id: "venus", tag: "Planet 02", name: "Venus", file: "venus.mp4", page: "venus.html",
+        orbitalPeriod: 0.6152,
         desc: "Venus is the hottest planet, shrouded in thick clouds of sulfuric acid. Despite being farther from the Sun than Mercury, its runaway greenhouse effect makes its surface hotter than any other planet.",
         facts: [
           { label: "Orbit Period", value: "225 Earth days" },
@@ -1272,11 +1011,8 @@
         ]
       },
       {
-        id: "earth",
-        tag: "Planet 03",
-        name: "Earth",
-        file: "earth.mp4",
-        page: "earth.html",
+        id: "earth", tag: "Planet 03", name: "Earth", file: "earth.mp4", page: "earth.html",
+        orbitalPeriod: 1,
         desc: "Earth is the only known planet to harbor life. With vast oceans, a breathable atmosphere, and a protective magnetic field, it is a unique blue marble in the cosmic void.",
         facts: [
           { label: "Orbit Period", value: "365.25 days" },
@@ -1285,11 +1021,8 @@
         ]
       },
       {
-        id: "mars",
-        tag: "Planet 04",
-        name: "Mars",
-        file: "mars.mp4",
-        page: "mars.html",
+        id: "mars", tag: "Planet 04", name: "Mars", file: "mars.mp4", page: "mars.html",
+        orbitalPeriod: 1.8808,
         desc: "Mars, the Red Planet, has the tallest volcano and the longest canyon in the solar system. Scientists are actively exploring it as a potential candidate for future human habitation.",
         facts: [
           { label: "Orbit Period", value: "687 Earth days" },
@@ -1298,11 +1031,8 @@
         ]
       },
       {
-        id: "jupiter",
-        tag: "Planet 05",
-        name: "Jupiter",
-        file: "jupiter.mp4",
-        page: "jupiter.html",
+        id: "jupiter", tag: "Planet 05", name: "Jupiter", file: "jupiter.mp4", page: "jupiter.html",
+        orbitalPeriod: 11.862,
         desc: "Jupiter is the largest planet in the solar system — so massive that all other planets could fit inside it. Its iconic Great Red Spot is a storm that has raged for centuries.",
         facts: [
           { label: "Orbit Period", value: "11.9 Earth years" },
@@ -1311,11 +1041,8 @@
         ]
       },
       {
-        id: "saturn",
-        tag: "Planet 06",
-        name: "Saturn",
-        file: "saturn.mp4",
-        page: "saturn.html",
+        id: "saturn", tag: "Planet 06", name: "Saturn", file: "saturn.mp4", page: "saturn.html",
+        orbitalPeriod: 29.457,
         desc: "Saturn is the jewel of the solar system, famous for its breathtaking ring system made of ice and rock. It is a gas giant so light that it would float in water.",
         facts: [
           { label: "Orbit Period", value: "29.5 Earth years" },
@@ -1324,11 +1051,8 @@
         ]
       },
       {
-        id: "uranus",
-        tag: "Planet 07",
-        name: "Uranus",
-        file: "uranus.mp4",
-        page: "uranus.html",
+        id: "uranus", tag: "Planet 07", name: "Uranus", file: "uranus.mp4", page: "uranus.html",
+        orbitalPeriod: 84.011,
         desc: "Uranus is an ice giant that rotates on its side with an axial tilt of 98°. Its pale blue-green color comes from methane in its atmosphere, which absorbs red light.",
         facts: [
           { label: "Orbit Period", value: "84 Earth years" },
@@ -1337,11 +1061,8 @@
         ]
       },
       {
-        id: "neptune",
-        tag: "Planet 08",
-        name: "Neptune",
-        file: "neptune.mp4",
-        page: "neptune.html",
+        id: "neptune", tag: "Planet 08", name: "Neptune", file: "neptune.mp4", page: "neptune.html",
+        orbitalPeriod: 164.8,
         desc: "Neptune is the farthest planet from the Sun and the windiest in the solar system. Its winds can reach over 2,000 km/h, and its deep blue color is one of the most striking in the solar system.",
         facts: [
           { label: "Orbit Period", value: "165 Earth years" },
@@ -1350,12 +1071,9 @@
         ]
       },
       {
-        id: "pluto",
-        tag: "Dwarf Planet",
-        name: "Pluto",
-        file: "pluto.mp4",
-        page: "pluto.html",
-        desc: "Pluto is a dwarf planet in the Kuiper Belt, reclassified from its planetary status in 2006. Despite its small size, it has a complex surface featuring nitrogen ice plains, mountain ranges of water ice, and a thin atmosphere that expands and collapses with its 248-year orbit.",
+        id: "pluto", tag: "Dwarf Planet", name: "Pluto", file: "pluto.mp4", page: "pluto.html",
+        orbitalPeriod: 247.94,
+        desc: "Pluto is a dwarf planet in the Kuiper Belt, reclassified from its planetary status in 2006. Despite its small size, it has a complex surface featuring nitrogen ice plains, mountain ranges of water ice, and a thin atmosphere.",
         facts: [
           { label: "Orbit Period", value: "248 Earth years" },
           { label: "Diameter", value: "2,377 km" },
@@ -1364,10 +1082,8 @@
       },
     ];
 
-     /* ─────────────────────────────────────────────
-       TEXTURES & BLEND MAPPINGS
-     ───────────────────────────────────────────── */
-     const textureMap = {
+    /* ── TEXTURE & BLEND MAPS ── */
+    const textureMap = {
       sun: ['textures/sunmap.jpg','textures/sun_surface.jpg','textures/stars.jpg'],
       mercury: ['textures/mercury_color.jpg','textures/mercury_bump.jpg','textures/mercury_surface.jpg'],
       venus: ['textures/venus_surface.jpg','textures/venus_clouds.jpg'],
@@ -1378,26 +1094,17 @@
       uranus: ['textures/uranus_map.jpg','textures/uranus.jpg','textures/uranus_rings.png'],
       neptune: ['textures/neptune_map.jpg','textures/neptune_surface.jpg'],
       pluto: ['textures/pluto_map.jpg','textures/pluto_bump.jpg','textures/charon_map.jpg']
-     };
+    };
 
-     const blendMap = {
-      sun: 'codes/sun.blend',
-      mercury: 'codes/mercury.blend',
-      venus: 'codes/venus.blend',
-      earth: 'codes/earth.blend',
-      mars: 'codes/mars.blend',
-      jupiter: 'codes/jupiter.blend',
-      saturn: 'codes/saturn.blend',
-      uranus: 'codes/uranus.blend',
-      neptune: 'codes/neptune.blend',
+    const blendMap = {
+      sun: 'codes/sun.blend', mercury: 'codes/mercury.blend', venus: 'codes/venus.blend',
+      earth: 'codes/earth.blend', mars: 'codes/mars.blend', jupiter: 'codes/jupiter.blend',
+      saturn: 'codes/saturn.blend', uranus: 'codes/uranus.blend', neptune: 'codes/neptune.blend',
       pluto: 'codes/pluto.blend'
-     };
+    };
 
-     /* ─────────────────────────────────────────────
-       BUILD VIDEO GRID
-     ───────────────────────────────────────────── */
+    /* ── BUILD VIDEO GRID ── */
     const grid = document.getElementById('planet-video-grid');
-
     planets.forEach((planet) => {
       const block = document.createElement('div');
       block.className = 'planet-video-block';
@@ -1413,7 +1120,7 @@
           <div class="planet-video-tag">${planet.tag}</div>
           <div class="planet-video-name">${planet.name}</div>
           <div class="planet-video-hint">
-            <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:14px;height:14px;">
               <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.4"/>
               <path d="M6 8h4M8 6l2 2-2 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -1424,41 +1131,244 @@
 
       block.addEventListener('click', () => openModal(planet));
       block.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          openModal(planet);
-        }
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(planet); }
       });
-
       grid.appendChild(block);
     });
 
-    /* ─────────────────────────────────────────────
-       MODAL LOGIC
-    ───────────────────────────────────────────── */
-    const backdrop   = document.getElementById('modal-backdrop');
-    const modal      = document.getElementById('modal');
-    const modalVideo = document.getElementById('modal-video');
-    const modalSrc   = document.getElementById('modal-video-src');
-    const modalBadge = document.getElementById('modal-badge');
-    const modalTitle = document.getElementById('modal-planet-title');
-    const modalDesc  = document.getElementById('modal-desc');
-    const modalFacts = document.getElementById('modal-facts');
-    const modalLink  = document.getElementById('modal-page-link');
-    const modalDownloadBlend = document.getElementById('modal-download-blend');
-    const modalDownloadTextures = document.getElementById('modal-download-textures');
-    const closeBtns  = [
-      document.getElementById('modal-close'),
-      document.getElementById('modal-close-btn'),
-    ];
-    const fsBtn = document.getElementById('modal-fullscreen-btn');
+    /* ── MODAL REFS ── */
+    const backdrop             = document.getElementById('modal-backdrop');
+    const modal                = document.getElementById('modal');
+    const modalVideo           = document.getElementById('modal-video');
+    const modalSrc             = document.getElementById('modal-video-src');
+    const modalBadge           = document.getElementById('modal-badge');
+    const modalTitle           = document.getElementById('modal-planet-title');
+    const modalDesc            = document.getElementById('modal-desc');
+    const modalFacts           = document.getElementById('modal-facts');
+    const modalDownloadBlend   = document.getElementById('modal-download-blend');
+    const modalDownloadTextures= document.getElementById('modal-download-textures');
+    const modalCodeBlock       = document.getElementById('planet-code-block');
+    const modalCodeContent     = document.getElementById('planet-code-content');
+    const codeCopyBtn          = document.getElementById('code-copy-btn');
+    const closeBtns            = [document.getElementById('modal-close'), document.getElementById('modal-close-btn')];
+    const fsBtn                = document.getElementById('modal-fullscreen-btn');
 
+    /* ── AGE CALCULATOR REFS ── */
+    const calcPlanetName    = document.getElementById('calc-planet-name');
+    const ageInput          = document.getElementById('age-input');
+    const ageCalcBtn        = document.getElementById('age-calc-btn');
+    const ageError          = document.getElementById('age-error');
+    const ageErrorMsg       = document.getElementById('age-error-msg');
+    const ageResult         = document.getElementById('age-result');
+    const ageNoCalc         = document.getElementById('age-no-calc');
+    const resultPlanetLabel = document.getElementById('result-planet-label');
+    const resultPlanetBadge = document.getElementById('result-planet-badge');
+    const resultValue       = document.getElementById('result-value');
+    const resultBreakdown   = document.getElementById('result-breakdown');
+
+    let currentPlanet = null;
+    let currentCodeToken = 0;
+    const planetCodeCache = new Map();
+
+    function getPlanetCodeUrl(planetId) {
+      return `text%20file/${planetId}.txt`;
+    }
+
+    async function loadPlanetCode(planet) {
+      const loadToken = ++currentCodeToken;
+      const codeUrl = getPlanetCodeUrl(planet.id);
+
+      modalCodeContent.textContent = 'Loading code...';
+      codeCopyBtn.disabled = true;
+      codeCopyBtn.textContent = 'Copy code';
+
+      try {
+        let codeText = planetCodeCache.get(codeUrl);
+
+        if (!codeText) {
+          const response = await fetch(codeUrl, { cache: 'no-store' });
+          if (!response.ok) {
+            throw new Error(`Failed to load ${codeUrl}`);
+          }
+          codeText = await response.text();
+          planetCodeCache.set(codeUrl, codeText);
+        }
+
+        if (loadToken !== currentCodeToken || !currentPlanet || currentPlanet.id !== planet.id) return;
+
+        modalCodeContent.textContent = codeText.trimEnd() || 'No code available for this planet.';
+        codeCopyBtn.disabled = false;
+      } catch {
+        if (loadToken !== currentCodeToken || !currentPlanet || currentPlanet.id !== planet.id) return;
+
+        modalCodeContent.textContent = 'Unable to load this planet code file.';
+        codeCopyBtn.disabled = true;
+      }
+    }
+
+    async function copyPlanetCode() {
+      const codeText = modalCodeContent.textContent || '';
+      if (!codeText || codeCopyBtn.disabled) return;
+
+      try {
+        await navigator.clipboard.writeText(codeText);
+        codeCopyBtn.textContent = 'Copied';
+        codeCopyBtn.classList.add('copied');
+        setTimeout(() => {
+          codeCopyBtn.textContent = 'Copy code';
+          codeCopyBtn.classList.remove('copied');
+        }, 1400);
+      } catch {
+        const selection = window.getSelection();
+        const range = document.createRange();
+        range.selectNodeContents(modalCodeContent);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        document.execCommand('copy');
+        selection.removeAllRanges();
+      }
+    }
+
+    /* ── AGE VALIDATION & CALCULATION ── */
+    function resetCalcUI() {
+      ageInput.value = '';
+      ageInput.classList.remove('error');
+      ageError.classList.remove('visible');
+      ageResult.classList.remove('visible');
+      ageNoCalc.classList.remove('visible');
+    }
+
+    function showError(msg) {
+      ageErrorMsg.textContent = msg;
+      ageError.classList.add('visible');
+      ageInput.classList.add('error');
+      ageResult.classList.remove('visible');
+    }
+
+    function clearError() {
+      ageError.classList.remove('visible');
+      ageInput.classList.remove('error');
+    }
+
+    function calculateAge() {
+      clearError();
+
+      const raw = ageInput.value.trim();
+
+      // Empty check
+      if (raw === '') {
+        showError('Please enter your age to calculate.');
+        return;
+      }
+
+      // Must be a number
+      if (isNaN(raw) || raw === '') {
+        showError('That doesn\'t look like a number. Please enter a valid age.');
+        return;
+      }
+
+      const age = Number(raw);
+
+      // Must be an integer
+      if (!Number.isFinite(age)) {
+        showError('Please enter a finite number.');
+        return;
+      }
+
+      // Must be positive
+      if (age <= 0) {
+        showError('Age must be greater than 0.');
+        return;
+      }
+
+      // Must be a reasonable age
+      if (age > 150) {
+        showError('Please enter a realistic age (1 – 150 Earth years).');
+        return;
+      }
+
+      // Must be a whole number (or close to it)
+      if (age !== Math.floor(age) && !String(raw).includes('.')) {
+        showError('Please enter a whole number for your age.');
+        return;
+      }
+
+      // No orbital period (Sun)
+      if (!currentPlanet.orbitalPeriod) {
+        ageNoCalc.classList.add('visible');
+        ageResult.classList.remove('visible');
+        return;
+      }
+
+      // ── Calculate Planet Age ──
+      const planetAgeInYears = age / currentPlanet.orbitalPeriod;
+      
+      // Break down into years, months, days
+      const wholeYears = Math.floor(planetAgeInYears);
+      const remaining = (planetAgeInYears - wholeYears) * 12; // Convert fractional year to months
+      const months = Math.floor(remaining);
+      const remainingFraction = (remaining - months);
+      const days = Math.round(remainingFraction * 30.44); // Average days per month
+      
+      // Format main display
+      const displayYears = wholeYears > 0 ? wholeYears : planetAgeInYears.toFixed(2);
+      resultValue.textContent = displayYears;
+      resultPlanetLabel.textContent = currentPlanet.name;
+      resultPlanetBadge.textContent = currentPlanet.name;
+
+      // Build breakdown grid
+      const breakdownHTML = `
+        <div class="age-breakdown-item">
+          <div class="age-breakdown-value">${wholeYears}</div>
+          <div class="age-breakdown-unit">Year${wholeYears !== 1 ? 's' : ''}</div>
+        </div>
+        <div class="age-breakdown-item">
+          <div class="age-breakdown-value">${months}</div>
+          <div class="age-breakdown-unit">Month${months !== 1 ? 's' : ''}</div>
+        </div>
+        <div class="age-breakdown-item">
+          <div class="age-breakdown-value">${days}</div>
+          <div class="age-breakdown-unit">Day${days !== 1 ? 's' : ''}</div>
+        </div>
+      `;
+      resultBreakdown.innerHTML = breakdownHTML;
+      
+      // Calculation explanation
+      const resultCalc = document.getElementById('result-calculation');
+      const orbitalText = currentPlanet.orbitalPeriod === 1 
+        ? 'Earth year (orbital period = Earth orbit)'
+        : `${currentPlanet.orbitalPeriod} Earth years (${currentPlanet.name}'s orbital period)`;
+      resultCalc.innerHTML = `<strong>${age}</strong> Earth years ÷ <strong>${currentPlanet.orbitalPeriod}</strong> ${orbitalText} = <strong>${wholeYears} yrs, ${months} mo, ${days} days</strong>`;
+
+      ageResult.classList.add('visible');
+      ageNoCalc.classList.remove('visible');
+    }
+
+    // Trigger on button click
+    ageCalcBtn.addEventListener('click', calculateAge);
+
+    // Trigger on Enter key in input
+    ageInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') calculateAge();
+    });
+
+    // Clear error as user types
+    ageInput.addEventListener('input', () => {
+      if (ageInput.classList.contains('error')) clearError();
+      ageResult.classList.remove('visible');
+      ageNoCalc.classList.remove('visible');
+    });
+
+    codeCopyBtn.addEventListener('click', copyPlanetCode);
+
+    /* ── OPEN MODAL ── */
     function openModal(planet) {
-      // Set content
+      currentPlanet = planet;
+
+      // Content
       modalBadge.textContent = planet.tag;
       modalTitle.textContent = planet.name;
       modalDesc.textContent  = planet.desc;
-      modalLink.href         = planet.page;
 
       // Facts
       modalFacts.innerHTML = planet.facts.map(f => `
@@ -1468,12 +1378,23 @@
         </div>
       `).join('');
 
+      // Age calculator labels
+      calcPlanetName.textContent = planet.name;
+      resetCalcUI();
+
+      // Code block
+      modalCodeBlock.style.display = '';
+      loadPlanetCode(planet);
+
+      // Hide Sun note by default; it'll show on calculate if needed
+      ageNoCalc.classList.remove('visible');
+
       // Video
       modalSrc.src = `media/${planet.file}`;
       modalVideo.load();
       modalVideo.play().catch(() => {});
 
-      // Set blend download link
+      // Blend download
       if (blendMap[planet.id]) {
         modalDownloadBlend.href = blendMap[planet.id];
         modalDownloadBlend.style.display = '';
@@ -1482,21 +1403,17 @@
         modalDownloadBlend.style.display = 'none';
       }
 
-      // Set textures download handler (downloads individual texture files sequentially)
+      // Textures download
       if (textureMap[planet.id] && textureMap[planet.id].length) {
         modalDownloadTextures.style.display = '';
         modalDownloadTextures.disabled = false;
         modalDownloadTextures.onclick = (e) => {
           e.preventDefault();
-          const files = textureMap[planet.id];
-          files.forEach((f, idx) => {
+          textureMap[planet.id].forEach((f, idx) => {
             setTimeout(() => {
               const a = document.createElement('a');
-              a.href = f;
-              a.download = f.split('/').pop();
-              document.body.appendChild(a);
-              a.click();
-              a.remove();
+              a.href = f; a.download = f.split('/').pop();
+              document.body.appendChild(a); a.click(); a.remove();
             }, idx * 250);
           });
         };
@@ -1508,43 +1425,42 @@
       backdrop.classList.add('open');
       document.body.style.overflow = 'hidden';
       modal.scrollTop = 0;
-
-      // Focus trap seed
-      setTimeout(() => fsBtn.focus(), 350);
+      // Focus the age input but avoid scrolling the modal into view.
+      // Use the preventScroll option when available, with safe fallbacks.
+      setTimeout(() => {
+        try {
+          ageInput.focus({ preventScroll: true });
+        } catch (err) {
+          try { ageInput.focus(); } catch (err2) { /* ignore */ }
+        }
+      }, 400);
     }
 
+    /* ── CLOSE MODAL ── */
     function closeModal() {
       backdrop.classList.remove('open');
       document.body.style.overflow = '';
       modalVideo.pause();
       modalSrc.src = '';
       modalVideo.load();
+      currentPlanet = null;
+      currentCodeToken += 1;
     }
 
     closeBtns.forEach(b => b.addEventListener('click', closeModal));
-
-    backdrop.addEventListener('click', (e) => {
-      if (e.target === backdrop) closeModal();
-    });
-
+    backdrop.addEventListener('click', (e) => { if (e.target === backdrop) closeModal(); });
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && backdrop.classList.contains('open')) closeModal();
     });
 
     /* Fullscreen */
     fsBtn.addEventListener('click', () => {
-      if (modalVideo.requestFullscreen) {
-        modalVideo.requestFullscreen();
-      } else if (modalVideo.webkitRequestFullscreen) {
-        modalVideo.webkitRequestFullscreen();
-      } else if (modalVideo.mozRequestFullScreen) {
-        modalVideo.mozRequestFullScreen();
-      }
+      if (modalVideo.requestFullscreen) modalVideo.requestFullscreen();
+      else if (modalVideo.webkitRequestFullscreen) modalVideo.webkitRequestFullscreen();
+      else if (modalVideo.mozRequestFullScreen) modalVideo.mozRequestFullScreen();
     });
 
-    /* ─────────────────────────────────────────────
-       PLANET SELECT NAV
-    ───────────────────────────────────────────── */
+    /* ── PLANET SELECT NAV ── */
     const planetSelect = document.getElementById('planet-select');
     const planetOpen   = document.getElementById('planet-open');
 
@@ -1561,18 +1477,11 @@
   <script>
     if (typeof Starfield !== 'undefined') {
       Starfield.setup({
-        starColor: "rgb(58, 85, 217)",
-        hueJitter: 0,
-        trailLength: 0.8,
-        baseSpeed: 3,
-        maxAcceleration: 2,
-        accelerationRate: 0.05,
-        decelerationRate: 0.05,
-        minSpawnRadius: 80,
-        maxSpawnRadius: 500
+        starColor: "rgb(58, 85, 217)", hueJitter: 0, trailLength: 0.8,
+        baseSpeed: 3, maxAcceleration: 2, accelerationRate: 0.05, decelerationRate: 0.05,
+        minSpawnRadius: 80, maxSpawnRadius: 500
       });
     }
   </script>
 </body>
-
 </html>
