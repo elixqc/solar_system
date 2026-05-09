@@ -1124,10 +1124,12 @@
       <h2 class="section-title">The Videos.</h2>
       <p class="section-lead">Watch the original source material and the final composited rotoscope project.</p>
 
+      <div style="margin-top: 44px; margin-bottom: 24px;">
+      </div>
       <div class="comparison-grid">
         <div class="render-shell" style="grid-template-columns: 1fr; gap: 24px; padding: 24px; margin-top: 0; align-items: start;">
           <div class="video-shell">
-            <video autoplay muted loop playsinline preload="metadata">
+            <video id="ref-video" muted playsinline preload="metadata">
               <source src="WEEKLY/REFERENCE.mp4" type="video/mp4" />
             </video>
           </div>
@@ -1139,12 +1141,10 @@
         </div>
 
         <div class="render-shell" style="grid-template-columns: 1fr; gap: 24px; padding: 24px; margin-top: 0; align-items: start;">
-          <div class="video-shell" style="display: grid; place-items: center; width: 100%; aspect-ratio: 16 / 9; background: #000;">
-            <div style="text-align: center;">
-              <div style="display: inline-flex; align-items: center; min-height: 28px; padding: 0 12px; border-radius: 980px; background: rgba(41, 151, 255, 0.14); color: var(--sky-blue); font-size: 12px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;">Coming Soon</div>
-              <h3 style="margin: 14px 0 0; font-size: 24px; font-weight: 600; color: var(--paper-white);">Final Video Pending</h3>
-              <p style="margin: 8px 0 0; font-size: 15px; color: rgba(255, 255, 255, 0.72);">The rotoscoping process is still underway.</p>
-            </div>
+          <div class="video-shell">
+            <video id="final-video" muted playsinline preload="metadata">
+              <source src="WEEKLY/FINAL.mp4" type="video/mp4" />
+            </video>
           </div>
           <div class="video-caption">
             <div class="meta-kicker">Final Output</div>
@@ -1152,6 +1152,14 @@
             <p>The completed rotoscoped composition with layered audio, animated text overlays, and visual effects.</p>
           </div>
         </div>
+      </div>
+      <div style="display: flex; justify-content: center; margin-top: 32px;">
+        <button id="sync-toggle-btn" class="btn-pill-ghost" style="margin: 0;">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 8px;">
+            <path d="M8 2V14M2 8H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          Play Side by Side
+        </button>
       </div>
     </section>
 
@@ -1427,6 +1435,42 @@
           { label: "Focus", value: "Polishing" },
           { label: "Status", value: "Complete" }
         ]
+      },
+      {
+        num: 8,
+        tag: "Week 08",
+        name: "Color Grading & Effects",
+        file: "WEEKLY/WEEK8.mp4",
+        desc: "Applied advanced color grading to enhance visual consistency across all frames. Added subtle visual effects and transitions between scenes.",
+        facts: [
+          { label: "Phase", value: "Enhancement" },
+          { label: "Focus", value: "Color Grading" },
+          { label: "Status", value: "Complete" }
+        ]
+      },
+      {
+        num: 9,
+        tag: "Week 09",
+        name: "Final Adjustments & Audio Mix",
+        file: "WEEKLY/WEEK9.mp4",
+        desc: "Finalized audio mixing and levels. Made final adjustments to timing and transitions. Prepared all export files for final delivery.",
+        facts: [
+          { label: "Phase", value: "Enhancement" },
+          { label: "Focus", value: "Audio & Timing" },
+          { label: "Status", value: "Complete" }
+        ]
+      },
+      {
+        num: 10,
+        tag: "Week 10",
+        name: "Portfolio & Documentation",
+        file: "WEEKLY/WEEK10.mp4",
+        desc: "Compiled comprehensive project documentation, created portfolio presentations, and prepared final materials for showcase and archival.",
+        facts: [
+          { label: "Phase", value: "Archival" },
+          { label: "Focus", value: "Documentation" },
+          { label: "Status", value: "Complete" }
+        ]
       }
     ];
 
@@ -1554,6 +1598,68 @@
         maxSpawnRadius: 500
       });
     }
+
+    /* ─────────────────────────────────────────────
+       SYNCHRONIZED VIDEO PLAYBACK
+    ───────────────────────────────────────────── */
+    const refVideo = document.getElementById('ref-video');
+    const finalVideo = document.getElementById('final-video');
+    const syncBtn = document.getElementById('sync-toggle-btn');
+    let isSynced = false;
+
+    syncBtn.addEventListener('click', () => {
+      isSynced = !isSynced;
+      syncBtn.style.background = isSynced ? 'var(--action-blue)' : 'transparent';
+      syncBtn.style.color = isSynced ? 'var(--paper-white)' : 'var(--sky-blue)';
+      syncBtn.style.borderColor = isSynced ? 'var(--action-blue)' : 'var(--sky-blue)';
+      
+      // Reset both videos to start
+      refVideo.currentTime = 0;
+      finalVideo.currentTime = 0;
+      
+      if (isSynced) {
+        // Start synchronized playback with audio from final video only
+        refVideo.muted = true;
+        finalVideo.muted = false;
+        refVideo.play();
+        finalVideo.play();
+      } else {
+        // Stop synchronization, pause both, mute final video
+        refVideo.pause();
+        finalVideo.pause();
+        finalVideo.muted = true;
+      }
+    });
+
+    // Keep videos in sync during playback
+    refVideo.addEventListener('play', () => {
+      if (isSynced) finalVideo.play();
+    });
+
+    refVideo.addEventListener('pause', () => {
+      if (isSynced) finalVideo.pause();
+    });
+
+    finalVideo.addEventListener('play', () => {
+      if (isSynced) refVideo.play();
+    });
+
+    finalVideo.addEventListener('pause', () => {
+      if (isSynced) refVideo.pause();
+    });
+
+    // Sync timeline position
+    refVideo.addEventListener('timeupdate', () => {
+      if (isSynced && Math.abs(refVideo.currentTime - finalVideo.currentTime) > 0.1) {
+        finalVideo.currentTime = refVideo.currentTime;
+      }
+    });
+
+    finalVideo.addEventListener('timeupdate', () => {
+      if (isSynced && Math.abs(refVideo.currentTime - finalVideo.currentTime) > 0.1) {
+        refVideo.currentTime = finalVideo.currentTime;
+      }
+    });
   </script>
 </body>
 
