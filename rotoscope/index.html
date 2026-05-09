@@ -932,6 +932,35 @@
       color: var(--paper-white);
     }
 
+    /* ── SYNC BUTTON SPECIAL STYLING ── */
+    #sync-toggle-btn {
+      position: relative;
+      padding: 16px 36px !important;
+      font-size: 18px !important;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      border-radius: 50px !important;
+      box-shadow: 0 8px 24px rgba(41, 151, 255, 0.15);
+      transition: all 0.3s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+
+    #sync-toggle-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(41, 151, 255, 0.25);
+      background: rgba(41, 151, 255, 0.08) !important;
+    }
+
+    #sync-toggle-btn:active {
+      transform: translateY(0);
+    }
+
+    #sync-toggle-btn.active {
+      background: linear-gradient(135deg, var(--action-blue) 0%, var(--sky-blue) 100%) !important;
+      color: var(--paper-white) !important;
+      border-color: var(--sky-blue) !important;
+      box-shadow: 0 16px 40px rgba(41, 151, 255, 0.35);
+    }
+
     footer {
       background: var(--parchment);
       border-top: 1px solid var(--hairline);
@@ -1155,8 +1184,8 @@
       </div>
       <div style="display: flex; justify-content: center; margin-top: 32px;">
         <button id="sync-toggle-btn" class="btn-pill-ghost" style="margin: 0;">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 8px;">
-            <path d="M8 2V14M2 8H14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <svg width="20" height="20" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 10px;">
+            <path d="M8 2V14M2 8H14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
           Play Side by Side
         </button>
@@ -1609,26 +1638,35 @@
 
     syncBtn.addEventListener('click', () => {
       isSynced = !isSynced;
-      syncBtn.style.background = isSynced ? 'var(--action-blue)' : 'transparent';
-      syncBtn.style.color = isSynced ? 'var(--paper-white)' : 'var(--sky-blue)';
-      syncBtn.style.borderColor = isSynced ? 'var(--action-blue)' : 'var(--sky-blue)';
-      
-      // Reset both videos to start
-      refVideo.currentTime = 0;
-      finalVideo.currentTime = 0;
       
       if (isSynced) {
+        // Add active state styling
+        syncBtn.classList.add('active');
+        syncBtn.style.background = 'linear-gradient(135deg, var(--action-blue) 0%, var(--sky-blue) 100%)';
+        syncBtn.style.color = 'var(--paper-white)';
+        syncBtn.style.borderColor = 'var(--sky-blue)';
+        
         // Start synchronized playback with audio from final video only
         refVideo.muted = true;
         finalVideo.muted = false;
         refVideo.play();
         finalVideo.play();
       } else {
+        // Remove active state styling
+        syncBtn.classList.remove('active');
+        syncBtn.style.background = 'transparent';
+        syncBtn.style.color = 'var(--sky-blue)';
+        syncBtn.style.borderColor = 'var(--sky-blue)';
+        
         // Stop synchronization, pause both, mute final video
         refVideo.pause();
         finalVideo.pause();
         finalVideo.muted = true;
       }
+      
+      // Reset both videos to start
+      refVideo.currentTime = 0;
+      finalVideo.currentTime = 0;
     });
 
     // Keep videos in sync during playback
