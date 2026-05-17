@@ -212,7 +212,9 @@
       background: #000; border: 1px solid rgba(255,255,255,0.1); border-bottom: none;
       box-shadow: 0 0 0 1px rgba(41,151,255,0.08), 0 -24px 80px rgba(41,151,255,0.08), inset 0 1px 0 rgba(255,255,255,0.08);
     }
-    .render-frame video { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; background: #000; }
+    .render-frame video,
+    .render-frame iframe { width: 100%; aspect-ratio: 16/9; display: block; background: #000; border: 0; }
+    .render-frame video { object-fit: cover; }
     .render-frame::after {
       content: ""; position: absolute; inset: 0;
       background: repeating-linear-gradient(to bottom, transparent 0px, transparent 3px, rgba(0,0,0,0.04) 3px, rgba(0,0,0,0.04) 4px);
@@ -254,7 +256,9 @@
       transform: translateY(-6px) scale(1.01); border-color: rgba(41,151,255,0.4);
       box-shadow: 0 24px 64px rgba(0,0,0,0.6), 0 0 0 1px rgba(41,151,255,0.2);
     }
-    .planet-video-block video { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; background: #000; }
+    .planet-video-block video,
+    .planet-video-block iframe { width: 100%; aspect-ratio: 16/9; display: block; background: #000; border: 0; pointer-events: none; }
+    .planet-video-block video { object-fit: cover; }
 
     .planet-video-overlay {
       position: absolute; inset: 0;
@@ -307,8 +311,25 @@
     }
     .modal-close:hover { background: rgba(255,255,255,0.16); color: var(--paper-white); }
 
-    .modal-video-shell { position: relative; border-radius: 28px 28px 0 0; overflow: hidden; background: #000; }
-    .modal-video-shell video { width: 100%; aspect-ratio: 16/9; object-fit: cover; display: block; }
+    .modal-video-shell {
+      position: relative;
+      border-radius: 28px 28px 0 0;
+      overflow: hidden;
+      background: #000;
+      aspect-ratio: 16 / 9;
+    }
+    .modal-video-shell video,
+    .modal-video-shell iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      border: 0;
+      background: #000;
+      pointer-events: none;
+    }
+    .modal-video-shell video { object-fit: cover; }
 
     .modal-video-controls { position: absolute; bottom: 20px; right: 20px; display: flex; gap: 10px; }
     .modal-btn {
@@ -814,9 +835,13 @@
         </div>
 
         <div class="render-frame">
-          <video id="render-video" autoplay muted loop playsinline preload="metadata">
-            <source src="media/solar_system.mp4" type="video/mp4" />
-          </video>
+          <iframe
+            id="render-player"
+            src="https://www.youtube-nocookie.com/embed/iW0AsLnhGoE?autoplay=1&mute=1&loop=1&playlist=iW0AsLnhGoE&controls=1&rel=0&modestbranding=1&playsinline=1"
+            title="Whole Solar System render"
+            allow="autoplay; encrypted-media; picture-in-picture"
+            allowfullscreen>
+          </iframe>
         </div>
 
         <div class="render-stats">
@@ -861,7 +886,7 @@
     </div>
     <div class="footer-right">
       Back to <a href="index.html">Blender Home</a><br />
-      Intro render: blender/media/solar-system.mp4
+      Intro render: YouTube iW0AsLnhGoE
       <div class="footer-note">Use the navigation links above to move between solar-system pages.</div>
     </div>
   </footer>
@@ -872,9 +897,17 @@
       <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
 
       <div class="modal-video-shell">
-        <video id="modal-video" autoplay muted loop playsinline preload="metadata">
+        <video id="modal-video" autoplay muted loop playsinline preload="metadata" hidden>
           <source id="modal-video-src" src="" type="video/mp4" />
         </video>
+        <iframe
+          id="modal-youtube"
+          src=""
+          title="Whole Solar System render"
+          allow="autoplay; encrypted-media; picture-in-picture"
+          allowfullscreen
+          hidden>
+        </iframe>
         <div class="modal-video-controls">
           <button class="modal-btn modal-btn-fs" id="modal-fullscreen-btn">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -967,14 +1000,34 @@
 
   <script>
     /* ── RENDER FULLSCREEN ── */
-    const renderVideo = document.getElementById('render-video');
+    const renderPlayer = document.getElementById('render-player');
     const renderFsBtn = document.getElementById('render-fs-btn');
     renderFsBtn.addEventListener('click', () => {
-      const v = renderVideo;
-      if (v.requestFullscreen) v.requestFullscreen();
-      else if (v.webkitRequestFullscreen) v.webkitRequestFullscreen();
-      else if (v.mozRequestFullScreen) v.mozRequestFullScreen();
+      const player = renderPlayer;
+      if (player.requestFullscreen) player.requestFullscreen();
+      else if (player.webkitRequestFullscreen) player.webkitRequestFullscreen();
+      else if (player.mozRequestFullScreen) player.mozRequestFullScreen();
     });
+
+    const youtubeIds = {
+      sun: 'bqnrUin0qUU',
+      mercury: 'ibj9WRVkW1k',
+      venus: '6M6wO3OSmJY',
+      earth: 'FFYPBa2T0f8',
+      mars: 'OH76VCvgAEA',
+      jupiter: '_kHSee2pTvw',
+      saturn: 'SmDZkMTPTM8',
+      uranus: '6286ZWRbLfs',
+      neptune: 'Mx5pO1axJFs',
+      pluto: 'AhLoCXlzAFs',
+      whole_solar: 'iW0AsLnhGoE'
+    };
+
+    function getYoutubeEmbedUrl(videoId) {
+      return `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3&fs=0&disablekb=1`;
+    }
+
+    const wholeSolarYoutubeUrl = getYoutubeEmbedUrl(youtubeIds.whole_solar);
 
     /* ── PLANET DATA ── */
     const planets = [
@@ -1103,7 +1156,7 @@
 
     // Whole-solar project entry (UI access for downloadable .blend and notes)
     const wholePlanet = {
-      id: 'whole_solar', tag: 'Project', name: 'Whole Solar System', file: 'solar_system.mp4', page: 'index.html',
+      id: 'whole_solar', tag: 'Project', name: 'Whole Solar System', file: '', page: 'index.html',
       orbitalPeriod: 1, desc: 'Full solar system render and project files.', facts: [
         { label: 'Content', value: 'Full render + assets' },
         { label: 'Format', value: 'Blender .blend + textures + notes' },
@@ -1123,9 +1176,12 @@
       block.setAttribute('aria-label', `Open ${planet.name} details`);
 
       block.innerHTML = `
-        <video autoplay muted loop playsinline preload="metadata">
-          <source src="media/${planet.file}" type="video/mp4" />
-        </video>
+        <iframe
+          src="${getYoutubeEmbedUrl(youtubeIds[planet.id])}"
+          title="${planet.name} render"
+          allow="autoplay; encrypted-media; picture-in-picture"
+          allowfullscreen>
+        </iframe>
         <div class="planet-video-overlay">
           <div class="planet-video-tag">${planet.tag}</div>
           <div class="planet-video-name">${planet.name}</div>
@@ -1160,6 +1216,7 @@
     const modal                = document.getElementById('modal');
     const modalVideo           = document.getElementById('modal-video');
     const modalSrc             = document.getElementById('modal-video-src');
+    const modalYoutube         = document.getElementById('modal-youtube');
     const modalBadge           = document.getElementById('modal-badge');
     const modalTitle           = document.getElementById('modal-planet-title');
     const modalDesc            = document.getElementById('modal-desc');
@@ -1416,10 +1473,12 @@
       // Hide Sun note by default; it'll show on calculate if needed
       ageNoCalc.classList.remove('visible');
 
-      // Video
-      modalSrc.src = `media/${planet.file}`;
-      modalVideo.load();
-      modalVideo.play().catch(() => {});
+      // Video / embedded source
+      modalVideo.pause();
+      modalVideo.hidden = true;
+      modalSrc.src = '';
+      modalYoutube.hidden = false;
+      modalYoutube.src = getYoutubeEmbedUrl(youtubeIds[planet.id] || youtubeIds.whole_solar);
 
       // Blend download
       if (blendMap[planet.id]) {
@@ -1470,6 +1529,9 @@
       modalVideo.pause();
       modalSrc.src = '';
       modalVideo.load();
+      modalVideo.hidden = true;
+      modalYoutube.src = '';
+      modalYoutube.hidden = true;
       currentPlanet = null;
       currentCodeToken += 1;
     }
@@ -1482,9 +1544,9 @@
 
     /* Fullscreen */
     fsBtn.addEventListener('click', () => {
-      if (modalVideo.requestFullscreen) modalVideo.requestFullscreen();
-      else if (modalVideo.webkitRequestFullscreen) modalVideo.webkitRequestFullscreen();
-      else if (modalVideo.mozRequestFullScreen) modalVideo.mozRequestFullScreen();
+      if (modalYoutube.requestFullscreen) modalYoutube.requestFullscreen();
+      else if (modalYoutube.webkitRequestFullscreen) modalYoutube.webkitRequestFullscreen();
+      else if (modalYoutube.mozRequestFullScreen) modalYoutube.mozRequestFullScreen();
     });
 
     /* Planet selector removed from hero; no JS needed. */
