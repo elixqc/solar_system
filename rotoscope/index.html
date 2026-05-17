@@ -379,6 +379,7 @@
     }
 
     .video-shell {
+      position: relative;
       overflow: hidden;
       border-radius: 18px;
       background: #000;
@@ -390,6 +391,66 @@
       aspect-ratio: 16 / 9;
       object-fit: cover;
       background: #000;
+    }
+
+    .video-loading {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      display: grid;
+      place-items: center;
+      padding: 16px;
+      background: radial-gradient(circle at center, rgba(20, 20, 22, 0.74), rgba(0, 0, 0, 0.92));
+      color: rgba(255, 255, 255, 0.86);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: opacity 0.25s ease;
+      pointer-events: none;
+    }
+
+    .video-shell.ready .video-loading {
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .video-fullscreen-btn {
+      position: absolute;
+      right: 14px;
+      bottom: 14px;
+      z-index: 5;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-height: 34px;
+      padding: 0 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      background: rgba(0, 0, 0, 0.55);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      color: var(--paper-white);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      cursor: pointer;
+      transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+    }
+
+    .video-fullscreen-btn:hover {
+      background: rgba(0, 0, 0, 0.72);
+      border-color: rgba(255, 255, 255, 0.36);
+    }
+
+    .video-fullscreen-btn:active {
+      transform: scale(0.96);
+    }
+
+    .video-fullscreen-btn svg {
+      width: 14px;
+      height: 14px;
+      flex: 0 0 auto;
     }
 
     .video-caption {
@@ -483,6 +544,80 @@
     .details-card .inline-link {
       color: var(--action-blue);
       font-weight: 600;
+    }
+
+    .credits-wrap {
+      margin-top: 44px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(260px, 0.75fr);
+      gap: 20px;
+      align-items: stretch;
+      max-width: 72rem;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .credits-card {
+      height: 100%;
+      padding: 28px;
+      border-radius: 18px;
+      background: var(--parchment);
+      border: 1px solid var(--hairline);
+    }
+
+    .credits-card h3 {
+      margin: 0 0 12px;
+      font-size: 24px;
+      line-height: 1.1;
+      letter-spacing: -0.04em;
+      font-weight: 600;
+      color: var(--near-black);
+    }
+
+    .credits-card p {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.58;
+      color: var(--muted-80);
+    }
+
+    .credits-note + .credits-note {
+      margin-top: 16px;
+    }
+
+    .credit-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 14px;
+    }
+
+    .credit-list li {
+      display: grid;
+      gap: 4px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--hairline);
+    }
+
+    .credit-list li:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .credit-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted-48);
+    }
+
+    .credit-value {
+      font-size: 15px;
+      line-height: 1.5;
+      color: var(--near-black);
+      word-break: break-word;
     }
 
     .section-lead {
@@ -935,13 +1070,23 @@
     /* ── SYNC BUTTON SPECIAL STYLING ── */
     #sync-toggle-btn {
       position: relative;
-      padding: 16px 36px !important;
-      font-size: 18px !important;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 30px !important;
+      font-size: 17px !important;
       font-weight: 600;
       letter-spacing: -0.02em;
       border-radius: 50px !important;
-      box-shadow: 0 8px 24px rgba(41, 151, 255, 0.15);
+      box-shadow: 0 8px 24px rgba(41, 151, 255, 0.16);
       transition: all 0.3s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+
+    .btn-icon {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 auto;
     }
 
     #sync-toggle-btn:hover {
@@ -959,6 +1104,68 @@
       color: var(--paper-white) !important;
       border-color: var(--sky-blue) !important;
       box-shadow: 0 16px 40px rgba(41, 151, 255, 0.35);
+    }
+
+    .compare-controls {
+      margin-top: 26px;
+      max-width: 52rem;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 18px 18px 14px;
+      border-radius: 16px;
+      background: var(--parchment);
+      border: 1px solid var(--hairline);
+      display: grid;
+      gap: 10px;
+    }
+
+    .compare-controls-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted-48);
+    }
+
+    .compare-time {
+      font-variant-numeric: tabular-nums;
+      font-size: 12px;
+      color: var(--muted-80);
+    }
+
+    .compare-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 8px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--action-blue) var(--progress, 0%), #d6d6da var(--progress, 0%));
+      outline: none;
+      cursor: pointer;
+    }
+
+    .compare-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--paper-white);
+      border: 2px solid var(--action-blue);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .compare-slider::-moz-range-thumb {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--paper-white);
+      border: 2px solid var(--action-blue);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     }
 
     footer {
@@ -1056,6 +1263,10 @@
         grid-template-columns: repeat(2, 1fr);
       }
 
+      .compare-controls {
+        padding: 14px;
+      }
+
       .modal-body {
         grid-template-columns: 1fr;
         padding: 24px;
@@ -1063,6 +1274,10 @@
 
       .modal-facts {
         grid-template-columns: 1fr 1fr;
+      }
+
+      .credits-wrap {
+        grid-template-columns: 1fr;
       }
 
       .footer-right {
@@ -1158,9 +1373,16 @@
       <div class="comparison-grid">
         <div class="render-shell" style="grid-template-columns: 1fr; gap: 24px; padding: 24px; margin-top: 0; align-items: start;">
           <div class="video-shell">
-            <video id="ref-video" muted playsinline preload="metadata">
+            <video id="ref-video" muted playsinline preload="auto">
               <source src="WEEKLY/REFERENCE.mp4" type="video/mp4" />
             </video>
+            <div class="video-loading" id="ref-video-loading">Loading video...</div>
+            <button id="ref-video-fs" class="video-fullscreen-btn" type="button" aria-label="Open reference video fullscreen">
+              <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M1.5 6V1.5H6M10 1.5H14.5V6M14.5 10V14.5H10M6 14.5H1.5V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Fullscreen
+            </button>
           </div>
           <div class="video-caption">
             <div class="meta-kicker">Source Material</div>
@@ -1171,9 +1393,16 @@
 
         <div class="render-shell" style="grid-template-columns: 1fr; gap: 24px; padding: 24px; margin-top: 0; align-items: start;">
           <div class="video-shell">
-            <video id="final-video" muted playsinline preload="metadata">
+            <video id="final-video" muted playsinline preload="auto">
               <source src="WEEKLY/FINAL.mp4" type="video/mp4" />
             </video>
+            <div class="video-loading" id="final-video-loading">Loading video...</div>
+            <button id="final-video-fs" class="video-fullscreen-btn" type="button" aria-label="Open final video fullscreen">
+              <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M1.5 6V1.5H6M10 1.5H14.5V6M14.5 10V14.5H10M6 14.5H1.5V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Fullscreen
+            </button>
           </div>
           <div class="video-caption">
             <div class="meta-kicker">Final Output</div>
@@ -1184,11 +1413,18 @@
       </div>
       <div style="display: flex; justify-content: center; margin-top: 32px;">
         <button id="sync-toggle-btn" class="btn-pill-ghost" style="margin: 0;">
-          <svg width="20" height="20" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" style="margin-right: 10px;">
-            <path d="M8 2V14M2 8H14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <svg class="btn-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path id="sync-btn-icon" d="M5 3.5L12 8L5 12.5V3.5Z" fill="currentColor"/>
           </svg>
-          Play Side by Side
+          <span id="sync-btn-text">Play Side by Side</span>
         </button>
+      </div>
+      <div class="compare-controls" aria-label="Synchronized timeline controls">
+        <div class="compare-controls-top">
+          <span>Shared Timeline</span>
+          <span class="compare-time" id="compare-time-label">00:00 / 00:00</span>
+        </div>
+        <input id="compare-scrubber" class="compare-slider" type="range" min="0" max="100" step="0.05" value="0" aria-label="Drag to seek both videos" />
       </div>
     </section>
 
@@ -1247,44 +1483,68 @@
       <div class="details-grid">
         <div class="details-card">
           <div class="meta-kicker">Week 1</div>
-          <h3>Research & Planning</h3>
-          <p>Explored rotoscoping techniques and reference videos. Selected the source live-action footage and outlined
-            the overall creative direction of the project. Identified the tools and software to be used.</p>
+          <h3>Dancer Rotoscope Start</h3>
+          <p>Started the dancer rotoscope project by preparing the footage and tracing the first frames to establish clean shape and movement direction.</p>
         </div>
         <div class="details-card">
           <div class="meta-kicker">Week 2</div>
-          <h3>Initial Frame Tracing</h3>
-          <p>Began frame-by-frame rotoscoping of the source footage. Focused on establishing consistent outlines for the
-            subject. Completed approximately the first third of the video sequence.</p>
+          <h3>Frame-by-Frame Tracing</h3>
+          <p>Continued rotoscoping the dancer with focus on consistent outlines, body proportions, and smooth transition between poses.</p>
         </div>
         <div class="details-card">
           <div class="meta-kicker">Week 3</div>
-          <h3>Continued Tracing & Refinement</h3>
-          <p>Continued tracing through the middle section of the footage. Revisited earlier frames for cleanup and
-            consistency. Began experimenting with color and style for the animated overlay layer.</p>
+          <h3>Motion Cleanup</h3>
+          <p>Refined traced frames and corrected edge jitter to improve motion flow as the dancer moves through faster sequences.</p>
         </div>
         <div class="details-card">
           <div class="meta-kicker">Week 4</div>
-          <h3>Compositing & Audio</h3>
-          <p>Completed tracing of all frames. Composited the rotoscoped layer with background elements. Integrated
-            background audio and sound effects, syncing them to key motion moments in the video.</p>
+          <h3>Detail Pass</h3>
+          <p>Added details to limbs, clothing, and silhouette depth so the dancer's motion reads clearly in every key pose.</p>
         </div>
         <div class="details-card">
           <div class="meta-kicker">Week 5</div>
-          <h3>Text Overlays & Final Export</h3>
-          <p>Added typographic elements including title cards and animated text. Performed final color grading. Exported
-            the completed video at full quality and prepared all project documentation and credits.</p>
+          <h3>Continuing Dancer Rotoscope</h3>
+          <p>Extended frame-by-frame tracing across the next sequence and aligned timing so movement rhythm stays natural.</p>
         </div>
         <div class="details-card">
           <div class="meta-kicker">Week 6</div>
-          <h3>Final Review & Submission</h3>
-          <p>Conducted a final pass for quality assurance: fixed minor timing issues, optimized exports for web, and
-            compiled supporting documentation. Submitted the project and prepared presentation materials.</p>
+          <h3>Refinement and Consistency</h3>
+          <p>Adjusted frame consistency across cuts, cleaned stray line artifacts, and maintained dancer proportions from start to end.</p>
+        </div>
+        <div class="details-card">
+          <div class="meta-kicker">Week 7</div>
+          <h3>Middle Sequence Rotoscope</h3>
+          <p>Finished the middle section of the dancer sequence and corrected transitions between turns, spins, and directional changes.</p>
+        </div>
+        <div class="details-card">
+          <div class="meta-kicker">Week 8</div>
+          <h3>Action Segment Tracing</h3>
+          <p>Focused on dynamic movement sections with careful redraws to preserve clarity during rapid dancer motion.</p>
+        </div>
+        <div class="details-card">
+          <div class="meta-kicker">Week 9</div>
+          <h3>Advanced Cleanup</h3>
+          <p>Performed another cleanup pass and removed visual inconsistencies so the dancer rotoscope looks stable across the timeline.</p>
+        </div>
+        <div class="details-card">
+          <div class="meta-kicker">Week 10</div>
+          <h3>Near-Complete Rotoscope</h3>
+          <p>Completed most of the dancer rotoscope sequence and reviewed pacing before moving to the final remaining shots.</p>
         </div>
         <div class="details-card">
           <div class="meta-kicker">Week 11</div>
-          <h3>Final Polish & Archival</h3>
-          <p>Applied final color grading refinements and audio mixing adjustments. Compiled comprehensive project documentation and prepared archival materials for long-term storage and portfolio showcase.</p>
+          <h3>Dancer Rotoscope Complete</h3>
+          <p>Wrapped up the dancer rotoscope work and prepared the full sequence for text integration and final composition.</p>
+        </div>
+        <div class="details-card">
+          <div class="meta-kicker">Week 12</div>
+          <h3>Lyrics Integration</h3>
+          <p>Added lyrics to the video and synced text timing with the beat and dancer motion to improve storytelling and flow.</p>
+        </div>
+        <div class="details-card">
+          <div class="meta-kicker">Week 13</div>
+          <h3>Finalizing Video</h3>
+          <p>Finalized the full project by polishing transitions, reviewing audio sync, and exporting the finished rotoscope video output.</p>
         </div>
       </div>
     </section>
@@ -1305,27 +1565,35 @@
       <div class="section-eyebrow">05 — Attribution</div>
       <h2 class="section-title">Disclaimer & Credits.</h2>
 
-      <div class="info-card" style="margin-top: 44px; max-width: 60rem;">
-        <h3>Important Notice</h3>
-        <p style="margin-bottom: 16px;">The live-action source footage used in this rotoscoping project is <strong>not
-            owned by the creator</strong> of this project. All rights to the original video belong to its respective
-          copyright holder.</p>
+      <div class="credits-wrap">
+        <article class="credits-card" aria-label="Disclaimer details">
+          <h3>Important Notice</h3>
+          <p class="credits-note">The live-action source footage used in this rotoscoping project is <strong>not owned by the creator</strong> of this portfolio piece. All rights to the original video remain with the respective copyright holder.</p>
+          <p class="credits-note">This work was produced <strong>for academic and educational purposes only</strong> as part of the <em>Multimedia & Authoring</em> course requirement. No commercial distribution or monetization is intended.</p>
+          <p class="credits-note"><strong>No copyright infringement is intended.</strong> If you are the rightful owner and have concerns regarding usage, please reach out directly.</p>
+        </article>
 
-        <p style="margin-bottom: 16px;">
-          <strong>Original Video:</strong> <em>Urban Dance Choreography Highlight</em><br>
-          <strong>Original Creator / Channel:</strong> <em>DanceVibe Studios</em><br>
-          <strong>Source Platform:</strong> <em>YouTube</em><br>
-          <strong>Original URL:</strong> <a href="https://youtube.com/watch?v=4SdJ2IHkHc8" class="inline-link"
-            target="_blank">https://youtube.com/watch?v=4SdJ2IHkHc8</a>
-        </p>
-
-        <p style="margin-bottom: 16px;">This project was created <strong>solely for academic and educational
-            purposes</strong> as part of the <em>Multimedia & Authoring</em> course requirement. No commercial use,
-          distribution, or monetization is intended. All rotoscoped and composite elements were produced by the student
-          author.</p>
-
-        <p><strong>No copyright infringement is intended.</strong> If you are the rightful owner and have concerns
-          regarding the use of this footage, please reach out directly.</p>
+        <aside class="credits-card" aria-label="Credits">
+          <h3>Credits</h3>
+          <ul class="credit-list">
+            <li>
+              <span class="credit-label">Original Video</span>
+              <span class="credit-value"><em>Urban Dance Choreography Highlight</em></span>
+            </li>
+            <li>
+              <span class="credit-label">Creator / Channel</span>
+              <span class="credit-value"><em>DanceVibe Studios</em></span>
+            </li>
+            <li>
+              <span class="credit-label">Source Platform</span>
+              <span class="credit-value"><em>YouTube</em></span>
+            </li>
+            <li>
+              <span class="credit-label">Original URL</span>
+              <span class="credit-value"><a href="https://youtube.com/watch?v=4SdJ2IHkHc8" class="inline-link" target="_blank" rel="noopener noreferrer">https://youtube.com/watch?v=4SdJ2IHkHc8</a></span>
+            </li>
+          </ul>
+        </aside>
       </div>
     </section>
   </main>
@@ -1388,21 +1656,21 @@
       {
         num: 1,
         tag: "Week 01",
-        name: "Research & Planning",
+        name: "Dancer Rotoscope Start",
         file: "WEEKLY/WEEK1.mp4",
-        desc: "Explored rotoscoping techniques and reference videos. Selected the source live-action footage and outlined the overall creative direction of the project.",
+        desc: "Started the dancer rotoscope project by preparing footage and tracing the first frames.",
         facts: [
-          { label: "Phase", value: "Pre-production" },
-          { label: "Focus", value: "Research" },
+          { label: "Phase", value: "Production" },
+          { label: "Focus", value: "Rotoscope" },
           { label: "Status", value: "Complete" }
         ]
       },
       {
         num: 2,
         tag: "Week 02",
-        name: "Initial Frame Tracing",
+        name: "Frame-by-Frame Tracing",
         file: "WEEKLY/WEEK2.mp4",
-        desc: "Began frame-by-frame rotoscoping of the source footage. Focused on establishing consistent outlines for the subject.",
+        desc: "Continued frame-by-frame tracing of the dancer with focus on consistent outlines.",
         facts: [
           { label: "Phase", value: "Production" },
           { label: "Focus", value: "Tracing" },
@@ -1412,9 +1680,9 @@
       {
         num: 3,
         tag: "Week 03",
-        name: "Continued Tracing",
+        name: "Motion Cleanup",
         file: "WEEKLY/WEEK3.mp4",
-        desc: "Continued tracing through the middle section of the footage. Revisited earlier frames for cleanup and consistency.",
+        desc: "Refined traced frames and corrected edge jitter to improve motion flow.",
         facts: [
           { label: "Phase", value: "Production" },
           { label: "Focus", value: "Cleanup" },
@@ -1424,9 +1692,9 @@
       {
         num: 4,
         tag: "Week 04",
-        name: "Tracing Refinement",
+        name: "Detail Pass",
         file: "WEEKLY/WEEK4.mp4",
-        desc: "Refined the traced outlines across all completed frames. Began experimenting with color and style for the animated overlay layer.",
+        desc: "Added detail on dancer silhouette and major body movements for clearer visual readability.",
         facts: [
           { label: "Phase", value: "Production" },
           { label: "Focus", value: "Refinement" },
@@ -1436,12 +1704,12 @@
       {
         num: 5,
         tag: "Week 05",
-        name: "Compositing Begins",
+        name: "Continuing Dancer Rotoscope",
         file: "WEEKLY/WEEK5.mp4",
-        desc: "Started compositing the rotoscoped layer with background elements. Ensuring proper depth ordering and blending modes.",
+        desc: "Extended frame-by-frame tracing for the next sequence and aligned movement timing.",
         facts: [
-          { label: "Phase", value: "Post-production" },
-          { label: "Focus", value: "Compositing" },
+          { label: "Phase", value: "Production" },
+          { label: "Focus", value: "Rotoscope" },
           { label: "Status", value: "Complete" }
         ]
       }
@@ -1449,72 +1717,96 @@
       {
         num: 6,
         tag: "Week 06",
-        name: "Final Review & Submission",
+        name: "Refinement and Consistency",
         file: "WEEKLY/WEEK6.mp4",
-        desc: "Finalized the composition with quality checks, export optimizations, and prepared documentation for submission.",
+        desc: "Adjusted consistency and cleaned artifacts across dancer frames.",
         facts: [
-          { label: "Phase", value: "Delivery" },
-          { label: "Focus", value: "QA & Export" },
+          { label: "Phase", value: "Production" },
+          { label: "Focus", value: "Consistency" },
           { label: "Status", value: "Complete" }
         ]
       },
       {
         num: 7,
         tag: "Week 07",
-        name: "Post-Submission Refinements",
+        name: "Middle Sequence Rotoscope",
         file: "WEEKLY/WEEK7.mp4",
-        desc: "Additional refinements, minor edits, and final polish after review.",
+        desc: "Finished rotoscoping the middle dancer sequence and transition frames.",
         facts: [
-          { label: "Phase", value: "Maintenance" },
-          { label: "Focus", value: "Polishing" },
+          { label: "Phase", value: "Production" },
+          { label: "Focus", value: "Rotoscope" },
           { label: "Status", value: "Complete" }
         ]
       },
       {
         num: 8,
         tag: "Week 08",
-        name: "Color Grading & Effects",
+        name: "Action Segment Tracing",
         file: "WEEKLY/WEEK8.mp4",
-        desc: "Applied advanced color grading to enhance visual consistency across all frames. Added subtle visual effects and transitions between scenes.",
+        desc: "Focused on dynamic dancer movement sections and stabilized fast frame changes.",
         facts: [
-          { label: "Phase", value: "Enhancement" },
-          { label: "Focus", value: "Color Grading" },
+          { label: "Phase", value: "Production" },
+          { label: "Focus", value: "Dynamic Motion" },
           { label: "Status", value: "Complete" }
         ]
       },
       {
         num: 9,
         tag: "Week 09",
-        name: "Final Adjustments & Audio Mix",
+        name: "Advanced Cleanup",
         file: "WEEKLY/WEEK9.mp4",
-        desc: "Finalized audio mixing and levels. Made final adjustments to timing and transitions. Prepared all export files for final delivery.",
+        desc: "Performed full cleanup pass to keep dancer rotoscope stable across the timeline.",
         facts: [
-          { label: "Phase", value: "Enhancement" },
-          { label: "Focus", value: "Audio & Timing" },
+          { label: "Phase", value: "Production" },
+          { label: "Focus", value: "Cleanup" },
           { label: "Status", value: "Complete" }
         ]
       },
       {
         num: 10,
         tag: "Week 10",
-        name: "Portfolio & Documentation",
+        name: "Near-Complete Rotoscope",
         file: "WEEKLY/WEEK10.mp4",
-        desc: "Compiled comprehensive project documentation, created portfolio presentations, and prepared final materials for showcase and archival.",
+        desc: "Completed most dancer rotoscope shots and reviewed pacing.",
         facts: [
-          { label: "Phase", value: "Archival" },
-          { label: "Focus", value: "Documentation" },
+          { label: "Phase", value: "Production" },
+          { label: "Focus", value: "Rotoscope" },
           { label: "Status", value: "Complete" }
         ]
       },
       {
         num: 11,
         tag: "Week 11",
-        name: "Final Polish & Archival",
+        name: "Dancer Rotoscope Complete",
         file: "WEEKLY/WEEK11.mp4",
-        desc: "Applied final color grading refinements and audio mixing adjustments. Compiled comprehensive project documentation and prepared archival materials.",
+        desc: "Wrapped up all dancer rotoscope work and prepared sequence for final text integration.",
         facts: [
-          { label: "Phase", value: "Archival" },
-          { label: "Focus", value: "Final Polish" },
+          { label: "Phase", value: "Production" },
+          { label: "Focus", value: "Rotoscope Complete" },
+          { label: "Status", value: "Complete" }
+        ]
+      },
+      {
+        num: 12,
+        tag: "Week 12",
+        name: "Lyrics Integration",
+        file: "",
+        desc: "Added lyrics and synced text timing with beat and dancer movement.",
+        facts: [
+          { label: "Phase", value: "Post-production" },
+          { label: "Focus", value: "Lyrics" },
+          { label: "Status", value: "Complete" }
+        ]
+      },
+      {
+        num: 13,
+        tag: "Week 13",
+        name: "Finalizing Video",
+        file: "",
+        desc: "Finalized transitions, checked audio sync, and exported the completed video.",
+        facts: [
+          { label: "Phase", value: "Delivery" },
+          { label: "Focus", value: "Final Export" },
           { label: "Status", value: "Complete" }
         ]
       }
@@ -1651,70 +1943,161 @@
     const refVideo = document.getElementById('ref-video');
     const finalVideo = document.getElementById('final-video');
     const syncBtn = document.getElementById('sync-toggle-btn');
-    let isSynced = false;
+    const syncBtnText = document.getElementById('sync-btn-text');
+    const syncBtnIcon = document.getElementById('sync-btn-icon');
+    const scrubber = document.getElementById('compare-scrubber');
+    const timeLabel = document.getElementById('compare-time-label');
+    const refVideoFsBtn = document.getElementById('ref-video-fs');
+    const finalVideoFsBtn = document.getElementById('final-video-fs');
+    const refVideoShell = refVideo.closest('.video-shell');
+    const finalVideoShell = finalVideo.closest('.video-shell');
+    let isPlaying = false;
+    let isScrubbing = false;
+    const DRIFT_TOLERANCE = 0.12;
+
+    function bindLoadingState(video, shell) {
+      const markReady = () => shell.classList.add('ready');
+      const markLoading = () => shell.classList.remove('ready');
+
+      video.addEventListener('loadstart', markLoading);
+      video.addEventListener('waiting', markLoading);
+      video.addEventListener('stalled', markLoading);
+      video.addEventListener('loadeddata', markReady);
+      video.addEventListener('canplay', markReady);
+      video.addEventListener('playing', markReady);
+      video.addEventListener('error', markLoading);
+    }
+
+    function requestVideoFullscreen(video) {
+      if (video.requestFullscreen) {
+        video.requestFullscreen();
+      } else if (video.webkitRequestFullscreen) {
+        video.webkitRequestFullscreen();
+      } else if (video.msRequestFullscreen) {
+        video.msRequestFullscreen();
+      }
+    }
+
+    function getSharedDuration() {
+      const refDur = Number.isFinite(refVideo.duration) ? refVideo.duration : 0;
+      const finalDur = Number.isFinite(finalVideo.duration) ? finalVideo.duration : 0;
+      if (refDur > 0 && finalDur > 0) return Math.min(refDur, finalDur);
+      return Math.max(refDur, finalDur, 0);
+    }
+
+    function formatClock(seconds) {
+      const safeSeconds = Math.max(0, Math.floor(seconds || 0));
+      const mins = Math.floor(safeSeconds / 60);
+      const secs = safeSeconds % 60;
+      return `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+
+    function updateButtonState() {
+      if (isPlaying) {
+        syncBtn.classList.add('active');
+        syncBtnText.textContent = 'Pause Side by Side';
+        syncBtnIcon.setAttribute('d', 'M4.5 3H6.8V13H4.5V3ZM9.2 3H11.5V13H9.2V3Z');
+      } else {
+        syncBtn.classList.remove('active');
+        syncBtnText.textContent = 'Play Side by Side';
+        syncBtnIcon.setAttribute('d', 'M5 3.5L12 8L5 12.5V3.5Z');
+      }
+    }
+
+    function updateTimelineUI(current = 0) {
+      const duration = getSharedDuration();
+      const clampedCurrent = Math.min(current, duration || 0);
+      const progress = duration > 0 ? (clampedCurrent / duration) * 100 : 0;
+      scrubber.value = String(clampedCurrent);
+      scrubber.style.setProperty('--progress', `${progress}%`);
+      timeLabel.textContent = `${formatClock(clampedCurrent)} / ${formatClock(duration)}`;
+    }
+
+    function seekBoth(targetTime) {
+      const duration = getSharedDuration();
+      const safeTime = Math.max(0, Math.min(targetTime, duration || 0));
+      refVideo.currentTime = safeTime;
+      finalVideo.currentTime = safeTime;
+      updateTimelineUI(safeTime);
+    }
+
+    function playBoth() {
+      refVideo.muted = true;
+      finalVideo.muted = false;
+      refVideo.currentTime = finalVideo.currentTime;
+      Promise.all([refVideo.play(), finalVideo.play()]).then(() => {
+        isPlaying = true;
+        updateButtonState();
+      }).catch(() => {
+        isPlaying = false;
+        updateButtonState();
+      });
+    }
+
+    function pauseBoth() {
+      refVideo.pause();
+      finalVideo.pause();
+      isPlaying = false;
+      updateButtonState();
+    }
 
     syncBtn.addEventListener('click', () => {
-      isSynced = !isSynced;
-      
-      if (isSynced) {
-        // Add active state styling
-        syncBtn.classList.add('active');
-        syncBtn.style.background = 'linear-gradient(135deg, var(--action-blue) 0%, var(--sky-blue) 100%)';
-        syncBtn.style.color = 'var(--paper-white)';
-        syncBtn.style.borderColor = 'var(--sky-blue)';
-        
-        // Start synchronized playback with audio from final video only
-        refVideo.muted = true;
-        finalVideo.muted = false;
-        refVideo.play();
-        finalVideo.play();
+      if (isPlaying) {
+        pauseBoth();
       } else {
-        // Remove active state styling
-        syncBtn.classList.remove('active');
-        syncBtn.style.background = 'transparent';
-        syncBtn.style.color = 'var(--sky-blue)';
-        syncBtn.style.borderColor = 'var(--sky-blue)';
-        
-        // Stop synchronization, pause both, mute final video
-        refVideo.pause();
-        finalVideo.pause();
-        finalVideo.muted = true;
-      }
-      
-      // Reset both videos to start
-      refVideo.currentTime = 0;
-      finalVideo.currentTime = 0;
-    });
-
-    // Keep videos in sync during playback
-    refVideo.addEventListener('play', () => {
-      if (isSynced) finalVideo.play();
-    });
-
-    refVideo.addEventListener('pause', () => {
-      if (isSynced) finalVideo.pause();
-    });
-
-    finalVideo.addEventListener('play', () => {
-      if (isSynced) refVideo.play();
-    });
-
-    finalVideo.addEventListener('pause', () => {
-      if (isSynced) refVideo.pause();
-    });
-
-    // Sync timeline position
-    refVideo.addEventListener('timeupdate', () => {
-      if (isSynced && Math.abs(refVideo.currentTime - finalVideo.currentTime) > 0.1) {
-        finalVideo.currentTime = refVideo.currentTime;
+        playBoth();
       }
     });
+
+    scrubber.addEventListener('pointerdown', () => {
+      isScrubbing = true;
+    });
+
+    scrubber.addEventListener('pointerup', () => {
+      isScrubbing = false;
+    });
+
+    scrubber.addEventListener('pointercancel', () => {
+      isScrubbing = false;
+    });
+
+    scrubber.addEventListener('input', (event) => {
+      const value = parseFloat(event.target.value || '0');
+      seekBoth(value);
+    });
+
+    const durationSetup = () => {
+      const sharedDuration = getSharedDuration();
+      scrubber.max = String(sharedDuration || 100);
+      updateTimelineUI(0);
+    };
+
+    refVideo.addEventListener('loadedmetadata', durationSetup);
+    finalVideo.addEventListener('loadedmetadata', durationSetup);
+
+    bindLoadingState(refVideo, refVideoShell);
+    bindLoadingState(finalVideo, finalVideoShell);
 
     finalVideo.addEventListener('timeupdate', () => {
-      if (isSynced && Math.abs(refVideo.currentTime - finalVideo.currentTime) > 0.1) {
-        refVideo.currentTime = finalVideo.currentTime;
+      if (!isScrubbing) {
+        const drift = Math.abs(refVideo.currentTime - finalVideo.currentTime);
+        if (drift > DRIFT_TOLERANCE) {
+          refVideo.currentTime = finalVideo.currentTime;
+        }
+        updateTimelineUI(finalVideo.currentTime);
       }
     });
+
+    finalVideo.addEventListener('ended', () => {
+      pauseBoth();
+      seekBoth(0);
+    });
+
+    refVideoFsBtn.addEventListener('click', () => requestVideoFullscreen(refVideo));
+    finalVideoFsBtn.addEventListener('click', () => requestVideoFullscreen(finalVideo));
+
+    updateButtonState();
+    updateTimelineUI(0);
   </script>
 </body>
 
