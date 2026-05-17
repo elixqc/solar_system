@@ -106,11 +106,6 @@
       position: relative;
     }
 
-    .nav-dropdown {
-      padding-bottom: 12px;
-      margin-bottom: -12px;
-    }
-
     .nav-links a {
       display: inline-flex;
       align-items: center;
@@ -127,76 +122,6 @@
       color: var(--paper-white);
     }
 
-    .nav-dropdown>a::after {
-      content: "▾";
-      margin-left: 6px;
-      font-size: 10px;
-      line-height: 1;
-      opacity: 0.7;
-    }
-
-    .nav-submenu {
-      position: absolute;
-      top: calc(100% + 2px);
-      left: 50%;
-      transform: translateX(-50%) translateY(8px);
-      min-width: 220px;
-      padding: 12px 10px 10px;
-      border-radius: 18px;
-      background: rgba(29, 29, 31, 0.96);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      box-shadow: rgba(0, 0, 0, 0.35) 0 18px 44px;
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-      transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s ease;
-      z-index: 300;
-    }
-
-    .nav-dropdown--end .nav-submenu {
-      left: auto;
-      right: 0;
-      transform: translateY(8px);
-    }
-
-    .nav-dropdown:hover .nav-submenu,
-    .nav-dropdown:focus-within .nav-submenu {
-      opacity: 1;
-      visibility: visible;
-      pointer-events: auto;
-      transform: translateX(-50%) translateY(0);
-    }
-
-    .nav-dropdown--end:hover .nav-submenu,
-    .nav-dropdown--end:focus-within .nav-submenu {
-      transform: translateY(0);
-    }
-
-    .nav-submenu a {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      min-height: 36px;
-      padding: 0 14px;
-      border-radius: 12px;
-      font-size: 12px;
-      letter-spacing: -0.01em;
-      color: rgba(255, 255, 255, 0.82);
-      text-decoration: none;
-      white-space: nowrap;
-      transition: background 0.18s ease, color 0.18s ease;
-    }
-
-    .nav-submenu a:hover {
-      background: rgba(255, 255, 255, 0.08);
-      color: var(--paper-white);
-    }
-
-    .nav-submenu a span {
-      color: rgba(255, 255, 255, 0.44);
-      font-size: 11px;
-    }
 
     .nav-badge {
       font-size: 11px;
@@ -1070,36 +995,6 @@
       }
     }
 
-    @media (max-width: 1024px) {
-      .nav-submenu {
-        left: 0;
-        transform: translateY(10px);
-      }
-
-      .nav-dropdown:hover .nav-submenu,
-      .nav-dropdown:focus-within .nav-submenu {
-        transform: translateX(-50%) translateY(0);
-      }
-
-      .nav-dropdown--end:hover .nav-submenu,
-      .nav-dropdown--end:focus-within .nav-submenu {
-        transform: translateY(0);
-      }
-    }
-
-    @media (hover: none) and (pointer: coarse) {
-      .nav-dropdown:hover .nav-submenu {
-        opacity: 0;
-        visibility: hidden;
-        pointer-events: none;
-      }
-
-      .nav-dropdown:focus-within .nav-submenu {
-        opacity: 1;
-        visibility: visible;
-        pointer-events: auto;
-      }
-    }
 
     @media (max-width: 640px) {
       .hero-title {
@@ -1143,40 +1038,8 @@
         <li><a href="#hero">Home</a></li>
         <li><a href="#work">Work</a></li>
         <li><a href="#about">About</a></li>
-        <li class="nav-dropdown">
-          <a href="blender/index.html">Blender</a>
-          <!-- FIX: was <nav> opened but closed with </div> — unified to <div> -->
-          <div class="nav-submenu" role="navigation" aria-label="Blender pages">
-            <a href="blender/index.html"><span>01</span>Whole Solar System</a>
-            <a href="blender/mercury.html"><span>02</span>Mercury</a>
-            <a href="blender/venus.html"><span>03</span>Venus</a>
-            <a href="blender/earth.html"><span>04</span>Earth</a>
-            <a href="blender/mars.html"><span>05</span>Mars</a>
-            <a href="blender/jupiter.html"><span>06</span>Jupiter</a>
-            <a href="blender/saturn.html"><span>07</span>Saturn</a>
-            <a href="blender/uranus.html"><span>08</span>Uranus</a>
-            <a href="blender/neptune.html"><span>09</span>Neptune</a>
-          </div>
-        </li>
-        <li class="nav-dropdown nav-dropdown--end">
-          <a href="rotoscope/index.html">Rotoscope</a>
-          <div class="nav-submenu" role="navigation" aria-label="Rotoscope weeks">
-            <a href="rotoscope/week-1.html"><span>01</span>Week 1</a>
-            <a href="rotoscope/week-2.html"><span>02</span>Week 2</a>
-            <a href="rotoscope/week-3.html"><span>03</span>Week 3</a>
-            <a href="rotoscope/week-4.html"><span>04</span>Week 4</a>
-            <a href="rotoscope/week-5.html"><span>05</span>Week 5</a>
-            <a href="rotoscope/week-6.html"><span>06</span>Week 6</a>
-            <a href="rotoscope/week-7.html"><span>07</span>Week 7</a>
-            <a href="rotoscope/week-8.html"><span>08</span>Week 8</a>
-            <a href="rotoscope/week-9.html"><span>09</span>Week 9</a>
-            <a href="rotoscope/week-10.html"><span>10</span>Week 10</a>
-            <a href="rotoscope/week-11.html"><span>11</span>Week 11</a>
-            <a href="rotoscope/week-12.html"><span>12</span>Week 12</a>
-            <a href="rotoscope/week-13.html"><span>13</span>Week 13</a>
-            <a href="rotoscope/week-14.html"><span>14</span>Week 14</a>
-          </div>
-        </li>
+        <li><a href="blender/index.html">Blender</a></li>
+        <li><a href="rotoscope/index.html">Rotoscope</a></li>
       </ul>
       <div class="nav-badge">M&amp;A Portfolio</div>
     </nav>

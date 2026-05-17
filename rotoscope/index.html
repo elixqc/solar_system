@@ -416,41 +416,38 @@
     }
 
     .video-fullscreen-btn {
-      position: absolute;
-      right: 14px;
-      bottom: 14px;
-      z-index: 5;
       display: inline-flex;
       align-items: center;
       gap: 8px;
+      justify-content: center;
       min-height: 34px;
-      padding: 0 12px;
-      border-radius: 999px;
-      border: 1px solid rgba(255, 255, 255, 0.22);
-      background: rgba(0, 0, 0, 0.55);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      color: var(--paper-white);
+      padding: 0 13px;
+      border-radius: 980px;
+      border: 1px solid rgba(0, 113, 227, 0.45);
+      background: transparent;
+      color: var(--action-blue);
       font-size: 12px;
       font-weight: 600;
       letter-spacing: -0.01em;
       cursor: pointer;
-      transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+      width: fit-content;
     }
 
     .video-fullscreen-btn:hover {
-      background: rgba(0, 0, 0, 0.72);
-      border-color: rgba(255, 255, 255, 0.36);
-    }
-
-    .video-fullscreen-btn:active {
-      transform: scale(0.96);
+      background: rgba(0, 113, 227, 0.08);
+      border-color: var(--focus-blue);
+      color: var(--focus-blue);
     }
 
     .video-fullscreen-btn svg {
       width: 14px;
       height: 14px;
       flex: 0 0 auto;
+    }
+
+    .video-caption .video-fullscreen-btn {
+      margin-top: 10px;
     }
 
     .video-caption {
@@ -544,6 +541,52 @@
     .details-card .inline-link {
       color: var(--action-blue);
       font-weight: 600;
+    }
+
+    #procedure,
+    #progress {
+      padding-top: 68px;
+      padding-bottom: 68px;
+    }
+
+    #procedure .section-lead,
+    #progress .section-lead {
+      margin-top: 12px;
+      font-size: 18px;
+      line-height: 1.4;
+      opacity: 0.74;
+    }
+
+    #procedure .details-grid,
+    #progress .details-grid {
+      margin-top: 28px;
+      gap: 14px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    #procedure .details-card,
+    #progress .details-card {
+      padding: 18px;
+      border-radius: 14px;
+    }
+
+    #procedure .details-card .meta-kicker,
+    #progress .details-card .meta-kicker {
+      margin-bottom: 8px;
+      font-size: 11px;
+    }
+
+    #procedure .details-card h3,
+    #progress .details-card h3 {
+      margin-bottom: 8px;
+      font-size: 19px;
+      line-height: 1.15;
+    }
+
+    #procedure .details-card p,
+    #progress .details-card p {
+      font-size: 14px;
+      line-height: 1.45;
     }
 
     .credits-wrap {
@@ -1069,18 +1112,16 @@
 
     /* ── SYNC BUTTON SPECIAL STYLING ── */
     #sync-toggle-btn {
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      padding: 14px 30px !important;
+      min-height: 44px;
+      padding: 11px 24px !important;
       font-size: 17px !important;
       font-weight: 600;
       letter-spacing: -0.02em;
-      border-radius: 50px !important;
-      box-shadow: 0 8px 24px rgba(41, 151, 255, 0.16);
-      transition: all 0.3s cubic-bezier(0.25,0.46,0.45,0.94);
+      border-radius: 980px !important;
+      border: 1px solid rgba(0, 113, 227, 0.45) !important;
+      color: var(--action-blue) !important;
+      background: transparent !important;
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
     }
 
     .btn-icon {
@@ -1090,20 +1131,15 @@
     }
 
     #sync-toggle-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 32px rgba(41, 151, 255, 0.25);
       background: rgba(41, 151, 255, 0.08) !important;
-    }
-
-    #sync-toggle-btn:active {
-      transform: translateY(0);
+      border-color: var(--focus-blue) !important;
+      color: var(--focus-blue) !important;
     }
 
     #sync-toggle-btn.active {
-      background: linear-gradient(135deg, var(--action-blue) 0%, var(--sky-blue) 100%) !important;
+      background: var(--action-blue) !important;
       color: var(--paper-white) !important;
-      border-color: var(--sky-blue) !important;
-      box-shadow: 0 16px 40px rgba(41, 151, 255, 0.35);
+      border-color: var(--action-blue) !important;
     }
 
     .compare-controls {
@@ -1111,9 +1147,9 @@
       max-width: 52rem;
       margin-left: auto;
       margin-right: auto;
-      padding: 18px 18px 14px;
-      border-radius: 16px;
-      background: var(--parchment);
+      padding: 16px 18px 14px;
+      border-radius: 18px;
+      background: var(--paper-white);
       border: 1px solid var(--hairline);
       display: grid;
       gap: 10px;
@@ -1141,9 +1177,9 @@
       -webkit-appearance: none;
       appearance: none;
       width: 100%;
-      height: 8px;
+      height: 7px;
       border-radius: 999px;
-      background: linear-gradient(90deg, var(--action-blue) var(--progress, 0%), #d6d6da var(--progress, 0%));
+      background: linear-gradient(90deg, var(--action-blue) var(--progress, 0%), #d9d9df var(--progress, 0%));
       outline: none;
       cursor: pointer;
     }
@@ -1224,6 +1260,11 @@
         grid-template-columns: 1fr;
       }
 
+      #procedure .details-grid,
+      #progress .details-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
       .weekly-video-grid {
         grid-template-columns: repeat(3, 1fr);
       }
@@ -1256,6 +1297,17 @@
       }
 
       .comparison-grid {
+        grid-template-columns: 1fr;
+      }
+
+      #procedure,
+      #progress {
+        padding-top: 56px;
+        padding-bottom: 56px;
+      }
+
+      #procedure .details-grid,
+      #progress .details-grid {
         grid-template-columns: 1fr;
       }
 
@@ -1377,17 +1429,17 @@
               <source src="WEEKLY/REFERENCE.mp4" type="video/mp4" />
             </video>
             <div class="video-loading" id="ref-video-loading">Loading video...</div>
+          </div>
+          <div class="video-caption">
+            <div class="meta-kicker">Source Material</div>
+            <h3>Live Action Footage.</h3>
+            <p>The original source video used as the base layer for the rotoscoping process.</p>
             <button id="ref-video-fs" class="video-fullscreen-btn" type="button" aria-label="Open reference video fullscreen">
               <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path d="M1.5 6V1.5H6M10 1.5H14.5V6M14.5 10V14.5H10M6 14.5H1.5V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
               Fullscreen
             </button>
-          </div>
-          <div class="video-caption">
-            <div class="meta-kicker">Source Material</div>
-            <h3>Live Action Footage.</h3>
-            <p>The original source video used as the base layer for the rotoscoping process.</p>
           </div>
         </div>
 
@@ -1397,17 +1449,17 @@
               <source src="WEEKLY/FINAL.mp4" type="video/mp4" />
             </video>
             <div class="video-loading" id="final-video-loading">Loading video...</div>
+          </div>
+          <div class="video-caption">
+            <div class="meta-kicker">Final Output</div>
+            <h3>Audio + Text + Video.</h3>
+            <p>The completed rotoscoped composition with layered audio, animated text overlays, and visual effects.</p>
             <button id="final-video-fs" class="video-fullscreen-btn" type="button" aria-label="Open final video fullscreen">
               <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 <path d="M1.5 6V1.5H6M10 1.5H14.5V6M14.5 10V14.5H10M6 14.5H1.5V10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
               Fullscreen
             </button>
-          </div>
-          <div class="video-caption">
-            <div class="meta-kicker">Final Output</div>
-            <h3>Audio + Text + Video.</h3>
-            <p>The completed rotoscoped composition with layered audio, animated text overlays, and visual effects.</p>
           </div>
         </div>
       </div>

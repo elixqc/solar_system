@@ -340,8 +340,13 @@
     .modal-btn-fs { background: rgba(255,255,255,0.14); color: var(--paper-white); border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(8px); }
 
     .modal-body {
-      padding: 36px 40px 40px;
-      display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: start;
+      position: relative;
+      padding: 36px 260px 40px 40px;
+      display: block;
+    }
+
+    .modal-body > div:first-child {
+      width: 100%;
     }
 
     /* Allow grid children to shrink so long pre/code blocks don't expand the modal */
@@ -356,13 +361,46 @@
     .modal-title { margin: 0 0 12px; font-size: clamp(32px,5vw,52px); line-height: 1; letter-spacing: -0.05em; font-weight: 600; color: var(--paper-white); }
     .modal-desc { margin: 0; font-size: 16px; line-height: 1.65; color: rgba(255,255,255,0.72); max-width: 44rem; }
 
-    .modal-facts { margin-top: 28px; display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
-    .modal-fact { padding: 16px 18px; border-radius: 14px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); }
+    .modal-facts {
+      width: 100%;
+      margin-top: 28px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      align-items: stretch;
+      justify-content: stretch;
+    }
+    .modal-fact {
+      width: auto;
+      min-width: 0;
+      flex: 1 1 0;
+      padding: 16px 18px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
     .modal-fact-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 6px; }
-    .modal-fact-value { font-size: 17px; font-weight: 600; letter-spacing: -0.03em; color: var(--paper-white); }
+    .modal-fact-value {
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      color: var(--paper-white);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .modal-side {
+      position: absolute;
+      top: 36px;
+      right: 40px;
+      width: 220px;
+      align-self: start;
+    }
 
     /* ── AGE CALCULATOR ── */
     .age-calc {
+      width: 100%;
       margin-top: 28px;
       padding: 24px;
       border-radius: 18px;
@@ -609,6 +647,7 @@
 
     /* ── CODE BLOCK ── */
     .planet-code-block {
+      width: 100%;
       margin-top: 28px;
       padding: 20px;
       border-radius: 14px;
@@ -635,11 +674,17 @@
       max-width: 100%;
     }
 
-    .code-copy-btn {
+    .code-actions {
       position: absolute;
       top: 12px;
-      right: 12px;
+      right: 20px;
       z-index: 10;
+      display: inline-flex;
+      gap: 8px;
+    }
+
+    .code-copy-btn,
+    .code-download-btn {
       min-height: 32px;
       padding: 0 12px;
       border-radius: 8px;
@@ -653,9 +698,12 @@
       cursor: pointer;
       transition: opacity 0.2s ease, background 0.2s ease;
     }
-    .code-copy-btn:hover { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.9); }
-    .code-copy-btn:active { transform: scale(0.95); }
-    .code-copy-btn.copied { color: rgba(41,151,255,0.9); }
+    .code-copy-btn:hover,
+    .code-download-btn:hover { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.9); }
+    .code-copy-btn:active,
+    .code-download-btn:active { transform: scale(0.95); }
+    .code-copy-btn.copied,
+    .code-download-btn.done { color: rgba(41,151,255,0.9); }
 
     .code-content {
       padding: 20px;
@@ -963,7 +1011,11 @@
           <div class="planet-code-block" id="planet-code-block">
             <div class="code-block-label">Planet Code in Python</div>
             <div class="code-block-container">
-              <button class="code-copy-btn" id="code-copy-btn" type="button">Copy code</button>
+              <div class="code-actions">
+                <button class="code-copy-btn" id="code-copy-btn" type="button">Copy code</button>
+                <button class="code-download-btn" id="code-download-txt-btn" type="button">Download .txt</button>
+                <button class="code-download-btn" id="code-download-py-btn" type="button">Download .py</button>
+              </div>
               <pre class="code-content" id="planet-code-content">Loading code...</pre>
             </div>
           </div>
@@ -1035,6 +1087,7 @@
           { label: "Type", value: "G-type Star" },
           { label: "Diameter", value: "1,392,700 km" },
           { label: "Surface Temp", value: "5,500 °C" },
+          { label: "Rotation", value: "25.4 days" },
         ]
       },
       {
@@ -1045,6 +1098,7 @@
           { label: "Orbit Period", value: "88 Earth days" },
           { label: "Diameter", value: "4,879 km" },
           { label: "Moons", value: "0" },
+          { label: "Rotation", value: "58.6 days" },
         ]
       },
       {
@@ -1055,6 +1109,7 @@
           { label: "Orbit Period", value: "225 Earth days" },
           { label: "Diameter", value: "12,104 km" },
           { label: "Surface Temp", value: "465 °C" },
+          { label: "Rotation", value: "243 days" },
         ]
       },
       {
@@ -1065,6 +1120,7 @@
           { label: "Orbit Period", value: "365.25 days" },
           { label: "Diameter", value: "12,742 km" },
           { label: "Moons", value: "1" },
+          { label: "Rotation", value: "23.9 hours" },
         ]
       },
       {
@@ -1075,6 +1131,7 @@
           { label: "Orbit Period", value: "687 Earth days" },
           { label: "Diameter", value: "6,779 km" },
           { label: "Moons", value: "2" },
+          { label: "Rotation", value: "24.6 hours" },
         ]
       },
       {
@@ -1085,6 +1142,7 @@
           { label: "Orbit Period", value: "11.9 Earth years" },
           { label: "Diameter", value: "139,820 km" },
           { label: "Moons", value: "95" },
+          { label: "Rotation", value: "9.9 hours" },
         ]
       },
       {
@@ -1095,6 +1153,7 @@
           { label: "Orbit Period", value: "29.5 Earth years" },
           { label: "Diameter", value: "116,460 km" },
           { label: "Ring Span", value: "~282,000 km" },
+          { label: "Rotation", value: "10.7 hours" },
         ]
       },
       {
@@ -1105,6 +1164,7 @@
           { label: "Orbit Period", value: "84 Earth years" },
           { label: "Diameter", value: "50,724 km" },
           { label: "Axial Tilt", value: "97.77°" },
+          { label: "Rotation", value: "17.2 hours" },
         ]
       },
       {
@@ -1115,6 +1175,7 @@
           { label: "Orbit Period", value: "165 Earth years" },
           { label: "Diameter", value: "49,244 km" },
           { label: "Wind Speed", value: "2,100 km/h" },
+          { label: "Rotation", value: "16.1 hours" },
         ]
       },
       {
@@ -1125,6 +1186,7 @@
           { label: "Orbit Period", value: "248 Earth years" },
           { label: "Diameter", value: "2,377 km" },
           { label: "Moons", value: "5" },
+          { label: "Rotation", value: "153.3 hours" },
         ]
       },
     ];
@@ -1218,6 +1280,8 @@
     const modalCodeBlock       = document.getElementById('planet-code-block');
     const modalCodeContent     = document.getElementById('planet-code-content');
     const codeCopyBtn          = document.getElementById('code-copy-btn');
+    const codeDownloadTxtBtn   = document.getElementById('code-download-txt-btn');
+    const codeDownloadPyBtn    = document.getElementById('code-download-py-btn');
     const closeBtns            = [document.getElementById('modal-close'), document.getElementById('modal-close-btn')];
     const fsBtn                = document.getElementById('modal-fullscreen-btn');
 
@@ -1249,7 +1313,14 @@
 
       modalCodeContent.textContent = 'Loading code...';
       codeCopyBtn.disabled = true;
+      codeDownloadTxtBtn.disabled = true;
+      codeDownloadPyBtn.disabled = true;
       codeCopyBtn.textContent = 'Copy code';
+      codeDownloadTxtBtn.textContent = 'Download .txt';
+      codeDownloadPyBtn.textContent = 'Download .py';
+      codeCopyBtn.classList.remove('copied');
+      codeDownloadTxtBtn.classList.remove('done');
+      codeDownloadPyBtn.classList.remove('done');
 
       try {
         let codeText = planetCodeCache.get(codeUrl);
@@ -1267,11 +1338,15 @@
 
         modalCodeContent.textContent = codeText.trimEnd() || 'No code available for this planet.';
         codeCopyBtn.disabled = false;
+        codeDownloadTxtBtn.disabled = false;
+        codeDownloadPyBtn.disabled = false;
       } catch {
         if (loadToken !== currentCodeToken || !currentPlanet || currentPlanet.id !== planet.id) return;
 
         modalCodeContent.textContent = 'Unable to load this planet code file.';
         codeCopyBtn.disabled = true;
+        codeDownloadTxtBtn.disabled = true;
+        codeDownloadPyBtn.disabled = true;
       }
     }
 
@@ -1296,6 +1371,30 @@
         document.execCommand('copy');
         selection.removeAllRanges();
       }
+    }
+
+    function downloadPlanetCode(extension) {
+      const codeText = modalCodeContent.textContent || '';
+      const targetBtn = extension === 'py' ? codeDownloadPyBtn : codeDownloadTxtBtn;
+      if (!codeText || targetBtn.disabled) return;
+
+      const baseName = currentPlanet?.id ? `${currentPlanet.id}-code` : 'planet-code';
+      const blob = new Blob([codeText], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = `${baseName}.${extension}`;
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      URL.revokeObjectURL(url);
+
+      targetBtn.textContent = 'Downloaded';
+      targetBtn.classList.add('done');
+      setTimeout(() => {
+        targetBtn.textContent = extension === 'py' ? 'Download .py' : 'Download .txt';
+        targetBtn.classList.remove('done');
+      }, 1400);
     }
 
     /* ── AGE VALIDATION & CALCULATION ── */
@@ -1429,6 +1528,8 @@
     });
 
     codeCopyBtn.addEventListener('click', copyPlanetCode);
+    codeDownloadTxtBtn.addEventListener('click', () => downloadPlanetCode('txt'));
+    codeDownloadPyBtn.addEventListener('click', () => downloadPlanetCode('py'));
 
     /* ── OPEN MODAL ── */
     function openModal(planet) {
