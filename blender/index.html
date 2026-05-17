@@ -256,10 +256,7 @@
       transform: translateY(-6px) scale(1.01); border-color: rgba(41,151,255,0.4);
       box-shadow: 0 24px 64px rgba(0,0,0,0.6), 0 0 0 1px rgba(41,151,255,0.2);
     }
-    .planet-video-block video,
-    .planet-video-block iframe { width: 100%; aspect-ratio: 16/9; display: block; background: #000; border: 0; pointer-events: none; }
-    .planet-video-block video { object-fit: cover; }
-    .video-fallback { display: none; }
+    .planet-video-block video { width: 100%; aspect-ratio: 16/9; display: block; background: #000; border: 0; object-fit: cover; }
 
     .planet-video-overlay {
       position: absolute; inset: 0;
@@ -839,13 +836,6 @@
           <video id="render-player" autoplay muted loop playsinline preload="metadata">
             <source src="media/solar_system.mp4" type="video/mp4" />
           </video>
-          <iframe
-            class="video-fallback render-video-fallback"
-            src="https://www.youtube-nocookie.com/embed/iW0AsLnhGoE?autoplay=1&mute=1&loop=1&playlist=iW0AsLnhGoE&controls=0&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3&fs=0&disablekb=1"
-            title="Whole Solar System render"
-            allow="autoplay; encrypted-media; picture-in-picture"
-            allowfullscreen>
-          </iframe>
         </div>
 
         <div class="render-stats">
@@ -901,17 +891,9 @@
       <button class="modal-close" id="modal-close" aria-label="Close">✕</button>
 
       <div class="modal-video-shell">
-        <video id="modal-video" autoplay muted loop playsinline preload="metadata" hidden>
+        <video id="modal-video" autoplay muted loop playsinline preload="metadata">
           <source id="modal-video-src" src="" type="video/mp4" />
         </video>
-        <iframe
-          id="modal-youtube"
-          src=""
-          title="Whole Solar System render"
-          allow="autoplay; encrypted-media; picture-in-picture"
-          allowfullscreen
-          hidden>
-        </iframe>
         <div class="modal-video-controls">
           <button class="modal-btn modal-btn-fs" id="modal-fullscreen-btn">
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -1005,21 +987,11 @@
   <script>
     /* ── RENDER FULLSCREEN ── */
     const renderPlayer = document.getElementById('render-player');
-    const renderYoutubeFallback = document.querySelector('.render-video-fallback');
     const renderFsBtn = document.getElementById('render-fs-btn');
-    if (renderPlayer && renderYoutubeFallback) {
-      renderPlayer.onerror = () => {
-        renderPlayer.hidden = true;
-        renderYoutubeFallback.classList.remove('video-fallback');
-      };
-    }
     renderFsBtn.addEventListener('click', () => {
-      const activePlayer = (!renderYoutubeFallback || renderYoutubeFallback.classList.contains('video-fallback'))
-        ? renderPlayer
-        : renderYoutubeFallback;
-      if (activePlayer.requestFullscreen) activePlayer.requestFullscreen();
-      else if (activePlayer.webkitRequestFullscreen) activePlayer.webkitRequestFullscreen();
-      else if (activePlayer.mozRequestFullScreen) activePlayer.mozRequestFullScreen();
+      if (renderPlayer.requestFullscreen) renderPlayer.requestFullscreen();
+      else if (renderPlayer.webkitRequestFullscreen) renderPlayer.webkitRequestFullscreen();
+      else if (renderPlayer.mozRequestFullScreen) renderPlayer.mozRequestFullScreen();
     });
 
     const youtubeIds = {
@@ -1203,13 +1175,6 @@
         <video autoplay muted loop playsinline preload="metadata">
           <source src="${getLocalBlenderVideoSrc(planet.file)}" type="video/mp4" />
         </video>
-        <iframe
-          class="video-fallback"
-          src="${getYoutubeEmbedUrl(youtubeIds[planet.id])}"
-          title="${planet.name} render"
-          allow="autoplay; encrypted-media; picture-in-picture"
-          allowfullscreen>
-        </iframe>
         <div class="planet-video-overlay">
           <div class="planet-video-tag">${planet.tag}</div>
           <div class="planet-video-name">${planet.name}</div>
@@ -1227,15 +1192,6 @@
       block.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(planet); }
       });
-
-      const previewVideo = block.querySelector('video');
-      const fallbackFrame = block.querySelector('iframe.video-fallback');
-      if (previewVideo && fallbackFrame) {
-        previewVideo.addEventListener('error', () => {
-          previewVideo.style.display = 'none';
-          fallbackFrame.classList.remove('video-fallback');
-        });
-      }
       grid.appendChild(block);
     });
 
@@ -1253,7 +1209,6 @@
     const modal                = document.getElementById('modal');
     const modalVideo           = document.getElementById('modal-video');
     const modalSrc             = document.getElementById('modal-video-src');
-    const modalYoutube         = document.getElementById('modal-youtube');
     const modalBadge           = document.getElementById('modal-badge');
     const modalTitle           = document.getElementById('modal-planet-title');
     const modalDesc            = document.getElementById('modal-desc');
@@ -1510,22 +1465,11 @@
       // Hide Sun note by default; it'll show on calculate if needed
       ageNoCalc.classList.remove('visible');
 
-      // Video / embedded source
-      modalYoutube.hidden = true;
-      modalYoutube.src = '';
+      // Video source
       modalVideo.hidden = false;
       modalSrc.src = getLocalBlenderVideoSrc(planet.file);
       modalVideo.load();
       modalVideo.play().catch(() => {});
-
-      modalVideo.onerror = () => {
-        if (modalYoutube.src) return;
-        modalSrc.src = '';
-        modalVideo.load();
-        modalVideo.hidden = true;
-        modalYoutube.hidden = false;
-        modalYoutube.src = getYoutubeEmbedUrl(youtubeIds[planet.id] || youtubeIds.whole_solar);
-      };
 
       // Blend download
       if (blendMap[planet.id]) {
@@ -1577,8 +1521,6 @@
       modalSrc.src = '';
       modalVideo.load();
       modalVideo.hidden = true;
-      modalYoutube.src = '';
-      modalYoutube.hidden = true;
       currentPlanet = null;
       currentCodeToken += 1;
     }
@@ -1591,13 +1533,6 @@
 
     /* Fullscreen */
     fsBtn.addEventListener('click', () => {
-      if (!modalYoutube.hidden && modalYoutube.src) {
-        if (modalYoutube.requestFullscreen) modalYoutube.requestFullscreen();
-        else if (modalYoutube.webkitRequestFullscreen) modalYoutube.webkitRequestFullscreen();
-        else if (modalYoutube.mozRequestFullScreen) modalYoutube.mozRequestFullScreen();
-        return;
-      }
-
       if (modalVideo.requestFullscreen) modalVideo.requestFullscreen();
       else if (modalVideo.webkitRequestFullscreen) modalVideo.webkitRequestFullscreen();
       else if (modalVideo.mozRequestFullScreen) modalVideo.mozRequestFullScreen();
