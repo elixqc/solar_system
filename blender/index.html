@@ -259,6 +259,7 @@
     .planet-video-block video,
     .planet-video-block iframe { width: 100%; aspect-ratio: 16/9; display: block; background: #000; border: 0; pointer-events: none; }
     .planet-video-block video { object-fit: cover; }
+    .video-fallback { display: none; }
 
     .planet-video-overlay {
       position: absolute; inset: 0;
@@ -835,9 +836,12 @@
         </div>
 
         <div class="render-frame">
+          <video id="render-player" autoplay muted loop playsinline preload="metadata">
+            <source src="media/solar_system.mp4" type="video/mp4" />
+          </video>
           <iframe
-            id="render-player"
-            src="https://www.youtube-nocookie.com/embed/iW0AsLnhGoE?autoplay=1&mute=1&loop=1&playlist=iW0AsLnhGoE&controls=1&rel=0&modestbranding=1&playsinline=1"
+            class="video-fallback render-video-fallback"
+            src="https://www.youtube-nocookie.com/embed/iW0AsLnhGoE?autoplay=1&mute=1&loop=1&playlist=iW0AsLnhGoE&controls=0&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3&fs=0&disablekb=1"
             title="Whole Solar System render"
             allow="autoplay; encrypted-media; picture-in-picture"
             allowfullscreen>
@@ -1001,12 +1005,21 @@
   <script>
     /* ── RENDER FULLSCREEN ── */
     const renderPlayer = document.getElementById('render-player');
+    const renderYoutubeFallback = document.querySelector('.render-video-fallback');
     const renderFsBtn = document.getElementById('render-fs-btn');
+    if (renderPlayer && renderYoutubeFallback) {
+      renderPlayer.onerror = () => {
+        renderPlayer.hidden = true;
+        renderYoutubeFallback.classList.remove('video-fallback');
+      };
+    }
     renderFsBtn.addEventListener('click', () => {
-      const player = renderPlayer;
-      if (player.requestFullscreen) player.requestFullscreen();
-      else if (player.webkitRequestFullscreen) player.webkitRequestFullscreen();
-      else if (player.mozRequestFullScreen) player.mozRequestFullScreen();
+      const activePlayer = (!renderYoutubeFallback || renderYoutubeFallback.classList.contains('video-fallback'))
+        ? renderPlayer
+        : renderYoutubeFallback;
+      if (activePlayer.requestFullscreen) activePlayer.requestFullscreen();
+      else if (activePlayer.webkitRequestFullscreen) activePlayer.webkitRequestFullscreen();
+      else if (activePlayer.mozRequestFullScreen) activePlayer.mozRequestFullScreen();
     });
 
     const youtubeIds = {
@@ -1025,6 +1038,17 @@
 
     function getYoutubeEmbedUrl(videoId) {
       return `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}&controls=0&rel=0&modestbranding=1&playsinline=1&iv_load_policy=3&fs=0&disablekb=1`;
+    }
+
+    function shouldPreferLocalVideo() {
+      const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+      if (connection && connection.saveData) return false;
+      if (connection && /slow-2g|2g/.test(connection.effectiveType || '')) return false;
+      return true;
+    }
+
+    function getLocalBlenderVideoSrc(fileName) {
+      return `media/${fileName}`;
     }
 
     const wholeSolarYoutubeUrl = getYoutubeEmbedUrl(youtubeIds.whole_solar);
@@ -1176,7 +1200,11 @@
       block.setAttribute('aria-label', `Open ${planet.name} details`);
 
       block.innerHTML = `
+        <video autoplay muted loop playsinline preload="metadata">
+          <source src="${getLocalBlenderVideoSrc(planet.file)}" type="video/mp4" />
+        </video>
         <iframe
+          class="video-fallback"
           src="${getYoutubeEmbedUrl(youtubeIds[planet.id])}"
           title="${planet.name} render"
           allow="autoplay; encrypted-media; picture-in-picture"
@@ -1199,6 +1227,15 @@
       block.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(planet); }
       });
+
+      const previewVideo = block.querySelector('video');
+      const fallbackFrame = block.querySelector('iframe.video-fallback');
+      if (previewVideo && fallbackFrame) {
+        previewVideo.addEventListener('error', () => {
+          previewVideo.style.display = 'none';
+          fallbackFrame.classList.remove('video-fallback');
+        });
+      }
       grid.appendChild(block);
     });
 
@@ -1474,11 +1511,21 @@
       ageNoCalc.classList.remove('visible');
 
       // Video / embedded source
-      modalVideo.pause();
-      modalVideo.hidden = true;
-      modalSrc.src = '';
-      modalYoutube.hidden = false;
-      modalYoutube.src = getYoutubeEmbedUrl(youtubeIds[planet.id] || youtubeIds.whole_solar);
+      modalYoutube.hidden = true;
+      modalYoutube.src = '';
+      modalVideo.hidden = false;
+      modalSrc.src = getLocalBlenderVideoSrc(planet.file);
+      modalVideo.load();
+      modalVideo.play().catch(() => {});
+
+      modalVideo.onerror = () => {
+        if (modalYoutube.src) return;
+        modalSrc.src = '';
+        modalVideo.load();
+        modalVideo.hidden = true;
+        modalYoutube.hidden = false;
+        modalYoutube.src = getYoutubeEmbedUrl(youtubeIds[planet.id] || youtubeIds.whole_solar);
+      };
 
       // Blend download
       if (blendMap[planet.id]) {
@@ -1544,9 +1591,16 @@
 
     /* Fullscreen */
     fsBtn.addEventListener('click', () => {
-      if (modalYoutube.requestFullscreen) modalYoutube.requestFullscreen();
-      else if (modalYoutube.webkitRequestFullscreen) modalYoutube.webkitRequestFullscreen();
-      else if (modalYoutube.mozRequestFullScreen) modalYoutube.mozRequestFullScreen();
+      if (!modalYoutube.hidden && modalYoutube.src) {
+        if (modalYoutube.requestFullscreen) modalYoutube.requestFullscreen();
+        else if (modalYoutube.webkitRequestFullscreen) modalYoutube.webkitRequestFullscreen();
+        else if (modalYoutube.mozRequestFullScreen) modalYoutube.mozRequestFullScreen();
+        return;
+      }
+
+      if (modalVideo.requestFullscreen) modalVideo.requestFullscreen();
+      else if (modalVideo.webkitRequestFullscreen) modalVideo.webkitRequestFullscreen();
+      else if (modalVideo.mozRequestFullScreen) modalVideo.mozRequestFullScreen();
     });
 
     /* Planet selector removed from hero; no JS needed. */
