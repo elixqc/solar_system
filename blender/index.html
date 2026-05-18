@@ -314,14 +314,12 @@
       }
     }
 
-    @keyframes modalSlideDown {
+    @keyframes modalFadeOut {
       from {
         opacity: 1;
-        transform: translateY(0) scale(1);
       }
       to {
         opacity: 0;
-        transform: translateY(32px) scale(0.96);
       }
     }
 
@@ -349,8 +347,8 @@
       pointer-events: auto;
       animation: modalBackdropIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
-    .modal-backdrop:not(.open) {
-      animation: modalBackdropOut 0.3s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+    .modal-backdrop.closing {
+      animation: modalBackdropOut 0.25s ease-out forwards;
     }
 
     .modal {
@@ -366,8 +364,8 @@
     .modal-backdrop.open .modal {
       animation: modalSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
-    .modal-backdrop:not(.open) .modal {
-      animation: modalSlideDown 0.35s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+    .modal-backdrop.closing .modal {
+      animation: modalFadeOut 0.25s ease-out forwards;
     }
 
     .modal-close {
@@ -425,6 +423,11 @@
     }
 
     /* Stagger animations for modal content */
+    .modal-backdrop.open .modal-video-shell {
+      animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+      opacity: 0;
+    }
+
     .modal-backdrop.open .modal-badge {
       animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
       opacity: 0;
@@ -453,6 +456,19 @@
     .modal-backdrop.open .planet-code-block {
       animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.65s forwards;
       opacity: 0;
+    }
+
+    /* Reset animations when closing modal to allow replay on reopen */
+    .modal-backdrop.closing .modal-video-shell,
+    .modal-backdrop.closing .modal-badge,
+    .modal-backdrop.closing .modal-title,
+    .modal-backdrop.closing .modal-desc,
+    .modal-backdrop.closing .modal-facts,
+    .modal-backdrop.closing .age-calc,
+    .modal-backdrop.closing .planet-code-block {
+      animation: none;
+      opacity: 0;
+      transform: translateY(16px);
     }
 
     /* Allow grid children to shrink so long pre/code blocks don't expand the modal */
@@ -922,6 +938,7 @@
       }
     }
   </style>
+  <link rel="stylesheet" href="scroll-animations.css">
 </head>
 
 <body>
@@ -1143,6 +1160,7 @@
   </div>
 
   <script src="../starfield.js"></script>
+  <script src="scroll-animations.js"></script>
   <script src="main.js"></script>
 </body>
 </html>

@@ -578,7 +578,15 @@ function openModal(planet) {
 
 /* ── CLOSE MODAL ── */
 function closeModal() {
+  // Trigger closing animation
   backdrop.classList.remove('open');
+  backdrop.classList.add('closing');
+  
+  // Remove closing class after animation completes to reset for next open
+  setTimeout(() => {
+    backdrop.classList.remove('closing');
+  }, 250);
+  
   document.body.style.overflow = '';
   modalVideo.pause();
   modalSrc.src = '';

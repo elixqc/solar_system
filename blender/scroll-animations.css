@@ -1,0 +1,200 @@
+/* ═══════════════════════════════════════════
+   SCROLL ANIMATIONS — Solar System
+   Add <link rel="stylesheet" href="scroll-animations.css">
+   just before </head> in your HTML.
+   ═══════════════════════════════════════════ */
+
+/* ── Base animation states ── */
+[data-anim] {
+  opacity: 0;
+  will-change: transform, opacity;
+  transition-property: opacity, transform;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  transition-duration: 0.8s;
+}
+
+[data-anim="fade-up"]      { transform: translateY(40px); }
+[data-anim="fade-down"]    { transform: translateY(-30px); }
+[data-anim="fade-left"]    { transform: translateX(40px); }
+[data-anim="fade-right"]   { transform: translateX(-40px); }
+[data-anim="scale-up"]     { transform: scale(0.88); }
+[data-anim="zoom-blur"]    { transform: scale(0.94); filter: blur(6px); }
+
+/* Revealed state */
+[data-anim].anim-in {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* Stagger delays — add data-delay="1..8" */
+[data-delay="1"] { transition-delay: 0.08s; }
+[data-delay="2"] { transition-delay: 0.16s; }
+[data-delay="3"] { transition-delay: 0.24s; }
+[data-delay="4"] { transition-delay: 0.32s; }
+[data-delay="5"] { transition-delay: 0.40s; }
+[data-delay="6"] { transition-delay: 0.48s; }
+[data-delay="7"] { transition-delay: 0.56s; }
+[data-delay="8"] { transition-delay: 0.64s; }
+
+/* ── Hero text — cascaded entrance ── */
+.hero-eyebrow,
+.hero-title,
+.hero-sub,
+.hero-ctas {
+  opacity: 0;
+  transform: translateY(28px);
+  animation: heroSlideUp 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hero-eyebrow  { animation-delay: 0.1s; }
+.hero-title    { animation-delay: 0.22s; }
+.hero-sub      { animation-delay: 0.34s; }
+.hero-ctas     { animation-delay: 0.46s; }
+
+/* Hero aside panels */
+.hero-panel,
+.project-card {
+  opacity: 0;
+  transform: translateX(28px);
+  animation: heroSlideLeft 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.hero-panel   { animation-delay: 0.28s; }
+.project-card { animation-delay: 0.42s; }
+
+@keyframes heroSlideUp {
+  to { opacity: 1; transform: none; }
+}
+@keyframes heroSlideLeft {
+  to { opacity: 1; transform: none; }
+}
+
+/* ── Render section ── */
+.render-header-left {
+  opacity: 0;
+  transform: translateY(32px);
+  animation: heroSlideUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+}
+.render-fs-btn {
+  opacity: 0;
+  transform: translateY(16px);
+  animation: heroSlideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+}
+
+/* ── Render frame — dramatic reveal ── */
+.render-frame {
+  opacity: 0;
+  transform: translateY(36px) scale(0.98);
+  animation: renderReveal 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+}
+@keyframes renderReveal {
+  to { opacity: 1; transform: none; }
+}
+
+/* ── Render stats — pop in sequence ── */
+.render-stat {
+  opacity: 0;
+  transform: translateY(20px);
+}
+.render-stat.anim-in {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.render-stats-cta {
+  opacity: 0;
+  transform: translateY(20px);
+}
+.render-stats-cta.anim-in {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── Planet grid cards ── */
+.planet-video-block {
+  opacity: 0;
+  transform: translateY(48px) scale(0.97);
+}
+.planet-video-block.anim-in {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── Section headers ── */
+.section-eyebrow,
+.section-title,
+.section-lead {
+  opacity: 0;
+  transform: translateY(24px);
+}
+.section-eyebrow.anim-in,
+.section-title.anim-in,
+.section-lead.anim-in {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── Parallax overlay on render section ── */
+.render-section::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 40% 50% at 50% -10%, rgba(41,151,255,0.12) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  transform: translateY(0);
+  transition: transform 0.1s linear;
+  will-change: transform;
+}
+
+/* ── Stat value counter pulse ── */
+@keyframes statCountPulse {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.06); }
+  100% { transform: scale(1); }
+}
+.render-stat.anim-in .render-stat-value {
+  animation: statCountPulse 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
+}
+
+/* ── Glowing scan line on hero video ── */
+@keyframes scanLine {
+  0%   { transform: translateY(-100%); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 0.3; }
+  100% { transform: translateY(100%); opacity: 0; }
+}
+.render-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 2px;
+  background: linear-gradient(to right, transparent, rgba(41,151,255,0.6), transparent);
+  animation: scanLine 3.5s ease-in-out 1.2s 1;
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  [data-anim],
+  .hero-eyebrow, .hero-title, .hero-sub, .hero-ctas,
+  .hero-panel, .project-card,
+  .render-header-left, .render-fs-btn, .render-frame,
+  .render-stat, .render-stats-cta,
+  .planet-video-block,
+  .section-eyebrow, .section-title, .section-lead {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+    filter: none !important;
+  }
+}
