@@ -6,7 +6,7 @@ import os
 # CONFIGURATION
 # ============================================================
 TEXTURE_DIR = r"C:\solar_system"
-RENDER_ENGINE = "CYCLES"   # or "BLENDER_EEVEE"
+RENDER_ENGINE = "BLENDER_EEVEE"
 RESOLUTION_X = 1920
 RESOLUTION_Y = 1080
 FRAME_START = 1
@@ -194,7 +194,8 @@ def make_material_principled(name, texture_path, emission_color=None,
         bump_node.inputs["Distance"].default_value = 0.2
 
     if emission_color and emission_strength > 0:
-        bsdf.inputs["Emission Color"].default_value    = (*emission_color, 1)
+        emit_color_key = "Emission Color" if "Emission Color" in bsdf.inputs else "Emission"
+        bsdf.inputs[emit_color_key].default_value = (*emission_color, 1)
         bsdf.inputs["Emission Strength"].default_value = emission_strength
 
     links.new(bsdf.outputs["BSDF"], out.inputs["Surface"])
@@ -821,6 +822,11 @@ def build_camera_system(planets):
     cam_obj.location = (50, -80, 60)
     cam_obj.keyframe_insert(data_path="location", frame=240)
 
+    # Set initial aperture f-stop keyframes for overview (Sun)
+    cam_data.dof.aperture_fstop = 1.8
+    cam_data.dof.keyframe_insert(data_path="aperture_fstop", frame=1)
+    cam_data.dof.keyframe_insert(data_path="aperture_fstop", frame=240)
+
     # Animate orbit lines fading out after the overview
     orbit_mat = bpy.data.materials.get("Orbit_Line_Mat")
     orbit_mix = orbit_mat.node_tree.nodes["OrbitFadeMix"] if orbit_mat else None
@@ -851,6 +857,7 @@ def build_camera_system(planets):
 
     prev_target = "Sun"
     prev_end_frame = 240
+    prev_fstop = 1.8
 
     # 6. Animate Planet Showcases
     for idx, (pname, b_start, b_end) in enumerate(blocks):
@@ -870,6 +877,17 @@ def build_camera_system(planets):
 
         prad = planets[pname]["radius"]
         
+        # Calculate appropriate f-stop to prevent blurry text on small planets (Mercury, Venus, Earth, Mars, Pluto)
+        # Inversely proportional to radius to expand the depth of field window on close-ups.
+        fstop = max(1.8, 1.2 / prad)
+        
+        # Animate the f-stop transition
+        cam_data.dof.aperture_fstop = prev_fstop
+        cam_data.dof.keyframe_insert(data_path="aperture_fstop", frame=trans_start)
+        cam_data.dof.aperture_fstop = fstop
+        cam_data.dof.keyframe_insert(data_path="aperture_fstop", frame=trans_end)
+        cam_data.dof.keyframe_insert(data_path="aperture_fstop", frame=showcase_end)
+
         # Pull camera back further for Saturn so the rings fit perfectly
         cam_prad = prad * 2.5 if pname == "Saturn" else prad
 
@@ -885,6 +903,7 @@ def build_camera_system(planets):
 
         prev_target = pname
         prev_end_frame = showcase_end
+        prev_fstop = fstop
 
     # 6b. Animate Final Scene - Zoom out to entire Solar System
     final_start = 1380
@@ -898,6 +917,13 @@ def build_camera_system(planets):
     keyframe_influence("Sun", final_start, 0.0)
     keyframe_influence("Sun", final_trans_end, 1.0)
     keyframe_influence("Sun", final_end, 1.0)
+
+    # Transition f-stop back to 1.8 for wide view
+    cam_data.dof.aperture_fstop = prev_fstop
+    cam_data.dof.keyframe_insert(data_path="aperture_fstop", frame=final_start)
+    cam_data.dof.aperture_fstop = 1.8
+    cam_data.dof.keyframe_insert(data_path="aperture_fstop", frame=final_trans_end)
+    cam_data.dof.keyframe_insert(data_path="aperture_fstop", frame=final_end)
 
     # Bring orbit lines back for the final overview
     if orbit_mix:
@@ -925,6 +951,12 @@ def build_camera_system(planets):
             for fcurve in obj.animation_data.action.fcurves:
                 for kf in fcurve.keyframe_points:
                     kf.interpolation = 'BEZIER'
+
+    # Smooth f-stop transition keyframes on camera data
+    if cam_data.animation_data and cam_data.animation_data.action:
+        for fcurve in cam_data.animation_data.action.fcurves:
+            for kf in fcurve.keyframe_points:
+                kf.interpolation = 'BEZIER'
 
     # Add slight camera noise for realism
     if cam_obj.animation_data and cam_obj.animation_data.action:
@@ -976,3 +1008,568 @@ def main():
 
 
 main()
+
+
+# ============================================================
+# SECTION 9 – EARTH SATELLITE  (ADDITION – does NOT modify above)
+# ============================================================
+from mathutils import Vector
+
+
+def add_earth_satellite():
+    """Add a detailed satellite with solar panels orbiting Earth."""
+    earth = bpy.data.objects.get("Earth")
+    if not earth:
+        print("  [!] Earth not found – skipping satellite")
+        return
+
+    earth_r = 0.30  # from PLANET_DATA
+
+    # ---- Orbit pivot (inclined, parented to Earth) ----
+    sat_orbit = create_empty("Satellite_Orbit")
+    sat_orbit.parent = earth
+
+    # ---- Satellite Body ----
+    bpy.ops.mesh.primitive_cube_add(size=0.05)
+    body = bpy.context.active_object
+    body.name = "Satellite"
+    body.scale = (1.0, 0.5, 0.25)
+
+    # Solar Panel – Left
+    bpy.ops.mesh.primitive_cube_add(size=0.07)
+    panel_l = bpy.context.active_object
+    panel_l.name = "Sat_PanelL"
+    panel_l.scale = (1.0, 0.55, 0.015)
+    panel_l.location = (-0.08, 0, 0)
+    panel_l.parent = body
+
+    # Solar Panel – Right
+    bpy.ops.mesh.primitive_cube_add(size=0.07)
+    panel_r = bpy.context.active_object
+    panel_r.name = "Sat_PanelR"
+    panel_r.scale = (1.0, 0.55, 0.015)
+    panel_r.location = (0.08, 0, 0)
+    panel_r.parent = body
+
+    # Antenna dish
+    bpy.ops.mesh.primitive_uv_sphere_add(
+        radius=0.012, segments=12, ring_count=6, location=(0, 0, 0.022))
+    dish = bpy.context.active_object
+    dish.name = "Sat_Dish"
+    dish.scale = (1.0, 1.0, 0.25)
+    dish.parent = body
+
+    # ---- Materials ----
+    # Body – silver metallic with strong emission so it glows visibly
+    body_mat = bpy.data.materials.new("Satellite_Body_Mat")
+    body_mat.use_nodes = True
+    bn = body_mat.node_tree.nodes
+    bl = body_mat.node_tree.links
+    bn.clear()
+    b_out = bn.new("ShaderNodeOutputMaterial"); b_out.location = (400, 0)
+    b_bsdf = bn.new("ShaderNodeBsdfPrincipled"); b_bsdf.location = (100, 0)
+    b_bsdf.inputs["Base Color"].default_value = (0.8, 0.8, 0.85, 1)
+    b_bsdf.inputs["Metallic"].default_value = 0.95
+    b_bsdf.inputs["Roughness"].default_value = 0.15
+    if "Emission Color" in b_bsdf.inputs:
+        b_bsdf.inputs["Emission Color"].default_value = (0.9, 0.95, 1.0, 1)
+        b_bsdf.inputs["Emission Strength"].default_value = 5.0
+    elif "Emission" in b_bsdf.inputs:
+        b_bsdf.inputs["Emission"].default_value = (0.9, 0.95, 1.0, 1)
+        b_bsdf.inputs["Emission Strength"].default_value = 5.0
+    bl.new(b_bsdf.outputs["BSDF"], b_out.inputs["Surface"])
+    assign_material(body, body_mat)
+    assign_material(dish, body_mat)
+
+    # Panels – dark blue solar cells with subtle emission
+    panel_mat = bpy.data.materials.new("Satellite_Panel_Mat")
+    panel_mat.use_nodes = True
+    pn = panel_mat.node_tree.nodes
+    pl = panel_mat.node_tree.links
+    pn.clear()
+    p_out = pn.new("ShaderNodeOutputMaterial"); p_out.location = (400, 0)
+    p_bsdf = pn.new("ShaderNodeBsdfPrincipled"); p_bsdf.location = (100, 0)
+    p_bsdf.inputs["Base Color"].default_value = (0.01, 0.03, 0.18, 1)
+    p_bsdf.inputs["Metallic"].default_value = 0.7
+    p_bsdf.inputs["Roughness"].default_value = 0.1
+    if "Emission Color" in p_bsdf.inputs:
+        p_bsdf.inputs["Emission Color"].default_value = (0.05, 0.12, 0.4, 1)
+        p_bsdf.inputs["Emission Strength"].default_value = 2.5
+    elif "Emission" in p_bsdf.inputs:
+        p_bsdf.inputs["Emission"].default_value = (0.05, 0.12, 0.4, 1)
+        p_bsdf.inputs["Emission Strength"].default_value = 2.5
+    pl.new(p_bsdf.outputs["BSDF"], p_out.inputs["Surface"])
+    assign_material(panel_l, panel_mat)
+    assign_material(panel_r, panel_mat)
+
+    # ---- Position & parent ----
+    sat_orbit_r = earth_r * 2.5  # close enough to be clearly visible on camera
+    body.location = (sat_orbit_r, 0, 0.05)
+    body.parent = sat_orbit
+
+    # ---- Animate inclined orbit (fast) ----
+    sat_orbit.rotation_euler = (math.radians(40), math.radians(15), 0)
+    sat_orbit.keyframe_insert(data_path="rotation_euler", frame=1)
+    sat_orbit.rotation_euler = (math.radians(40), math.radians(15),
+                                math.radians(360 * 25))
+    sat_orbit.keyframe_insert(data_path="rotation_euler", frame=FRAME_END)
+    for fc in sat_orbit.animation_data.action.fcurves:
+        for kf in fc.keyframe_points:
+            kf.interpolation = 'LINEAR'
+
+    # ---- Blinking navigation light ----
+    bpy.ops.object.light_add(type='POINT', location=(0, 0, 0.02))
+    nav = bpy.context.active_object
+    nav.name = "Sat_NavLight"
+    nav.parent = body
+    nav.data.color = (1.0, 0.15, 0.1)
+    nav.data.shadow_soft_size = 0.005
+    nav.data.use_shadow = False
+    nav.data.energy = 3.0
+
+    for f in range(FRAME_START, FRAME_END + 1, 20):
+        nav.data.energy = 6.0
+        nav.data.keyframe_insert(data_path="energy", frame=f)
+        nav.data.energy = 0.0
+        nav.data.keyframe_insert(data_path="energy", frame=f + 3)
+        nav.data.keyframe_insert(data_path="energy", frame=f + 17)
+
+    if nav.data.animation_data and nav.data.animation_data.action:
+        for fc in nav.data.animation_data.action.fcurves:
+            for kf in fc.keyframe_points:
+                kf.interpolation = 'CONSTANT'
+
+    print("  [+] Satellite added to Earth orbit")
+
+
+# ============================================================
+# SECTION 10 – COMETS  (ADDITION)
+# ============================================================
+def create_comet(name, parent_obj, start_pos, end_pos,
+                 start_frame, end_frame,
+                 head_radius=0.3, tail_length=4.0,
+                 color=(0.5, 0.7, 1.0, 1)):
+    """Create a comet with bright emissive head, point light, and fading tail.
+
+    `parent_obj` – Empty or object to parent to (None for world-space).
+    Positions are in parent local space.
+    """
+    travel_dir = Vector(end_pos) - Vector(start_pos)
+    tail_dir = -travel_dir.normalized()  # tail points opposite travel
+
+    # ---- Head (icosphere) ----
+    bpy.ops.mesh.primitive_ico_sphere_add(
+        radius=head_radius, subdivisions=3, location=(0, 0, 0))
+    head = bpy.context.active_object
+    head.name = f"Comet_{name}"
+    bpy.ops.object.shade_smooth()
+    if parent_obj:
+        head.parent = parent_obj
+
+    # Head material – intense white-blue emission
+    h_mat = bpy.data.materials.new(f"Comet_{name}_Head_Mat")
+    h_mat.use_nodes = True
+    hn = h_mat.node_tree.nodes; hl = h_mat.node_tree.links
+    hn.clear()
+    h_out = hn.new("ShaderNodeOutputMaterial"); h_out.location = (400, 0)
+    h_emit = hn.new("ShaderNodeEmission"); h_emit.location = (100, 0)
+    h_emit.inputs["Color"].default_value = (0.92, 0.96, 1.0, 1)
+    h_emit.inputs["Strength"].default_value = 30.0
+    hl.new(h_emit.outputs["Emission"], h_out.inputs["Surface"])
+    assign_material(head, h_mat)
+
+    # Point light on head for volumetric glow
+    bpy.ops.object.light_add(type='POINT', location=(0, 0, 0))
+    c_light = bpy.context.active_object
+    c_light.name = f"Comet_{name}_Light"
+    c_light.parent = head
+    c_light.data.energy = 800
+    c_light.data.color = color[:3]
+    c_light.data.shadow_soft_size = head_radius * 2
+    c_light.data.use_shadow = False
+    c_light.data.use_custom_distance = True
+    c_light.data.cutoff_distance = tail_length * 4
+
+    # ---- Tail (cone with gradient fade) ----
+    bpy.ops.mesh.primitive_cone_add(
+        radius1=head_radius * 0.6, radius2=0.0,
+        depth=tail_length, vertices=32, location=(0, 0, 0))
+    tail = bpy.context.active_object
+    tail.name = f"CometTail_{name}"
+    bpy.ops.object.shade_smooth()
+    tail.parent = head
+
+    # Orient tail: +Z of cone tip should align with tail_dir (behind)
+    rot_quat = tail_dir.to_track_quat('Z', 'Y')
+    tail.rotation_euler = rot_quat.to_euler()
+    # Offset so the fat base sits at the head center
+    offset = rot_quat @ Vector((0, 0, tail_length / 2))
+    tail.location = offset
+
+    # Tail material – gradient emission→transparent along Generated Z
+    t_mat = bpy.data.materials.new(f"CometTail_{name}_Mat")
+    t_mat.use_nodes = True
+    t_mat.blend_method = "BLEND"
+    t_mat.shadow_method = "NONE"
+    tn = t_mat.node_tree.nodes; tl = t_mat.node_tree.links
+    tn.clear()
+
+    t_out   = tn.new("ShaderNodeOutputMaterial"); t_out.location  = (700, 0)
+    t_emit  = tn.new("ShaderNodeEmission");       t_emit.location = (200, -100)
+    t_emit.inputs["Color"].default_value    = color
+    t_emit.inputs["Strength"].default_value = 15.0
+
+    t_trans = tn.new("ShaderNodeBsdfTransparent"); t_trans.location = (200, 100)
+    t_mix   = tn.new("ShaderNodeMixShader");       t_mix.location   = (500, 0)
+
+    t_coord = tn.new("ShaderNodeTexCoord");  t_coord.location = (-200, -100)
+    t_sep   = tn.new("ShaderNodeSeparateXYZ"); t_sep.location  = (0, -100)
+
+    tl.new(t_coord.outputs["Generated"], t_sep.inputs["Vector"])
+    # Z=0 at fat base (near head)  → Fac 0 → Input 1 → Emission
+    # Z=1 at pointy tip (tail end) → Fac 1 → Input 2 → Transparent
+    tl.new(t_sep.outputs["Z"],          t_mix.inputs["Fac"])
+    tl.new(t_emit.outputs["Emission"],  t_mix.inputs[1])
+    tl.new(t_trans.outputs["BSDF"],     t_mix.inputs[2])
+    tl.new(t_mix.outputs["Shader"],     t_out.inputs["Surface"])
+    assign_material(tail, t_mat)
+
+    # ---- Visibility keyframes ----
+    for obj in [head, tail, c_light]:
+        obj.hide_render = True;  obj.hide_viewport = True
+        obj.keyframe_insert(data_path="hide_render",   frame=1)
+        obj.keyframe_insert(data_path="hide_viewport",  frame=1)
+        if start_frame > 2:
+            obj.keyframe_insert(data_path="hide_render",  frame=start_frame - 1)
+            obj.keyframe_insert(data_path="hide_viewport", frame=start_frame - 1)
+
+        obj.hide_render = False; obj.hide_viewport = False
+        obj.keyframe_insert(data_path="hide_render",   frame=start_frame)
+        obj.keyframe_insert(data_path="hide_viewport",  frame=start_frame)
+
+    # Position
+    head.location = start_pos
+    head.keyframe_insert(data_path="location", frame=start_frame)
+    head.location = end_pos
+    head.keyframe_insert(data_path="location", frame=end_frame)
+
+    for obj in [head, tail, c_light]:
+        obj.hide_render = True;  obj.hide_viewport = True
+        obj.keyframe_insert(data_path="hide_render",   frame=end_frame + 1)
+        obj.keyframe_insert(data_path="hide_viewport",  frame=end_frame + 1)
+
+    # Interpolation
+    for obj in [head, tail, c_light]:
+        if obj.animation_data and obj.animation_data.action:
+            for fc in obj.animation_data.action.fcurves:
+                if fc.data_path in ("hide_render", "hide_viewport"):
+                    for kf in fc.keyframe_points:
+                        kf.interpolation = 'CONSTANT'
+                elif fc.data_path == "location":
+                    for kf in fc.keyframe_points:
+                        kf.interpolation = 'LINEAR'
+
+    print(f"  [+] Comet '{name}' added (frames {start_frame}–{end_frame})")
+    return head
+
+
+# ============================================================
+# SECTION 11 – SHOOTING STARS  (ADDITION)
+# ============================================================
+def create_shooting_star(name, parent_obj, start_pos, end_pos,
+                         start_frame, end_frame,
+                         streak_length=1.5, streak_radius=0.015,
+                         color=(1.0, 0.95, 0.8, 1)):
+    """Fast bright streak with a fading trail cone."""
+    travel_dir = Vector(end_pos) - Vector(start_pos)
+    travel_norm = travel_dir.normalized()
+
+    # ---- Streak body (cylinder) ----
+    bpy.ops.mesh.primitive_cylinder_add(
+        radius=streak_radius, depth=streak_length,
+        vertices=12, location=(0, 0, 0))
+    streak = bpy.context.active_object
+    streak.name = f"ShootingStar_{name}"
+    bpy.ops.object.shade_smooth()
+    if parent_obj:
+        streak.parent = parent_obj
+
+    # Orient cylinder +Z along travel direction
+    rot_quat = travel_norm.to_track_quat('Z', 'Y')
+    streak.rotation_euler = rot_quat.to_euler()
+
+    # Streak material – very bright emission
+    s_mat = bpy.data.materials.new(f"ShootingStar_{name}_Mat")
+    s_mat.use_nodes = True
+    sn = s_mat.node_tree.nodes; sl = s_mat.node_tree.links
+    sn.clear()
+    s_out  = sn.new("ShaderNodeOutputMaterial"); s_out.location  = (400, 0)
+    s_emit = sn.new("ShaderNodeEmission");       s_emit.location = (100, 0)
+    s_emit.inputs["Color"].default_value    = color
+    s_emit.inputs["Strength"].default_value = 50.0
+    sl.new(s_emit.outputs["Emission"], s_out.inputs["Surface"])
+    assign_material(streak, s_mat)
+
+    # ---- Trail cone (fades behind the streak) ----
+    trail_len = streak_length * 2.5
+    bpy.ops.mesh.primitive_cone_add(
+        radius1=streak_radius * 3, radius2=0.0,
+        depth=trail_len, vertices=16, location=(0, 0, 0))
+    trail = bpy.context.active_object
+    trail.name = f"ShootingStarTrail_{name}"
+    bpy.ops.object.shade_smooth()
+    trail.parent = streak
+
+    # In streak local space +Z = forward (travel).
+    # Flip cone 180° so fat base is at streak rear, pointy tip trails behind.
+    trail.rotation_euler = (math.radians(180), 0, 0)
+    trail.location = (0, 0, -(streak_length / 2 + trail_len / 2))
+
+    # Trail material – gradient fade (Generated Z: 0=base→emit, 1=tip→transparent)
+    tr_mat = bpy.data.materials.new(f"ShootingStarTrail_{name}_Mat")
+    tr_mat.use_nodes = True
+    tr_mat.blend_method = "BLEND"
+    tr_mat.shadow_method = "NONE"
+    trn = tr_mat.node_tree.nodes; trl = tr_mat.node_tree.links
+    trn.clear()
+
+    tr_out   = trn.new("ShaderNodeOutputMaterial"); tr_out.location   = (600, 0)
+    tr_emit  = trn.new("ShaderNodeEmission");       tr_emit.location  = (200, -80)
+    tr_emit.inputs["Color"].default_value    = color
+    tr_emit.inputs["Strength"].default_value = 25.0
+
+    tr_trans = trn.new("ShaderNodeBsdfTransparent"); tr_trans.location = (200, 80)
+    tr_mix   = trn.new("ShaderNodeMixShader");       tr_mix.location   = (400, 0)
+
+    tr_coord = trn.new("ShaderNodeTexCoord");    tr_coord.location = (-100, -80)
+    tr_sep   = trn.new("ShaderNodeSeparateXYZ"); tr_sep.location   = (50, -80)
+
+    trl.new(tr_coord.outputs["Generated"], tr_sep.inputs["Vector"])
+    trl.new(tr_sep.outputs["Z"],           tr_mix.inputs["Fac"])
+    trl.new(tr_emit.outputs["Emission"],   tr_mix.inputs[1])
+    trl.new(tr_trans.outputs["BSDF"],      tr_mix.inputs[2])
+    trl.new(tr_mix.outputs["Shader"],      tr_out.inputs["Surface"])
+    assign_material(trail, tr_mat)
+
+    # ---- Visibility & position keyframes ----
+    streak.hide_render = True;  streak.hide_viewport = True
+    streak.keyframe_insert(data_path="hide_render",   frame=1)
+    streak.keyframe_insert(data_path="hide_viewport",  frame=1)
+    if start_frame > 2:
+        streak.keyframe_insert(data_path="hide_render",  frame=start_frame - 1)
+        streak.keyframe_insert(data_path="hide_viewport", frame=start_frame - 1)
+
+    streak.hide_render = False; streak.hide_viewport = False
+    streak.keyframe_insert(data_path="hide_render",   frame=start_frame)
+    streak.keyframe_insert(data_path="hide_viewport",  frame=start_frame)
+
+    streak.location = start_pos
+    streak.keyframe_insert(data_path="location", frame=start_frame)
+    streak.location = end_pos
+    streak.keyframe_insert(data_path="location", frame=end_frame)
+
+    streak.hide_render = True;  streak.hide_viewport = True
+    streak.keyframe_insert(data_path="hide_render",   frame=end_frame + 1)
+    streak.keyframe_insert(data_path="hide_viewport",  frame=end_frame + 1)
+
+    if streak.animation_data and streak.animation_data.action:
+        for fc in streak.animation_data.action.fcurves:
+            if fc.data_path in ("hide_render", "hide_viewport"):
+                for kf in fc.keyframe_points:
+                    kf.interpolation = 'CONSTANT'
+            elif fc.data_path == "location":
+                for kf in fc.keyframe_points:
+                    kf.interpolation = 'LINEAR'
+
+    print(f"  [+] Shooting star '{name}' added (frames {start_frame}–{end_frame})")
+    return streak
+
+
+# ============================================================
+# SECTION 12 – EXECUTE SPACE EFFECTS  (ADDITION)
+# ============================================================
+def add_space_effects():
+    """Wire up satellite, comets, and shooting stars across the animation."""
+
+    print("\n=== Adding Space Effects ===")
+
+    # -----------------------------------------------------------
+    # 1.  EARTH SATELLITE
+    # -----------------------------------------------------------
+    add_earth_satellite()
+
+    # -----------------------------------------------------------
+    # 2.  COMETS
+    #     Each comet is parented to an "anchor" empty that sits at
+    #     the planet's orbital position inside its pivot, so it
+    #     tracks correctly with the camera system.
+    # -----------------------------------------------------------
+
+    # Comet A – sweeps across during the OVERVIEW (frames 80-200)
+    #   No parent (world-space). Camera is at ~(-60,-140,100)→(50,-80,60)
+    #   looking at the Sun. Comet flies through middle ground.
+    create_comet(
+        "Overview", None,
+        start_pos=(35, -55, 35),
+        end_pos=(-28, 22, 5),
+        start_frame=80, end_frame=200,
+        head_radius=0.2, tail_length=3.0,
+        color=(0.65, 0.82, 1.0, 1))
+
+    # Comet B – near Jupiter (showcase 780-900)
+    jup_pivot = bpy.data.objects.get("Jupiter_Pivot")
+    if jup_pivot:
+        jup_orbit_r = 55
+        jup_r = 3.36
+        jup_anchor = create_empty("CometAnchor_Jupiter")
+        jup_anchor.parent = jup_pivot
+        jup_anchor.location = (jup_orbit_r, 0, 0)
+
+        create_comet(
+            "Halley", jup_anchor,
+            start_pos=(-jup_r * 4, jup_r * 5, jup_r * 4),
+            end_pos=(jup_r * 6, -jup_r * 3, -jup_r * 2),
+            start_frame=790, end_frame=890,
+            head_radius=max(jup_r * 0.05, 0.06),
+            tail_length=max(jup_r * 1.2, 1.5),
+            color=(0.5, 0.75, 1.0, 1))
+
+    # Comet C – near Neptune (showcase 1140-1260)
+    nep_pivot = bpy.data.objects.get("Neptune_Pivot")
+    if nep_pivot:
+        nep_orbit_r = 125
+        nep_r = 1.16
+        nep_anchor_c = create_empty("CometAnchor_Neptune")
+        nep_anchor_c.parent = nep_pivot
+        nep_anchor_c.location = (nep_orbit_r, 0, 0)
+
+        create_comet(
+            "Hale_Bopp", nep_anchor_c,
+            start_pos=(-nep_r * 4, nep_r * 5, nep_r * 4),
+            end_pos=(nep_r * 6, -nep_r * 3, -nep_r * 2),
+            start_frame=1155, end_frame=1250,
+            head_radius=max(nep_r * 0.05, 0.06),
+            tail_length=max(nep_r * 1.2, 1.5),
+            color=(0.6, 0.8, 0.95, 1))
+
+    # -----------------------------------------------------------
+    # 3.  PLANET COMETS
+    #     Unified comets replace basic shooting stars across
+    #     all other planet showcases.
+    # -----------------------------------------------------------
+
+    # Helper: create an anchor at a planet's orbital position
+    def planet_anchor(planet_name, orbit_r, suffix="Comet"):
+        pivot = bpy.data.objects.get(f"{planet_name}_Pivot")
+        if not pivot:
+            return None
+        a = create_empty(f"{suffix}Anchor_{planet_name}")
+        a.parent = pivot
+        a.location = (orbit_r, 0, 0)
+        return a
+
+    # Mercury (showcase 300-420, prad 0.11, orbit 12)
+    merc_a = planet_anchor("Mercury", 12)
+    if merc_a:
+        s = max(0.11, 0.35)  # visual scale – ensure visibility
+        create_comet(
+            "Mercury_1", merc_a,
+            start_pos=(-s * 4, s * 5, s * 4),
+            end_pos=(s * 6, -s * 3, -s * 2),
+            start_frame=340, end_frame=358,
+            head_radius=max(s * 0.05, 0.06),
+            tail_length=max(s * 1.2, 1.5),
+            color=(1.0, 0.9, 0.65, 1))
+
+    # Venus (showcase 420-540, prad 0.28, orbit 18)
+    ven_a = planet_anchor("Venus", 18)
+    if ven_a:
+        s = max(0.28, 0.35)
+        create_comet(
+            "Venus_1", ven_a,
+            start_pos=(s * 4, -s * 5, -s * 4),
+            end_pos=(-s * 6, s * 3, s * 2),
+            start_frame=475, end_frame=493,
+            head_radius=max(s * 0.05, 0.06),
+            tail_length=max(s * 1.2, 1.5),
+            color=(1.0, 0.85, 0.6, 1))
+
+    # Mars (showcase 660-780, prad 0.16, orbit 34)
+    mars_a = planet_anchor("Mars", 34)
+    if mars_a:
+        s = max(0.16, 0.35)
+        create_comet(
+            "Mars_1", mars_a,
+            start_pos=(-s * 4, -s * 5, s * 4),
+            end_pos=(s * 6, s * 3, -s * 2),
+            start_frame=700, end_frame=718,
+            head_radius=max(s * 0.05, 0.06),
+            tail_length=max(s * 1.2, 1.5),
+            color=(1.0, 0.75, 0.45, 1))
+
+        create_comet(
+            "Mars_2", mars_a,
+            start_pos=(s * 4, s * 5, -s * 4),
+            end_pos=(-s * 6, -s * 3, s * 2),
+            start_frame=745, end_frame=762,
+            head_radius=max(s * 0.05, 0.06),
+            tail_length=max(s * 1.2, 1.5),
+            color=(1.0, 0.92, 0.75, 1))
+
+    # Saturn (showcase 900-1020, prad 2.83, orbit 80)
+    sat_a = planet_anchor("Saturn", 80)
+    if sat_a:
+        s = 2.83
+        create_comet(
+            "Saturn_1", sat_a,
+            start_pos=(s * 4, -s * 5, -s * 4),
+            end_pos=(-s * 6, s * 3, s * 2),
+            start_frame=945, end_frame=965,
+            head_radius=max(s * 0.05, 0.06),
+            tail_length=max(s * 1.2, 1.5),
+            color=(1.0, 0.9, 0.7, 1))
+
+    # Uranus (showcase 1020-1140, prad 1.20, orbit 105)
+    ura_a = planet_anchor("Uranus", 105)
+    if ura_a:
+        s = 1.20
+        create_comet(
+            "Uranus_1", ura_a,
+            start_pos=(-s * 4, -s * 5, s * 4),
+            end_pos=(s * 6, s * 3, -s * 2),
+            start_frame=1058, end_frame=1075,
+            head_radius=max(s * 0.05, 0.06),
+            tail_length=max(s * 1.2, 1.5),
+            color=(0.7, 0.95, 1.0, 1))
+
+        create_comet(
+            "Uranus_2", ura_a,
+            start_pos=(s * 4, s * 5, -s * 4),
+            end_pos=(-s * 6, -s * 3, s * 2),
+            start_frame=1102, end_frame=1118,
+            head_radius=max(s * 0.05, 0.06),
+            tail_length=max(s * 1.2, 1.5),
+            color=(0.8, 0.9, 1.0, 1))
+
+    # Pluto (showcase 1260-1380, prad 0.05, orbit 150)
+    plu_a = planet_anchor("Pluto", 150)
+    if plu_a:
+        s = max(0.05, 0.35)  # much bigger than actual radius for visibility
+        create_comet(
+            "Pluto_1", plu_a,
+            start_pos=(s * 4, -s * 5, s * 4),
+            end_pos=(-s * 6, s * 3, -s * 2),
+            start_frame=1300, end_frame=1320,
+            head_radius=max(s * 0.05, 0.06),
+            tail_length=max(s * 1.2, 1.5),
+            color=(0.85, 0.8, 0.95, 1))
+
+    # Reset frame
+    bpy.context.scene.frame_set(1)
+    bpy.context.view_layer.update()
+
+    print("=== Space Effects Complete ===\n")
+
+
+# Run!
+add_space_effects()
