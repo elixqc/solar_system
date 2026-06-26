@@ -1,6 +1,7 @@
 import bpy
 import math
 import os
+from mathutils import Vector, Matrix, Quaternion
 
 # ============================================================
 # CONFIGURATION
@@ -810,6 +811,28 @@ def build_camera_system(planets):
                 c.influence = influence
                 c.keyframe_insert(data_path="influence", frame=frame)
 
+    # Setup Light Animation
+    sun_light_obj = bpy.data.objects.get("SunLight")
+    sun_light = sun_light_obj.data if sun_light_obj else None
+
+    planet_light_energies = {
+        "Sun": 80000.0,
+        "Mercury": 15000.0,
+        "Venus": 35000.0,
+        "Earth": 75000.0,
+        "Mars": 140000.0,
+        "Jupiter": 360000.0,
+        "Saturn": 750000.0,
+        "Uranus": 1300000.0,
+        "Neptune": 1850000.0,
+        "Pluto": 2700000.0
+    }
+
+    if sun_light:
+        sun_light.energy = 80000.0
+        sun_light.keyframe_insert(data_path="energy", frame=1)
+        sun_light.keyframe_insert(data_path="energy", frame=240)
+
     # 4. Animate Scene 1 – Overview
     keyframe_influence("Sun", 1, 1.0)
     for pname in PLANET_DATA:
@@ -888,16 +911,45 @@ def build_camera_system(planets):
         cam_data.dof.keyframe_insert(data_path="aperture_fstop", frame=trans_end)
         cam_data.dof.keyframe_insert(data_path="aperture_fstop", frame=showcase_end)
 
+        # Animate dynamic lighting exposure
+        if sun_light:
+            prev_energy = planet_light_energies.get(prev_target, 80000.0)
+            current_energy = planet_light_energies.get(pname, 80000.0)
+            
+            sun_light.energy = prev_energy
+            sun_light.keyframe_insert(data_path="energy", frame=trans_start)
+            
+            sun_light.energy = current_energy
+            sun_light.keyframe_insert(data_path="energy", frame=trans_end)
+            sun_light.keyframe_insert(data_path="energy", frame=showcase_end)
+
         # Pull camera back further for Saturn so the rings fit perfectly
         cam_prad = prad * 2.5 if pname == "Saturn" else prad
 
         # Local camera position (arc/orbital movement around planet)
         start_loc = (-cam_prad * 5, -cam_prad * 8, cam_prad * 4)
+        end_loc = (cam_prad * 4, -cam_prad * 6, cam_prad * 2)
+
+        # Pause/Drift mid-animation focusing calculation
+        dur = showcase_end - showcase_start
+        hold_start = showcase_start + int(dur * 0.25)
+        hold_end = showcase_end - int(dur * 0.25)
+
+        start_v = Vector(start_loc)
+        end_v = Vector(end_loc)
+        mid_loc_1 = start_v + 0.46 * (end_v - start_v)
+        mid_loc_2 = start_v + 0.54 * (end_v - start_v)
+
+        # Keyframe camera positions with mid-animation pause/slow-drift
         cam_obj.location = start_loc
         cam_obj.keyframe_insert(data_path="location", frame=showcase_start)
 
-        # Subtle arc and push-in during showcase
-        end_loc = (cam_prad * 4, -cam_prad * 6, cam_prad * 2)
+        cam_obj.location = mid_loc_1
+        cam_obj.keyframe_insert(data_path="location", frame=hold_start)
+
+        cam_obj.location = mid_loc_2
+        cam_obj.keyframe_insert(data_path="location", frame=hold_end)
+
         cam_obj.location = end_loc
         cam_obj.keyframe_insert(data_path="location", frame=showcase_end)
 
@@ -924,6 +976,16 @@ def build_camera_system(planets):
     cam_data.dof.aperture_fstop = 1.8
     cam_data.dof.keyframe_insert(data_path="aperture_fstop", frame=final_trans_end)
     cam_data.dof.keyframe_insert(data_path="aperture_fstop", frame=final_end)
+
+    # Final overview light energy transition
+    if sun_light:
+        prev_energy = planet_light_energies.get(prev_target, 80000.0)
+        sun_light.energy = prev_energy
+        sun_light.keyframe_insert(data_path="energy", frame=final_start)
+        
+        sun_light.energy = 150000.0  # Dynamic lighting overview energy
+        sun_light.keyframe_insert(data_path="energy", frame=final_trans_end)
+        sun_light.keyframe_insert(data_path="energy", frame=final_end)
 
     # Bring orbit lines back for the final overview
     if orbit_mix:
@@ -955,6 +1017,12 @@ def build_camera_system(planets):
     # Smooth f-stop transition keyframes on camera data
     if cam_data.animation_data and cam_data.animation_data.action:
         for fcurve in cam_data.animation_data.action.fcurves:
+            for kf in fcurve.keyframe_points:
+                kf.interpolation = 'BEZIER'
+
+    # Smooth light energy f-curve keyframes
+    if sun_light and sun_light.animation_data and sun_light.animation_data.action:
+        for fcurve in sun_light.animation_data.action.fcurves:
             for kf in fcurve.keyframe_points:
                 kf.interpolation = 'BEZIER'
 
@@ -1013,7 +1081,273 @@ main()
 # ============================================================
 # SECTION 9 – EARTH SATELLITE  (ADDITION – does NOT modify above)
 # ============================================================
-from mathutils import Vector
+from mathutils import Vector, Matrix
+
+
+def create_spaceship_materials():
+    """Create three textured materials for the spaceship:
+    - Base Hull: textured with hull_normal.png
+    - Hull Lights: textured with hull_normal.png, hull_lights_diffuse.png, hull_lights_emit.png
+    - Engine Exhaust: bright blue emissive glow
+    """
+    # Load textures
+    hull_norm = bpy.data.images.load(tex("hull_normal.png"), check_existing=True)
+    lights_diff = bpy.data.images.load(tex("hull_lights_diffuse.png"), check_existing=True)
+    lights_emit = bpy.data.images.load(tex("hull_lights_emit.png"), check_existing=True)
+    
+    # 1. Base Hull Material
+    mat_hull = bpy.data.materials.new("Spaceship_Hull")
+    mat_hull.use_nodes = True
+    nodes = mat_hull.node_tree.nodes
+    links = mat_hull.node_tree.links
+    nodes.clear()
+    
+    out = nodes.new("ShaderNodeOutputMaterial")
+    bsdf = nodes.new("ShaderNodeBsdfPrincipled")
+    bsdf.inputs["Base Color"].default_value = (0.7, 0.72, 0.75, 1.0)
+    bsdf.inputs["Metallic"].default_value = 0.9
+    bsdf.inputs["Roughness"].default_value = 0.25
+    
+    # Texture coordinate & mapping
+    coord = nodes.new("ShaderNodeTexCoord")
+    
+    # Normal Map node
+    norm_tex = nodes.new("ShaderNodeTexImage")
+    norm_tex.image = hull_norm
+    norm_tex.image.colorspace_settings.name = 'Non-Color'
+    norm_tex.projection = 'BOX'
+    norm_tex.projection_blend = 0.1
+    
+    norm_map = nodes.new("ShaderNodeNormalMap")
+    norm_map.inputs["Strength"].default_value = 1.0
+    
+    links.new(coord.outputs["Object"], norm_tex.inputs["Vector"])
+    links.new(norm_tex.outputs["Color"], norm_map.inputs["Color"])
+    links.new(norm_map.outputs["Normal"], bsdf.inputs["Normal"])
+    links.new(bsdf.outputs["BSDF"], out.inputs["Surface"])
+    
+    # 2. Hull Lights Material (plated hull with glowing windows)
+    mat_lights = bpy.data.materials.new("Spaceship_HullLights")
+    mat_lights.use_nodes = True
+    nodes_l = mat_lights.node_tree.nodes
+    links_l = mat_lights.node_tree.links
+    nodes_l.clear()
+    
+    out_l = nodes_l.new("ShaderNodeOutputMaterial")
+    bsdf_l = nodes_l.new("ShaderNodeBsdfPrincipled")
+    bsdf_l.inputs["Metallic"].default_value = 0.9
+    bsdf_l.inputs["Roughness"].default_value = 0.25
+    
+    coord_l = nodes_l.new("ShaderNodeTexCoord")
+    
+    # Normal Map (same as base hull)
+    norm_tex_l = nodes_l.new("ShaderNodeTexImage")
+    norm_tex_l.image = hull_norm
+    norm_tex_l.image.colorspace_settings.name = 'Non-Color'
+    norm_tex_l.projection = 'BOX'
+    norm_tex_l.projection_blend = 0.1
+    
+    norm_map_l = nodes_l.new("ShaderNodeNormalMap")
+    norm_map_l.inputs["Strength"].default_value = 1.0
+    
+    links_l.new(coord_l.outputs["Object"], norm_tex_l.inputs["Vector"])
+    links_l.new(norm_tex_l.outputs["Color"], norm_map_l.inputs["Color"])
+    links_l.new(norm_map_l.outputs["Normal"], bsdf_l.inputs["Normal"])
+    
+    # Windows diffuse overlay
+    diff_tex = nodes_l.new("ShaderNodeTexImage")
+    diff_tex.image = lights_diff
+    diff_tex.projection = 'BOX'
+    diff_tex.projection_blend = 0.1
+    
+    mix_color = nodes_l.new("ShaderNodeMixRGB")
+    mix_color.blend_type = 'MULTIPLY'
+    mix_color.inputs["Color1"].default_value = (0.7, 0.72, 0.75, 1.0)
+    mix_color.inputs["Fac"].default_value = 0.8
+    
+    links_l.new(coord_l.outputs["Object"], diff_tex.inputs["Vector"])
+    links_l.new(diff_tex.outputs["Color"], mix_color.inputs["Color2"])
+    links_l.new(mix_color.outputs["Color"], bsdf_l.inputs["Base Color"])
+    
+    # Windows emissive map
+    emit_tex = nodes_l.new("ShaderNodeTexImage")
+    emit_tex.image = lights_emit
+    emit_tex.projection = 'BOX'
+    emit_tex.projection_blend = 0.1
+    
+    links_l.new(coord_l.outputs["Object"], emit_tex.inputs["Vector"])
+    
+    # Emit color & strength
+    mix_emit = nodes_l.new("ShaderNodeMixRGB")
+    mix_emit.blend_type = 'MULTIPLY'
+    mix_emit.inputs["Color1"].default_value = (0.3, 0.8, 1.0, 1.0)
+    links_l.new(emit_tex.outputs["Color"], mix_emit.inputs["Color2"])
+    links_l.new(mix_emit.outputs["Color"], bsdf_l.inputs["Emission"])
+    bsdf_l.inputs["Emission Strength"].default_value = 5.0
+    
+    links_l.new(bsdf_l.outputs["BSDF"], out_l.inputs["Surface"])
+    
+    # 3. Engine Glow Material
+    mat_glow = bpy.data.materials.new("Spaceship_EngineGlow")
+    mat_glow.use_nodes = True
+    nodes_g = mat_glow.node_tree.nodes
+    links_g = mat_glow.node_tree.links
+    nodes_g.clear()
+    out_g = nodes_g.new("ShaderNodeOutputMaterial")
+    emit_g = nodes_g.new("ShaderNodeEmission")
+    emit_g.inputs["Color"].default_value = (0.0, 0.6, 1.0, 1.0)
+    emit_g.inputs["Strength"].default_value = 30.0
+    links_g.new(emit_g.outputs["Emission"], out_g.inputs["Surface"])
+    
+    return mat_hull, mat_lights, mat_glow
+
+
+def generate_procedural_spaceship(name, scale=0.08):
+    """Generate a highly detailed procedural spaceship using bmesh,
+    modeled with wings, cockpit, engine nozzles, and detailed greebles.
+    Uses box-mapped hull texture normal map and light emission maps.
+    """
+    import bmesh
+    import random
+    from mathutils import Vector, Matrix
+
+    mesh = bpy.data.meshes.new(name + "_Mesh")
+    obj = bpy.data.objects.new(name, mesh)
+    bpy.context.collection.objects.link(obj)
+
+    bm = bmesh.new()
+
+    # 1. Base sleeker rectangular core (longer in Y, wider in X, thin in Z)
+    bmesh.ops.create_cube(bm, size=1.0)
+    bmesh.ops.scale(bm, vec=Vector((0.6, 2.0, 0.4)) * scale, verts=bm.verts)
+
+    # Base hull material
+    for face in bm.faces:
+        face.material_index = 0
+
+    # 2. Cockpit / Nose (Extrude +Y forward face)
+    for face in list(bm.faces):
+        if face.normal.y > 0.9:
+            # Extrude forward twice
+            f1 = bmesh.ops.extrude_discrete_faces(bm, faces=[face])['faces'][0]
+            bmesh.ops.translate(bm, vec=f1.normal * 0.8 * scale, verts=f1.verts)
+            # scale down slightly
+            pos = f1.calc_center_bounds()
+            for v in f1.verts:
+                v.co = pos + (v.co - pos) * Vector((0.7, 1.0, 0.5))
+            f1.material_index = 1
+
+            f2 = bmesh.ops.extrude_discrete_faces(bm, faces=[f1])['faces'][0]
+            bmesh.ops.translate(bm, vec=f2.normal * 0.5 * scale, verts=f2.verts)
+            # taper to a point
+            pos2 = f2.calc_center_bounds()
+            for v in f2.verts:
+                v.co = pos2 + (v.co - pos2) * Vector((0.2, 1.0, 0.1))
+            f2.material_index = 0
+
+    # 3. Wings (Extrude sides along X axis)
+    for face in list(bm.faces):
+        # If it's a side face (X normal)
+        if abs(face.normal.x) > 0.9 and abs(face.calc_center_bounds().y) < 0.5 * scale:
+            side = 1.0 if face.normal.x > 0 else -1.0
+            
+            # Wing segment 1
+            w1 = bmesh.ops.extrude_discrete_faces(bm, faces=[face])['faces'][0]
+            bmesh.ops.translate(bm, vec=w1.normal * 1.5 * scale + Vector((0, -0.6 * scale, 0)), verts=w1.verts)
+            # Scale thin in Z
+            pos = w1.calc_center_bounds()
+            for v in w1.verts:
+                v.co = pos + (v.co - pos) * Vector((1.0, 0.8, 0.2))
+            w1.material_index = 0
+
+            # Wing tip / segment 2 (sweep back)
+            w2 = bmesh.ops.extrude_discrete_faces(bm, faces=[w1])['faces'][0]
+            bmesh.ops.translate(bm, vec=w2.normal * 0.8 * scale + Vector((0, -0.4 * scale, 0)), verts=w2.verts)
+            pos2 = w2.calc_center_bounds()
+            for v in w2.verts:
+                v.co = pos2 + (v.co - pos2) * Vector((1.0, 0.4, 0.1))
+            w2.material_index = 1
+
+    # 4. Engine Mount and dual nozzle cones (rear face -Y)
+    for face in list(bm.faces):
+        if face.normal.y < -0.9:
+            mount = bmesh.ops.extrude_discrete_faces(bm, faces=[face])['faces'][0]
+            bmesh.ops.translate(bm, vec=mount.normal * 0.4 * scale, verts=mount.verts)
+            pos = mount.calc_center_bounds()
+            for v in mount.verts:
+                v.co = pos + (v.co - pos) * 0.8
+            mount.material_index = 0
+
+            # Create two engines
+            for offset in [-0.25, 0.25]:
+                engine_pos = pos + Vector((offset * scale, -0.1 * scale, 0))
+                engine_mat = Matrix.Translation(engine_pos) @ Matrix.Rotation(math.radians(-90), 4, 'X')
+                
+                # Outer metal cylinder
+                outer_cyl = bmesh.ops.create_cone(
+                    bm, cap_ends=True, cap_tris=False, segments=12,
+                    radius1=0.18 * scale, radius2=0.22 * scale, depth=0.4 * scale,
+                    matrix=engine_mat
+                )
+                for v in outer_cyl['verts']:
+                    for f in v.link_faces:
+                        f.material_index = 0
+
+                # Inner glow disc
+                glow_pos = engine_pos + Vector((0, -0.21 * scale, 0))
+                glow_mat = Matrix.Translation(glow_pos) @ Matrix.Rotation(math.radians(-90), 4, 'X')
+                inner_glow = bmesh.ops.create_cone(
+                    bm, cap_ends=True, cap_tris=False, segments=10,
+                    radius1=0.14 * scale, radius2=0.14 * scale, depth=0.02 * scale,
+                    matrix=glow_mat
+                )
+                for v in inner_glow['verts']:
+                    for f in v.link_faces:
+                        f.material_index = 2
+
+    # 5. Top fin (extruded along +Z)
+    for face in list(bm.faces):
+        if face.normal.z > 0.9 and abs(face.calc_center_bounds().y + 0.5 * scale) < 0.3 * scale:
+            fin = bmesh.ops.extrude_discrete_faces(bm, faces=[face])['faces'][0]
+            bmesh.ops.translate(bm, vec=fin.normal * 0.8 * scale + Vector((0, -0.4 * scale, 0)), verts=fin.verts)
+            pos = fin.calc_center_bounds()
+            for v in fin.verts:
+                v.co = pos + (v.co - pos) * Vector((0.15, 0.6, 1.0))
+            fin.material_index = 0
+
+    # 6. Spires / Greebles
+    # Add a thin spire on the cockpit
+    spire_pos = Vector((0, 1.6 * scale, 0.25 * scale))
+    spire_mat = Matrix.Translation(spire_pos) @ Matrix.Rotation(math.radians(15), 4, 'X')
+    spire = bmesh.ops.create_cone(
+        bm, cap_ends=True, cap_tris=False, segments=6,
+        radius1=0.015 * scale, radius2=0.0, depth=0.6 * scale,
+        matrix=spire_mat
+    )
+    for v in spire['verts']:
+        for f in v.link_faces:
+            f.material_index = 1
+
+    bm.to_mesh(mesh)
+    bm.free()
+
+    # Recenter origin
+    bpy.context.view_layer.objects.active = obj
+    obj.select_set(True)
+    bpy.ops.object.origin_set(type='ORIGIN_CENTER_OF_MASS')
+
+    # Bevel modifier for panel lines
+    bevel = obj.modifiers.new(name="Bevel", type='BEVEL')
+    bevel.width = 0.005 * scale
+    bevel.segments = 2
+
+    # Load and assign materials
+    mat_hull, mat_lights, mat_glow = create_spaceship_materials()
+    obj.data.materials.append(mat_hull)       # Index 0
+    obj.data.materials.append(mat_lights)     # Index 1
+    obj.data.materials.append(mat_glow)       # Index 2
+
+    return obj
 
 
 def add_earth_satellite():
@@ -1029,89 +1363,19 @@ def add_earth_satellite():
     sat_orbit = create_empty("Satellite_Orbit")
     sat_orbit.parent = earth
 
-    # ---- Satellite Body ----
-    bpy.ops.mesh.primitive_cube_add(size=0.05)
-    body = bpy.context.active_object
-    body.name = "Satellite"
-    body.scale = (1.0, 0.5, 0.25)
-
-    # Solar Panel – Left
-    bpy.ops.mesh.primitive_cube_add(size=0.07)
-    panel_l = bpy.context.active_object
-    panel_l.name = "Sat_PanelL"
-    panel_l.scale = (1.0, 0.55, 0.015)
-    panel_l.location = (-0.08, 0, 0)
-    panel_l.parent = body
-
-    # Solar Panel – Right
-    bpy.ops.mesh.primitive_cube_add(size=0.07)
-    panel_r = bpy.context.active_object
-    panel_r.name = "Sat_PanelR"
-    panel_r.scale = (1.0, 0.55, 0.015)
-    panel_r.location = (0.08, 0, 0)
-    panel_r.parent = body
-
-    # Antenna dish
-    bpy.ops.mesh.primitive_uv_sphere_add(
-        radius=0.012, segments=12, ring_count=6, location=(0, 0, 0.022))
-    dish = bpy.context.active_object
-    dish.name = "Sat_Dish"
-    dish.scale = (1.0, 1.0, 0.25)
-    dish.parent = body
-
-    # ---- Materials ----
-    # Body – silver metallic with strong emission so it glows visibly
-    body_mat = bpy.data.materials.new("Satellite_Body_Mat")
-    body_mat.use_nodes = True
-    bn = body_mat.node_tree.nodes
-    bl = body_mat.node_tree.links
-    bn.clear()
-    b_out = bn.new("ShaderNodeOutputMaterial"); b_out.location = (400, 0)
-    b_bsdf = bn.new("ShaderNodeBsdfPrincipled"); b_bsdf.location = (100, 0)
-    b_bsdf.inputs["Base Color"].default_value = (0.8, 0.8, 0.85, 1)
-    b_bsdf.inputs["Metallic"].default_value = 0.95
-    b_bsdf.inputs["Roughness"].default_value = 0.15
-    if "Emission Color" in b_bsdf.inputs:
-        b_bsdf.inputs["Emission Color"].default_value = (0.9, 0.95, 1.0, 1)
-        b_bsdf.inputs["Emission Strength"].default_value = 5.0
-    elif "Emission" in b_bsdf.inputs:
-        b_bsdf.inputs["Emission"].default_value = (0.9, 0.95, 1.0, 1)
-        b_bsdf.inputs["Emission Strength"].default_value = 5.0
-    bl.new(b_bsdf.outputs["BSDF"], b_out.inputs["Surface"])
-    assign_material(body, body_mat)
-    assign_material(dish, body_mat)
-
-    # Panels – dark blue solar cells with subtle emission
-    panel_mat = bpy.data.materials.new("Satellite_Panel_Mat")
-    panel_mat.use_nodes = True
-    pn = panel_mat.node_tree.nodes
-    pl = panel_mat.node_tree.links
-    pn.clear()
-    p_out = pn.new("ShaderNodeOutputMaterial"); p_out.location = (400, 0)
-    p_bsdf = pn.new("ShaderNodeBsdfPrincipled"); p_bsdf.location = (100, 0)
-    p_bsdf.inputs["Base Color"].default_value = (0.01, 0.03, 0.18, 1)
-    p_bsdf.inputs["Metallic"].default_value = 0.7
-    p_bsdf.inputs["Roughness"].default_value = 0.1
-    if "Emission Color" in p_bsdf.inputs:
-        p_bsdf.inputs["Emission Color"].default_value = (0.05, 0.12, 0.4, 1)
-        p_bsdf.inputs["Emission Strength"].default_value = 2.5
-    elif "Emission" in p_bsdf.inputs:
-        p_bsdf.inputs["Emission"].default_value = (0.05, 0.12, 0.4, 1)
-        p_bsdf.inputs["Emission Strength"].default_value = 2.5
-    pl.new(p_bsdf.outputs["BSDF"], p_out.inputs["Surface"])
-    assign_material(panel_l, panel_mat)
-    assign_material(panel_r, panel_mat)
+    # ---- Generate Procedural Satellite ----
+    body = generate_procedural_spaceship("Satellite", scale=0.03)
 
     # ---- Position & parent ----
     sat_orbit_r = earth_r * 2.5  # close enough to be clearly visible on camera
     body.location = (sat_orbit_r, 0, 0.05)
     body.parent = sat_orbit
 
-    # ---- Animate inclined orbit (fast) ----
+    # ---- Animate inclined orbit (slower) ----
     sat_orbit.rotation_euler = (math.radians(40), math.radians(15), 0)
     sat_orbit.keyframe_insert(data_path="rotation_euler", frame=1)
     sat_orbit.rotation_euler = (math.radians(40), math.radians(15),
-                                math.radians(360 * 25))
+                                math.radians(360 * 5))
     sat_orbit.keyframe_insert(data_path="rotation_euler", frame=FRAME_END)
     for fc in sat_orbit.animation_data.action.fcurves:
         for kf in fc.keyframe_points:
@@ -1149,36 +1413,79 @@ def create_comet(name, parent_obj, start_pos, end_pos,
                  start_frame, end_frame,
                  head_radius=0.3, tail_length=4.0,
                  color=(0.5, 0.7, 1.0, 1)):
-    """Create a comet with bright emissive head, point light, and fading tail.
-
-    `parent_obj` – Empty or object to parent to (None for world-space).
-    Positions are in parent local space.
+    """Create an improved comet with:
+    - Irregular asteroid nucleus (deformed icosphere)
+    - Glowing fresnel gas coma halo
+    - Double tails (thin blue ion tail, wider warm dust tail)
+    - Debris particles trailing along the tail
+    - Point light for local illumination
     """
+    import random
+    from mathutils import Vector, Quaternion
+
     travel_dir = Vector(end_pos) - Vector(start_pos)
     tail_dir = -travel_dir.normalized()  # tail points opposite travel
 
-    # ---- Head (icosphere) ----
+    # 1. Nucleus (deformed icosphere)
     bpy.ops.mesh.primitive_ico_sphere_add(
         radius=head_radius, subdivisions=3, location=(0, 0, 0))
     head = bpy.context.active_object
     head.name = f"Comet_{name}"
+    
+    # Deform vertices of the nucleus to make it look like a craggy rock
+    mesh = head.data
+    for vert in mesh.vertices:
+        noise = 1.0 + random.uniform(-0.16, 0.16)
+        vert.co *= noise
     bpy.ops.object.shade_smooth()
+    
     if parent_obj:
         head.parent = parent_obj
 
-    # Head material – intense white-blue emission
-    h_mat = bpy.data.materials.new(f"Comet_{name}_Head_Mat")
-    h_mat.use_nodes = True
-    hn = h_mat.node_tree.nodes; hl = h_mat.node_tree.links
-    hn.clear()
-    h_out = hn.new("ShaderNodeOutputMaterial"); h_out.location = (400, 0)
-    h_emit = hn.new("ShaderNodeEmission"); h_emit.location = (100, 0)
-    h_emit.inputs["Color"].default_value = (0.92, 0.96, 1.0, 1)
-    h_emit.inputs["Strength"].default_value = 30.0
-    hl.new(h_emit.outputs["Emission"], h_out.inputs["Surface"])
-    assign_material(head, h_mat)
+    # Nucleus material - dark rock
+    n_mat = bpy.data.materials.new(f"Comet_{name}_Nucleus_Mat")
+    n_mat.use_nodes = True
+    nn = n_mat.node_tree.nodes
+    nl = n_mat.node_tree.links
+    nn.clear()
+    n_out = nn.new("ShaderNodeOutputMaterial")
+    n_bsdf = nn.new("ShaderNodeBsdfPrincipled")
+    n_bsdf.inputs["Base Color"].default_value = (0.15, 0.15, 0.15, 1)
+    n_bsdf.inputs["Roughness"].default_value = 0.95
+    n_bsdf.inputs["Metallic"].default_value = 0.0
+    nl.new(n_bsdf.outputs["BSDF"], n_out.inputs["Surface"])
+    assign_material(head, n_mat)
 
-    # Point light on head for volumetric glow
+    # 2. Coma (surrounding gas halo)
+    bpy.ops.mesh.primitive_ico_sphere_add(
+        radius=head_radius * 1.6, subdivisions=2, location=(0, 0, 0))
+    coma = bpy.context.active_object
+    coma.name = f"CometComa_{name}"
+    coma.parent = head
+    bpy.ops.object.shade_smooth()
+
+    # Coma material - fresnel transparent soft glow
+    coma_mat = bpy.data.materials.new(f"CometComa_{name}_Mat")
+    coma_mat.use_nodes = True
+    coma_mat.blend_method = "BLEND"
+    coma_mat.shadow_method = "NONE"
+    cn = coma_mat.node_tree.nodes; cl = coma_mat.node_tree.links
+    cn.clear()
+    c_out = cn.new("ShaderNodeOutputMaterial")
+    c_trans = cn.new("ShaderNodeBsdfTransparent")
+    c_emit = cn.new("ShaderNodeEmission")
+    c_emit.inputs["Color"].default_value = color
+    c_emit.inputs["Strength"].default_value = 6.0
+    c_mix = cn.new("ShaderNodeMixShader")
+    c_lw = cn.new("ShaderNodeLayerWeight")
+    c_lw.inputs["Blend"].default_value = 0.25
+    cl.new(c_lw.outputs["Facing"], c_mix.inputs["Fac"])
+    cl.new(c_trans.outputs["BSDF"], c_mix.inputs[1])
+    cl.new(c_emit.outputs["Emission"], c_mix.inputs[2])
+    cl.new(c_mix.outputs["Shader"], c_out.inputs["Surface"])
+    assign_material(coma, coma_mat)
+
+    # 3. Point light on head for volumetric glow
     bpy.ops.object.light_add(type='POINT', location=(0, 0, 0))
     c_light = bpy.context.active_object
     c_light.name = f"Comet_{name}_Light"
@@ -1190,52 +1497,117 @@ def create_comet(name, parent_obj, start_pos, end_pos,
     c_light.data.use_custom_distance = True
     c_light.data.cutoff_distance = tail_length * 4
 
-    # ---- Tail (cone with gradient fade) ----
+    # 4. Ion Tail (thin, straight blue cone)
     bpy.ops.mesh.primitive_cone_add(
         radius1=head_radius * 0.6, radius2=0.0,
         depth=tail_length, vertices=32, location=(0, 0, 0))
-    tail = bpy.context.active_object
-    tail.name = f"CometTail_{name}"
+    ion_tail = bpy.context.active_object
+    ion_tail.name = f"CometIonTail_{name}"
     bpy.ops.object.shade_smooth()
-    tail.parent = head
+    ion_tail.parent = head
 
-    # Orient tail: +Z of cone tip should align with tail_dir (behind)
+    # Orient ion tail
     rot_quat = tail_dir.to_track_quat('Z', 'Y')
-    tail.rotation_euler = rot_quat.to_euler()
-    # Offset so the fat base sits at the head center
-    offset = rot_quat @ Vector((0, 0, tail_length / 2))
-    tail.location = offset
+    ion_tail.rotation_euler = rot_quat.to_euler()
+    ion_offset = rot_quat @ Vector((0, 0, tail_length / 2))
+    ion_tail.location = ion_offset
 
-    # Tail material – gradient emission→transparent along Generated Z
-    t_mat = bpy.data.materials.new(f"CometTail_{name}_Mat")
-    t_mat.use_nodes = True
-    t_mat.blend_method = "BLEND"
-    t_mat.shadow_method = "NONE"
-    tn = t_mat.node_tree.nodes; tl = t_mat.node_tree.links
-    tn.clear()
+    # Ion Tail Material - blue glow gradient
+    ion_mat = bpy.data.materials.new(f"CometIonTail_{name}_Mat")
+    ion_mat.use_nodes = True
+    ion_mat.blend_method = "BLEND"
+    ion_mat.shadow_method = "NONE"
+    in_nodes = ion_mat.node_tree.nodes; in_links = ion_mat.node_tree.links
+    in_nodes.clear()
+    
+    i_out = in_nodes.new("ShaderNodeOutputMaterial")
+    i_emit = in_nodes.new("ShaderNodeEmission")
+    i_emit.inputs["Color"].default_value = (0.2, 0.65, 1.0, 1.0)
+    i_emit.inputs["Strength"].default_value = 25.0
+    
+    i_trans = in_nodes.new("ShaderNodeBsdfTransparent")
+    i_mix = in_nodes.new("ShaderNodeMixShader")
+    i_coord = in_nodes.new("ShaderNodeTexCoord")
+    i_sep = in_nodes.new("ShaderNodeSeparateXYZ")
+    
+    in_links.new(i_coord.outputs["Generated"], i_sep.inputs["Vector"])
+    in_links.new(i_sep.outputs["Z"], i_mix.inputs["Fac"])
+    in_links.new(i_emit.outputs["Emission"], i_mix.inputs[1])
+    in_links.new(i_trans.outputs["BSDF"], i_mix.inputs[2])
+    in_links.new(i_mix.outputs["Shader"], i_out.inputs["Surface"])
+    assign_material(ion_tail, ion_mat)
 
-    t_out   = tn.new("ShaderNodeOutputMaterial"); t_out.location  = (700, 0)
-    t_emit  = tn.new("ShaderNodeEmission");       t_emit.location = (200, -100)
-    t_emit.inputs["Color"].default_value    = color
-    t_emit.inputs["Strength"].default_value = 15.0
+    # 5. Dust Tail (wider, slightly curved yellow-white cone)
+    dust_len = tail_length * 0.85
+    bpy.ops.mesh.primitive_cone_add(
+        radius1=head_radius * 1.0, radius2=0.0,
+        depth=dust_len, vertices=32, location=(0, 0, 0))
+    dust_tail = bpy.context.active_object
+    dust_tail.name = f"CometDustTail_{name}"
+    bpy.ops.object.shade_smooth()
+    dust_tail.parent = head
 
-    t_trans = tn.new("ShaderNodeBsdfTransparent"); t_trans.location = (200, 100)
-    t_mix   = tn.new("ShaderNodeMixShader");       t_mix.location   = (500, 0)
+    # Orient dust tail offset by ~10 degrees
+    perp = tail_dir.cross(Vector((0, 0, 1)))
+    if perp.length < 0.1:
+        perp = tail_dir.cross(Vector((0, 1, 0)))
+    perp.normalize()
+    
+    dust_rot_quat = rot_quat @ Quaternion(perp, math.radians(10))
+    dust_tail.rotation_euler = dust_rot_quat.to_euler()
+    dust_offset = dust_rot_quat @ Vector((0, 0, dust_len / 2))
+    dust_tail.location = dust_offset
 
-    t_coord = tn.new("ShaderNodeTexCoord");  t_coord.location = (-200, -100)
-    t_sep   = tn.new("ShaderNodeSeparateXYZ"); t_sep.location  = (0, -100)
+    # Dust Tail Material - warm yellow-white gradient
+    dust_mat = bpy.data.materials.new(f"CometDustTail_{name}_Mat")
+    dust_mat.use_nodes = True
+    dust_mat.blend_method = "BLEND"
+    dust_mat.shadow_method = "NONE"
+    dn_nodes = dust_mat.node_tree.nodes; dn_links = dust_mat.node_tree.links
+    dn_nodes.clear()
+    
+    d_out = dn_nodes.new("ShaderNodeOutputMaterial")
+    d_emit = dn_nodes.new("ShaderNodeEmission")
+    d_emit.inputs["Color"].default_value = (1.0, 0.88, 0.65, 1.0)
+    d_emit.inputs["Strength"].default_value = 15.0
+    
+    d_trans = dn_nodes.new("ShaderNodeBsdfTransparent")
+    d_mix = dn_nodes.new("ShaderNodeMixShader")
+    d_coord = dn_nodes.new("ShaderNodeTexCoord")
+    d_sep = dn_nodes.new("ShaderNodeSeparateXYZ")
+    
+    dn_links.new(d_coord.outputs["Generated"], d_sep.inputs["Vector"])
+    dn_links.new(d_sep.outputs["Z"], d_mix.inputs["Fac"])
+    dn_links.new(d_emit.outputs["Emission"], d_mix.inputs[1])
+    dn_links.new(d_trans.outputs["BSDF"], d_mix.inputs[2])
+    dn_links.new(d_mix.outputs["Shader"], d_out.inputs["Surface"])
+    assign_material(dust_tail, dust_mat)
 
-    tl.new(t_coord.outputs["Generated"], t_sep.inputs["Vector"])
-    # Z=0 at fat base (near head)  → Fac 0 → Input 1 → Emission
-    # Z=1 at pointy tip (tail end) → Fac 1 → Input 2 → Transparent
-    tl.new(t_sep.outputs["Z"],          t_mix.inputs["Fac"])
-    tl.new(t_emit.outputs["Emission"],  t_mix.inputs[1])
-    tl.new(t_trans.outputs["BSDF"],     t_mix.inputs[2])
-    tl.new(t_mix.outputs["Shader"],     t_out.inputs["Surface"])
-    assign_material(tail, t_mat)
+    # 6. Debris particles trailing along dust tail
+    debris_list = []
+    for p_idx in range(5):
+        p_radius = head_radius * random.uniform(0.08, 0.22)
+        dist = dust_len * random.uniform(0.1, 0.7)
+        disp = Vector((random.uniform(-0.15, 0.15), random.uniform(-0.15, 0.15), random.uniform(-0.15, 0.15))) * dist * 0.2
+        p_pos = dust_offset + (dust_rot_quat @ Vector((0, 0, dist - dust_len / 2))) + disp
+        
+        bpy.ops.mesh.primitive_ico_sphere_add(
+            radius=p_radius, subdivisions=1, location=p_pos)
+        part = bpy.context.active_object
+        part.name = f"Comet_{name}_Part_{p_idx}"
+        part.parent = head
+        
+        for pv in part.data.vertices:
+            pv.co *= random.uniform(0.7, 1.3)
+        bpy.ops.object.shade_smooth()
+        assign_material(part, n_mat)
+        debris_list.append(part)
+
+    # Collect all sub-objects for keyframing
+    comet_parts = [head, coma, ion_tail, dust_tail, c_light] + debris_list
 
     # ---- Visibility keyframes ----
-    for obj in [head, tail, c_light]:
+    for obj in comet_parts:
         obj.hide_render = True;  obj.hide_viewport = True
         obj.keyframe_insert(data_path="hide_render",   frame=1)
         obj.keyframe_insert(data_path="hide_viewport",  frame=1)
@@ -1253,13 +1625,13 @@ def create_comet(name, parent_obj, start_pos, end_pos,
     head.location = end_pos
     head.keyframe_insert(data_path="location", frame=end_frame)
 
-    for obj in [head, tail, c_light]:
+    for obj in comet_parts:
         obj.hide_render = True;  obj.hide_viewport = True
         obj.keyframe_insert(data_path="hide_render",   frame=end_frame + 1)
         obj.keyframe_insert(data_path="hide_viewport",  frame=end_frame + 1)
 
     # Interpolation
-    for obj in [head, tail, c_light]:
+    for obj in comet_parts:
         if obj.animation_data and obj.animation_data.action:
             for fc in obj.animation_data.action.fcurves:
                 if fc.data_path in ("hide_render", "hide_viewport"):
@@ -1471,49 +1843,49 @@ def add_space_effects():
     # Mercury (showcase 300-420, prad 0.11, orbit 12)
     merc_a = planet_anchor("Mercury", 12)
     if merc_a:
-        s = max(0.11, 0.35)  # visual scale – ensure visibility
+        s = 0.11
         create_comet(
             "Mercury_1", merc_a,
-            start_pos=(-s * 4, s * 5, s * 4),
-            end_pos=(s * 6, -s * 3, -s * 2),
-            start_frame=340, end_frame=358,
-            head_radius=max(s * 0.05, 0.06),
-            tail_length=max(s * 1.2, 1.5),
+            start_pos=(-s * 18, s * 20, s * 15),
+            end_pos=(s * 22, -s * 18, -s * 12),
+            start_frame=340, end_frame=415,
+            head_radius=s * 0.4,
+            tail_length=s * 3.0,
             color=(1.0, 0.9, 0.65, 1))
 
     # Venus (showcase 420-540, prad 0.28, orbit 18)
     ven_a = planet_anchor("Venus", 18)
     if ven_a:
-        s = max(0.28, 0.35)
+        s = 0.28
         create_comet(
             "Venus_1", ven_a,
-            start_pos=(s * 4, -s * 5, -s * 4),
-            end_pos=(-s * 6, s * 3, s * 2),
-            start_frame=475, end_frame=493,
-            head_radius=max(s * 0.05, 0.06),
-            tail_length=max(s * 1.2, 1.5),
+            start_pos=(s * 18, -s * 20, -s * 15),
+            end_pos=(-s * 22, s * 18, s * 12),
+            start_frame=450, end_frame=530,
+            head_radius=s * 0.4,
+            tail_length=s * 3.0,
             color=(1.0, 0.85, 0.6, 1))
 
     # Mars (showcase 660-780, prad 0.16, orbit 34)
     mars_a = planet_anchor("Mars", 34)
     if mars_a:
-        s = max(0.16, 0.35)
+        s = 0.16
         create_comet(
             "Mars_1", mars_a,
-            start_pos=(-s * 4, -s * 5, s * 4),
-            end_pos=(s * 6, s * 3, -s * 2),
-            start_frame=700, end_frame=718,
-            head_radius=max(s * 0.05, 0.06),
-            tail_length=max(s * 1.2, 1.5),
+            start_pos=(-s * 18, -s * 20, s * 15),
+            end_pos=(s * 22, s * 18, -s * 12),
+            start_frame=680, end_frame=755,
+            head_radius=s * 0.4,
+            tail_length=s * 3.0,
             color=(1.0, 0.75, 0.45, 1))
 
         create_comet(
             "Mars_2", mars_a,
-            start_pos=(s * 4, s * 5, -s * 4),
-            end_pos=(-s * 6, -s * 3, s * 2),
-            start_frame=745, end_frame=762,
-            head_radius=max(s * 0.05, 0.06),
-            tail_length=max(s * 1.2, 1.5),
+            start_pos=(s * 20, s * 18, -s * 15),
+            end_pos=(-s * 22, -s * 16, s * 12),
+            start_frame=758, end_frame=775,
+            head_radius=s * 0.4,
+            tail_length=s * 3.0,
             color=(1.0, 0.92, 0.75, 1))
 
     # Saturn (showcase 900-1020, prad 2.83, orbit 80)
@@ -1522,11 +1894,11 @@ def add_space_effects():
         s = 2.83
         create_comet(
             "Saturn_1", sat_a,
-            start_pos=(s * 4, -s * 5, -s * 4),
-            end_pos=(-s * 6, s * 3, s * 2),
-            start_frame=945, end_frame=965,
-            head_radius=max(s * 0.05, 0.06),
-            tail_length=max(s * 1.2, 1.5),
+            start_pos=(s * 14, -s * 16, -s * 12),
+            end_pos=(-s * 16, s * 14, s * 10),
+            start_frame=920, end_frame=1010,
+            head_radius=s * 0.4,
+            tail_length=s * 3.0,
             color=(1.0, 0.9, 0.7, 1))
 
     # Uranus (showcase 1020-1140, prad 1.20, orbit 105)
@@ -1535,33 +1907,33 @@ def add_space_effects():
         s = 1.20
         create_comet(
             "Uranus_1", ura_a,
-            start_pos=(-s * 4, -s * 5, s * 4),
-            end_pos=(s * 6, s * 3, -s * 2),
-            start_frame=1058, end_frame=1075,
-            head_radius=max(s * 0.05, 0.06),
-            tail_length=max(s * 1.2, 1.5),
+            start_pos=(-s * 14, -s * 16, s * 12),
+            end_pos=(s * 16, s * 14, -s * 10),
+            start_frame=1040, end_frame=1120,
+            head_radius=s * 0.4,
+            tail_length=s * 3.0,
             color=(0.7, 0.95, 1.0, 1))
 
         create_comet(
             "Uranus_2", ura_a,
-            start_pos=(s * 4, s * 5, -s * 4),
-            end_pos=(-s * 6, -s * 3, s * 2),
-            start_frame=1102, end_frame=1118,
-            head_radius=max(s * 0.05, 0.06),
-            tail_length=max(s * 1.2, 1.5),
+            start_pos=(s * 16, s * 14, -s * 12),
+            end_pos=(-s * 18, -s * 12, s * 10),
+            start_frame=1123, end_frame=1135,
+            head_radius=s * 0.4,
+            tail_length=s * 3.0,
             color=(0.8, 0.9, 1.0, 1))
 
     # Pluto (showcase 1260-1380, prad 0.05, orbit 150)
     plu_a = planet_anchor("Pluto", 150)
     if plu_a:
-        s = max(0.05, 0.35)  # much bigger than actual radius for visibility
+        s = 0.05
         create_comet(
             "Pluto_1", plu_a,
-            start_pos=(s * 4, -s * 5, s * 4),
-            end_pos=(-s * 6, s * 3, -s * 2),
-            start_frame=1300, end_frame=1320,
-            head_radius=max(s * 0.05, 0.06),
-            tail_length=max(s * 1.2, 1.5),
+            start_pos=(s * 18, -s * 20, s * 15),
+            end_pos=(-s * 22, s * 18, -s * 12),
+            start_frame=1280, end_frame=1370,
+            head_radius=s * 0.4,
+            tail_length=s * 3.0,
             color=(0.85, 0.8, 0.95, 1))
 
     # Reset frame
