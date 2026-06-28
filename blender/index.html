@@ -276,62 +276,96 @@
     }
     .planet-video-block:hover .planet-video-hint { opacity: 1; transform: translateY(0); }
 
+    /* ── PROCEDURE ── */
+    #procedure {
+      padding-top: 80px;
+      padding-bottom: 80px;
+    }
+
+    #procedure .section-eyebrow {
+      color: var(--sky-blue);
+    }
+
+    #procedure .section-title {
+      color: var(--paper-white);
+    }
+
+    #procedure .section-lead {
+      margin-top: 12px;
+      font-size: 18px;
+      line-height: 1.4;
+      opacity: 0.74;
+      color: rgba(255,255,255,0.65);
+    }
+
+    .procedure-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .procedure-card {
+      padding: 18px;
+      border-radius: 14px;
+      background: var(--dark-tile-2);
+      border: 1px solid var(--hairline-dark);
+      color: var(--paper-white);
+    }
+
+    .procedure-card img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin-bottom: 14px;
+      object-fit: cover;
+    }
+
+    .procedure-card .meta-kicker {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.48);
+      margin-bottom: 8px;
+    }
+
+    .procedure-card h3 {
+      margin: 0 0 8px;
+      font-size: 19px;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      font-weight: 600;
+      color: var(--paper-white);
+    }
+
+    .procedure-card p {
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.72);
+    }
+
     /* ── MODAL ── */
     @keyframes modalBackdropIn {
-      from {
-        opacity: 0;
-        backdrop-filter: blur(0px) saturate(100%);
-        -webkit-backdrop-filter: blur(0px) saturate(100%);
-      }
-      to {
-        opacity: 1;
-        backdrop-filter: blur(20px) saturate(120%);
-        -webkit-backdrop-filter: blur(20px) saturate(120%);
-      }
+      from { opacity: 0; backdrop-filter: blur(0px) saturate(100%); -webkit-backdrop-filter: blur(0px) saturate(100%); }
+      to { opacity: 1; backdrop-filter: blur(20px) saturate(120%); -webkit-backdrop-filter: blur(20px) saturate(120%); }
     }
-
     @keyframes modalBackdropOut {
-      from {
-        opacity: 1;
-        backdrop-filter: blur(20px) saturate(120%);
-        -webkit-backdrop-filter: blur(20px) saturate(120%);
-      }
-      to {
-        opacity: 0;
-        backdrop-filter: blur(0px) saturate(100%);
-        -webkit-backdrop-filter: blur(0px) saturate(100%);
-      }
+      from { opacity: 1; backdrop-filter: blur(20px) saturate(120%); -webkit-backdrop-filter: blur(20px) saturate(120%); }
+      to { opacity: 0; backdrop-filter: blur(0px) saturate(100%); -webkit-backdrop-filter: blur(0px) saturate(100%); }
     }
-
     @keyframes modalSlideUp {
-      from {
-        opacity: 0;
-        transform: translateY(48px) scale(0.96);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
+      from { opacity: 0; transform: translateY(48px) scale(0.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
     }
-
     @keyframes modalFadeOut {
-      from {
-        opacity: 1;
-      }
-      to {
-        opacity: 0;
-      }
+      from { opacity: 1; }
+      to { opacity: 0; }
     }
-
     @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(16px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .modal-backdrop {
@@ -343,8 +377,7 @@
       padding: 24px; opacity: 0; pointer-events: none;
     }
     .modal-backdrop.open {
-      opacity: 1;
-      pointer-events: auto;
+      opacity: 1; pointer-events: auto;
       animation: modalBackdropIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
     .modal-backdrop.closing {
@@ -357,8 +390,7 @@
       border-radius: 28px; background: #111214;
       border: 1px solid rgba(255,255,255,0.1);
       box-shadow: 0 48px 120px rgba(0,0,0,0.8);
-      transform: translateY(48px) scale(0.96);
-      opacity: 0;
+      transform: translateY(48px) scale(0.96); opacity: 0;
       scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.12) transparent;
     }
     .modal-backdrop.open .modal {
@@ -379,26 +411,16 @@
     .modal-close:hover { background: rgba(255,255,255,0.16); color: var(--paper-white); }
 
     .modal-video-shell {
-      position: relative;
-      border-radius: 28px 28px 0 0;
-      overflow: hidden;
-      background: #000;
-      aspect-ratio: 16 / 9;
+      position: relative; border-radius: 28px 28px 0 0; overflow: hidden;
+      background: #000; aspect-ratio: 16 / 9;
     }
     .modal-backdrop.open .modal-video-shell {
-      animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
-      opacity: 0;
+      animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards; opacity: 0;
     }
     .modal-video-shell video,
     .modal-video-shell iframe {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      display: block;
-      border: 0;
-      background: #000;
-      pointer-events: none;
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      display: block; border: 0; background: #000; pointer-events: none;
     }
     .modal-video-shell video { object-fit: cover; }
 
@@ -413,52 +435,17 @@
     .modal-btn-fs { background: rgba(255,255,255,0.14); color: var(--paper-white); border: 1px solid rgba(255,255,255,0.2); backdrop-filter: blur(8px); }
 
     .modal-body {
-      position: relative;
-      padding: 36px 260px 40px 40px;
-      display: block;
+      position: relative; padding: 36px 260px 40px 40px; display: block;
     }
+    .modal-body > div:first-child { width: 100%; }
 
-    .modal-body > div:first-child {
-      width: 100%;
-    }
+    .modal-backdrop.open .modal-badge { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards; opacity: 0; }
+    .modal-backdrop.open .modal-title { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.25s forwards; opacity: 0; }
+    .modal-backdrop.open .modal-desc { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.35s forwards; opacity: 0; }
+    .modal-backdrop.open .modal-facts { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards; opacity: 0; }
+    .modal-backdrop.open .age-calc { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.55s forwards; opacity: 0; }
+    .modal-backdrop.open .planet-code-block { animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.65s forwards; opacity: 0; }
 
-    /* Stagger animations for modal content */
-    .modal-backdrop.open .modal-video-shell {
-      animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
-      opacity: 0;
-    }
-
-    .modal-backdrop.open .modal-badge {
-      animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
-      opacity: 0;
-    }
-
-    .modal-backdrop.open .modal-title {
-      animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.25s forwards;
-      opacity: 0;
-    }
-
-    .modal-backdrop.open .modal-desc {
-      animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.35s forwards;
-      opacity: 0;
-    }
-
-    .modal-backdrop.open .modal-facts {
-      animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards;
-      opacity: 0;
-    }
-
-    .modal-backdrop.open .age-calc {
-      animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.55s forwards;
-      opacity: 0;
-    }
-
-    .modal-backdrop.open .planet-code-block {
-      animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.65s forwards;
-      opacity: 0;
-    }
-
-    /* Reset animations when closing modal to allow replay on reopen */
     .modal-backdrop.closing .modal-video-shell,
     .modal-backdrop.closing .modal-badge,
     .modal-backdrop.closing .modal-title,
@@ -466,12 +453,9 @@
     .modal-backdrop.closing .modal-facts,
     .modal-backdrop.closing .age-calc,
     .modal-backdrop.closing .planet-code-block {
-      animation: none;
-      opacity: 0;
-      transform: translateY(16px);
+      animation: none; opacity: 0; transform: translateY(16px);
     }
 
-    /* Allow grid children to shrink so long pre/code blocks don't expand the modal */
     .modal, .modal-body, .modal-body > div, .modal-side, .planet-code-block, .code-block-container { min-width: 0; }
 
     .modal-badge {
@@ -484,393 +468,17 @@
     .modal-desc { margin: 0; font-size: 16px; line-height: 1.65; color: rgba(255,255,255,0.72); max-width: 44rem; }
 
     .modal-facts {
-      width: 100%;
-      margin-top: 28px;
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
-      align-items: stretch;
-      justify-content: stretch;
+      width: 100%; margin-top: 28px; display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; align-items: stretch; justify-content: stretch;
     }
     .modal-fact {
-      width: auto;
-      min-width: 0;
-      flex: 1 1 0;
-      padding: 16px 18px;
-      border-radius: 14px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
+      width: auto; min-width: 0; flex: 1 1 0; padding: 16px 18px;
+      border-radius: 14px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
     }
     .modal-fact-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 6px; }
-    .modal-fact-value {
-      font-size: 17px;
-      font-weight: 600;
-      letter-spacing: -0.03em;
-      color: var(--paper-white);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+    .modal-fact-value { font-size: 17px; font-weight: 600; letter-spacing: -0.03em; color: var(--paper-white); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-    .modal-side {
-      position: absolute;
-      top: 36px;
-      right: 40px;
-      width: 220px;
-      align-self: start;
-    }
-
-    /* ── AGE CALCULATOR ── */
-    .age-calc {
-      width: 100%;
-      margin-top: 28px;
-      padding: 24px;
-      border-radius: 18px;
-      background: rgba(41, 151, 255, 0.06);
-      border: 1px solid rgba(41, 151, 255, 0.18);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .age-calc::before {
-      content: "";
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 1px;
-      background: linear-gradient(to right, transparent, rgba(41,151,255,0.5), transparent);
-    }
-
-    .age-calc-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 18px;
-    }
-
-    .age-calc-icon {
-      width: 32px; height: 32px;
-      border-radius: 8px;
-      background: rgba(41,151,255,0.15);
-      border: 1px solid rgba(41,151,255,0.25);
-      display: grid; place-items: center;
-      font-size: 14px;
-      flex: 0 0 auto;
-      color: var(--sky-blue);
-    }
-
-    .age-calc-title {
-      font-size: 13px;
-      font-weight: 700;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      color: var(--sky-blue);
-    }
-
-    .age-calc-sub {
-      font-size: 12px;
-      color: rgba(255,255,255,0.42);
-      margin-top: 1px;
-      letter-spacing: -0.01em;
-    }
-
-    .age-calc-row {
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 10px;
-      align-items: flex-start;
-    }
-
-    .age-input-wrap {
-      position: relative;
-      flex: 1;
-    }
-
-    .age-input {
-      width: 100%;
-      min-height: 48px;
-      padding: 0 16px 0 44px;
-      border-radius: 12px;
-      border: 1.5px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.06);
-      color: var(--paper-white);
-      font: inherit;
-      font-size: 16px;
-      letter-spacing: -0.02em;
-      outline: none;
-      transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
-      appearance: textfield;
-      -moz-appearance: textfield;
-    }
-    .age-input::-webkit-outer-spin-button,
-    .age-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-    .age-input::placeholder { color: rgba(255,255,255,0.28); }
-    .age-input:focus {
-      border-color: rgba(41,151,255,0.6);
-      background: rgba(41,151,255,0.07);
-      box-shadow: 0 0 0 3px rgba(41,151,255,0.12);
-    }
-    .age-input.error {
-      border-color: rgba(255, 80, 80, 0.7);
-      background: rgba(255,50,50,0.06);
-      box-shadow: 0 0 0 3px rgba(255,80,80,0.1);
-    }
-
-    .age-input-icon {
-      position: absolute;
-      left: 14px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 14px;
-      pointer-events: none;
-      line-height: 1;
-      color: rgba(41, 151, 255, 0.5);
-    }
-
-    .age-calc-btn {
-      min-height: 48px;
-      padding: 0 20px;
-      border-radius: 12px;
-      border: none;
-      background: var(--action-blue);
-      color: var(--paper-white);
-      font: inherit;
-      font-size: 14px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      cursor: pointer;
-      white-space: nowrap;
-      transition: opacity 0.2s ease, transform 0.15s ease, background 0.2s ease;
-      flex-shrink: 0;
-    }
-    .age-calc-btn:hover { opacity: 0.88; }
-    .age-calc-btn:active { transform: scale(0.95); }
-
-    .age-error {
-      display: none;
-      margin-top: 8px;
-      padding: 10px 14px;
-      font-size: 12px;
-      color: rgba(255, 100, 100, 0.9);
-      letter-spacing: -0.01em;
-      background: rgba(255, 80, 80, 0.08);
-      border: 1px solid rgba(255, 100, 100, 0.2);
-      border-radius: 10px;
-    }
-    .age-error.visible { display: block; }
-
-    .age-result {
-      display: none;
-      margin-top: 18px;
-      padding: 18px 20px;
-      border-radius: 14px;
-      background: rgba(0,0,0,0.3);
-      border: 1px solid rgba(255,255,255,0.07);
-      animation: resultFade 0.35s ease;
-    }
-    .age-result.visible { display: block; }
-
-    @keyframes resultFade {
-      from { opacity: 0; transform: translateY(6px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .age-result-label {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.35);
-      margin-bottom: 8px;
-    }
-
-    .age-result-main {
-      display: flex;
-      align-items: baseline;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    .age-result-value {
-      font-size: 38px;
-      font-weight: 700;
-      letter-spacing: -0.05em;
-      color: var(--paper-white);
-      line-height: 1;
-    }
-
-    .age-result-unit {
-      font-size: 16px;
-      font-weight: 400;
-      color: rgba(255,255,255,0.45);
-      letter-spacing: -0.02em;
-    }
-
-    .age-result-planet-label {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--sky-blue);
-      letter-spacing: 0.02em;
-    }
-
-    .age-result-breakdown {
-      margin-top: 16px;
-      padding-top: 16px;
-      border-top: 1px solid rgba(255,255,255,0.08);
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-    }
-
-    .age-breakdown-item {
-      text-align: center;
-      padding: 10px;
-      border-radius: 10px;
-      background: rgba(255,255,255,0.02);
-    }
-
-    .age-breakdown-value {
-      font-size: 20px;
-      font-weight: 700;
-      color: var(--sky-blue);
-      line-height: 1;
-      margin-bottom: 4px;
-    }
-
-    .age-breakdown-unit {
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.35);
-    }
-
-    .age-result-calculation {
-      margin-top: 12px;
-      padding-top: 12px;
-      border-top: 1px solid rgba(255,255,255,0.06);
-      font-size: 12px;
-      color: rgba(255,255,255,0.4);
-      line-height: 1.5;
-    }
-
-    .age-result-calculation strong { color: rgba(255,255,255,0.6); font-weight: 600; }
-
-    .age-no-calc {
-      display: none;
-      margin-top: 16px;
-      padding: 14px 18px;
-      border-radius: 12px;
-      background: rgba(255,200,80,0.07);
-      border: 1px solid rgba(255,200,80,0.15);
-      font-size: 13px;
-      color: rgba(255,200,80,0.8);
-    }
-    .age-no-calc.visible { display: block; }
-
-    /* ── CODE BLOCK ── */
-    .planet-code-block {
-      width: 100%;
-      margin-top: 28px;
-      padding: 20px;
-      border-radius: 14px;
-      background: rgba(0,0,0,0.3);
-      border: 1px solid rgba(255,255,255,0.08);
-      overflow: hidden;
-    }
-
-    .code-block-label {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.35);
-      margin-bottom: 12px;
-    }
-
-    .code-block-container {
-      position: relative;
-      border-radius: 10px;
-      background: rgba(0,0,0,0.5);
-      border: 1px solid rgba(255,255,255,0.06);
-      overflow: hidden;
-      max-width: 100%;
-    }
-
-    .code-actions {
-      position: absolute;
-      top: 12px;
-      right: 20px;
-      z-index: 10;
-      display: inline-flex;
-      gap: 8px;
-    }
-
-    .code-copy-btn,
-    .code-download-btn {
-      min-height: 32px;
-      padding: 0 12px;
-      border-radius: 8px;
-      border: 1px solid rgba(255,255,255,0.12);
-      background: rgba(255,255,255,0.06);
-      color: rgba(255,255,255,0.7);
-      font: inherit;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      cursor: pointer;
-      transition: opacity 0.2s ease, background 0.2s ease;
-    }
-    .code-copy-btn:hover,
-    .code-download-btn:hover { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.9); }
-    .code-copy-btn:active,
-    .code-download-btn:active { transform: scale(0.95); }
-    .code-copy-btn.copied,
-    .code-download-btn.done { color: rgba(41,151,255,0.9); }
-
-    .code-content {
-      padding: 20px;
-      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
-      font-size: 12px;
-      line-height: 1.6;
-      color: rgba(255,255,255,0.7);
-      overflow-x: auto;
-      max-height: 260px;
-      height: 260px; /* fixed height so the block won't push modal height */
-      overflow-y: auto;
-      white-space: pre; /* preserve formatting */
-      margin: 0; box-sizing: border-box; max-width: 100%;
-      word-break: normal; overflow-wrap: normal;
-    }
-
-    .code-content::-webkit-scrollbar {
-      width: 6px;
-      height: 6px;
-    }
-    .code-content::-webkit-scrollbar-track {
-      background: rgba(255,255,255,0.04);
-      border-radius: 3px;
-    }
-    .code-content::-webkit-scrollbar-thumb {
-      background: rgba(255,255,255,0.12);
-      border-radius: 3px;
-    }
-    .code-content::-webkit-scrollbar-thumb:hover {
-      background: rgba(255,255,255,0.2);
-    }
-
-    .code-line {
-      white-space: pre-wrap;
-      word-wrap: break-word;
-    }
-
-    .code-keyword { color: rgba(241,141,225,1); }     /* Pink for keywords */
-    .code-string { color: rgba(144,205,117,1); }      /* Green for strings */
-    .code-comment { color: rgba(120,119,122,1); }     /* Gray for comments */
-    .code-function { color: rgba(167,198,255,1); }    /* Light blue for functions */
-    .code-number { color: rgba(255,198,109,1); }      /* Orange for numbers */
-
-    /* ── MODAL SIDE ── */
-    .modal-side { display: grid; gap: 10px; min-width: 160px; }
+    .modal-side { position: absolute; top: 36px; right: 40px; width: 220px; align-self: start; display: grid; gap: 10px; min-width: 160px; }
     .modal-page-btn {
       display: inline-flex; align-items: center; justify-content: center; gap: 8px;
       min-height: 44px; padding: 11px 22px; border-radius: 980px; font-size: 14px;
@@ -881,6 +489,85 @@
     .modal-page-btn-ghost { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.8); border: 1px solid rgba(255,255,255,0.12); }
     .modal-page-btn:hover { opacity: 0.85; }
     .modal-page-btn:active { transform: scale(0.95); }
+
+    /* ── AGE CALCULATOR ── */
+    .age-calc {
+      width: 100%; margin-top: 28px; padding: 24px; border-radius: 18px;
+      background: rgba(41, 151, 255, 0.06); border: 1px solid rgba(41, 151, 255, 0.18);
+      position: relative; overflow: hidden;
+    }
+    .age-calc::before {
+      content: ""; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(to right, transparent, rgba(41,151,255,0.5), transparent);
+    }
+    .age-calc-header { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+    .age-calc-icon {
+      width: 32px; height: 32px; border-radius: 8px;
+      background: rgba(41,151,255,0.15); border: 1px solid rgba(41,151,255,0.25);
+      display: grid; place-items: center; font-size: 14px; flex: 0 0 auto; color: var(--sky-blue);
+    }
+    .age-calc-title { font-size: 13px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--sky-blue); }
+    .age-calc-sub { font-size: 12px; color: rgba(255,255,255,0.42); margin-top: 1px; letter-spacing: -0.01em; }
+    .age-calc-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: flex-start; }
+    .age-input-wrap { position: relative; flex: 1; }
+    .age-input {
+      width: 100%; min-height: 48px; padding: 0 16px 0 44px; border-radius: 12px;
+      border: 1.5px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.06);
+      color: var(--paper-white); font: inherit; font-size: 16px; letter-spacing: -0.02em;
+      outline: none; transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+      appearance: textfield; -moz-appearance: textfield;
+    }
+    .age-input::-webkit-outer-spin-button, .age-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    .age-input::placeholder { color: rgba(255,255,255,0.28); }
+    .age-input:focus { border-color: rgba(41,151,255,0.6); background: rgba(41,151,255,0.07); box-shadow: 0 0 0 3px rgba(41,151,255,0.12); }
+    .age-input.error { border-color: rgba(255, 80, 80, 0.7); background: rgba(255,50,50,0.06); box-shadow: 0 0 0 3px rgba(255,80,80,0.1); }
+    .age-input-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 14px; pointer-events: none; line-height: 1; color: rgba(41, 151, 255, 0.5); }
+    .age-calc-btn {
+      min-height: 48px; padding: 0 20px; border-radius: 12px; border: none;
+      background: var(--action-blue); color: var(--paper-white); font: inherit;
+      font-size: 14px; font-weight: 600; letter-spacing: -0.01em; cursor: pointer;
+      white-space: nowrap; transition: opacity 0.2s ease, transform 0.15s ease, background 0.2s ease; flex-shrink: 0;
+    }
+    .age-calc-btn:hover { opacity: 0.88; }
+    .age-calc-btn:active { transform: scale(0.95); }
+    .age-error { display: none; margin-top: 8px; padding: 10px 14px; font-size: 12px; color: rgba(255, 100, 100, 0.9); letter-spacing: -0.01em; background: rgba(255, 80, 80, 0.08); border: 1px solid rgba(255, 100, 100, 0.2); border-radius: 10px; }
+    .age-error.visible { display: block; }
+    .age-result { display: none; margin-top: 18px; padding: 18px 20px; border-radius: 14px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.07); animation: resultFade 0.35s ease; }
+    .age-result.visible { display: block; }
+    @keyframes resultFade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    .age-result-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 8px; }
+    .age-result-main { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+    .age-result-value { font-size: 38px; font-weight: 700; letter-spacing: -0.05em; color: var(--paper-white); line-height: 1; }
+    .age-result-unit { font-size: 16px; font-weight: 400; color: rgba(255,255,255,0.45); letter-spacing: -0.02em; }
+    .age-result-planet-label { font-size: 12px; font-weight: 600; color: var(--sky-blue); letter-spacing: 0.02em; }
+    .age-result-breakdown { margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.08); display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .age-breakdown-item { text-align: center; padding: 10px; border-radius: 10px; background: rgba(255,255,255,0.02); }
+    .age-breakdown-value { font-size: 20px; font-weight: 700; color: var(--sky-blue); line-height: 1; margin-bottom: 4px; }
+    .age-breakdown-unit { font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: rgba(255,255,255,0.35); }
+    .age-result-calculation { margin-top: 12px; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.06); font-size: 12px; color: rgba(255,255,255,0.4); line-height: 1.5; }
+    .age-result-calculation strong { color: rgba(255,255,255,0.6); font-weight: 600; }
+    .age-no-calc { display: none; margin-top: 16px; padding: 14px 18px; border-radius: 12px; background: rgba(255,200,80,0.07); border: 1px solid rgba(255,200,80,0.15); font-size: 13px; color: rgba(255,200,80,0.8); }
+    .age-no-calc.visible { display: block; }
+
+    /* ── CODE BLOCK ── */
+    .planet-code-block { width: 100%; margin-top: 28px; padding: 20px; border-radius: 14px; background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.08); overflow: hidden; }
+    .code-block-label { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 12px; }
+    .code-block-container { position: relative; border-radius: 10px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.06); overflow: hidden; max-width: 100%; }
+    .code-actions { position: absolute; top: 12px; right: 20px; z-index: 10; display: inline-flex; gap: 8px; }
+    .code-copy-btn, .code-download-btn { min-height: 32px; padding: 0 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.7); font: inherit; font-size: 11px; font-weight: 600; letter-spacing: -0.01em; cursor: pointer; transition: opacity 0.2s ease, background 0.2s ease; }
+    .code-copy-btn:hover, .code-download-btn:hover { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.9); }
+    .code-copy-btn:active, .code-download-btn:active { transform: scale(0.95); }
+    .code-copy-btn.copied, .code-download-btn.done { color: rgba(41,151,255,0.9); }
+    .code-content { padding: 20px; font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace; font-size: 12px; line-height: 1.6; color: rgba(255,255,255,0.7); overflow-x: auto; max-height: 260px; height: 260px; overflow-y: auto; white-space: pre; margin: 0; box-sizing: border-box; max-width: 100%; word-break: normal; overflow-wrap: normal; }
+    .code-content::-webkit-scrollbar { width: 6px; height: 6px; }
+    .code-content::-webkit-scrollbar-track { background: rgba(255,255,255,0.04); border-radius: 3px; }
+    .code-content::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
+    .code-content::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+    .code-keyword { color: rgba(241,141,225,1); }
+    .code-string { color: rgba(144,205,117,1); }
+    .code-comment { color: rgba(120,119,122,1); }
+    .code-function { color: rgba(167,198,255,1); }
+    .code-number { color: rgba(255,198,109,1); }
 
     /* ── FOOTER ── */
     footer {
@@ -900,6 +587,7 @@
     @media (max-width: 1024px) {
       .hero { grid-template-columns: 1fr; }
       .planet-video-grid { grid-template-columns: repeat(2,1fr); }
+      .procedure-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
     @media (max-width: 900px) {
       .render-header { grid-template-columns: 1fr; gap: 20px; align-items: flex-start; }
@@ -917,6 +605,8 @@
       .selector-row { grid-template-columns: 1fr; }
       .selector-row .btn-pill-primary { width: 100%; }
       .planet-video-grid { grid-template-columns: 1fr; }
+      .procedure-grid { grid-template-columns: 1fr; }
+      #procedure { padding-left: 24px; padding-right: 24px; }
       .modal-body { grid-template-columns: 1fr; padding: 24px; }
       .modal-facts { grid-template-columns: 1fr 1fr; }
       .footer-right { text-align: left; }
@@ -1040,6 +730,46 @@
       <p class="section-lead">Each body rendered individually — click any planet to explore its full details, facts, and
         a fullscreen view of its render loop.</p>
       <div class="planet-video-grid" id="planet-video-grid"></div>
+    </section>
+
+    <!-- ── PROCEDURE ── -->
+    <section class="tile tile-dark" id="procedure">
+      <div class="section-eyebrow">Workflow</div>
+      <h2 class="section-title">Procedure.</h2>
+      <p class="section-lead">The step-by-step process of creating the Blender solar system project from texture gathering to final render.</p>
+
+      <div class="procedure-grid">
+        <div class="procedure-card">
+          <img src="./STEPS/STEP 1.png" alt="Step 1: Gather Textures of Planets">
+          <div class="meta-kicker">Step 01</div>
+          <h3>Gather Textures of Planets</h3>
+          <p>Sourced and collected high-quality texture maps for each planet including surface details, atmospheres, and displacement information.</p>
+        </div>
+        <div class="procedure-card">
+          <img src="./STEPS/STEP 2.png" alt="Step 2: Generate a Python File for Blender thru AI">
+          <div class="meta-kicker">Step 02</div>
+          <h3>Generate a Python File for Blender thru AI</h3>
+          <p>Used AI assistance to generate optimized Python scripts for Blender that automate planet creation, material application, and positioning.</p>
+        </div>
+        <div class="procedure-card">
+          <img src="./STEPS/STEP 3.png" alt="Step 3: Double Check the Given Files">
+          <div class="meta-kicker">Step 03</div>
+          <h3>Double Check the Given Files</h3>
+          <p>Thoroughly reviewed all generated files and assets to ensure accuracy, proper scaling, correct texture application, and data integrity.</p>
+        </div>
+        <div class="procedure-card">
+          <img src="./STEPS/STEP 4.png" alt="Step 4: Setting Up the Animation and Camera">
+          <div class="meta-kicker">Step 04</div>
+          <h3>Setting Up the Animation and Camera</h3>
+          <p>Configured orbital animations for each planet, set up dynamic camera movement, and established lighting to showcase the solar system effectively.</p>
+        </div>
+        <div class="procedure-card">
+          <img src="./STEPS/STEP 5.png" alt="Step 5: Rendering">
+          <div class="meta-kicker">Step 05</div>
+          <h3>Rendering</h3>
+          <p>Rendered the final composition with optimized settings, applied post-processing effects, and compiled the complete solar system visualization.</p>
+        </div>
+      </div>
     </section>
   </main>
 
