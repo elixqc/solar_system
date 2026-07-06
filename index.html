@@ -668,6 +668,34 @@
       color: var(--near-black);
     }
 
+    .tools-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      align-items: center;
+      font-size: 0.85em;
+      letter-spacing: normal;
+      font-weight: 600;
+    }
+
+    .tool-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 0.9rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.72);
+      border: 1px solid var(--hairline);
+      color: var(--near-black);
+    }
+
+    .tool-pill img {
+      width: 18px;
+      height: 18px;
+      display: block;
+      object-fit: contain;
+    }
+
     .support-grid {
       display: grid;
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -1181,7 +1209,13 @@
         </div>
         <div class="about-col">
           <div class="about-col-label">Tools Used</div>
-          <div class="about-col-val">Blender · Adobe After Effects · DaVinci Resolve · Kdenlive · Claude AI</div>
+          <div class="about-col-val tools-list">
+            <span class="tool-pill"><img src="blender/icons/blender.png" alt="Blender">Blender</span>
+            <span class="tool-pill"><img src="blender/icons/aftereffects.png" alt="Adobe After Effects">Adobe After Effects</span>
+            <span class="tool-pill"><img src="blender/icons/davinci.png" alt="DaVinci Resolve">DaVinci Resolve</span>
+            <span class="tool-pill"><img src="blender/icons/kdenlive.png" alt="Kdenlive">Kdenlive</span>
+            <span class="tool-pill"><img src="blender/icons/claudeai.png" alt="Claude AI">Claude AI</span>
+          </div>
         </div>
       </div>
 
